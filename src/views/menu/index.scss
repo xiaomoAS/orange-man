@@ -1,0 +1,7 @@
+@use '@/assets/style/mixin' as *;
+
+@include b(main-menue) {
+  width: 200px;
+  border-radius: 0 8px 8px 0;
+  border: none;
+}

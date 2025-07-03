@@ -1,0 +1,36 @@
+/*
+ * @Autor: jiangzupei
+ * @Description: 
+ * @Date: 2025-07-03 15:48:18
+ * @LastEditors: jiangzupei1 jiangzupei1@jd.com
+ * @LastEditTime: 2025-07-03 16:14:53
+ * @FilePath: /orange-man/src/views/promotionsActivity/index.scss
+ */
+@use '@/assets/style/mixin' as *;
+
+@include b(batch-buttons) {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+
+  @include e(left) {
+    display: flex;
+  }
+
+  @include e(right) {
+    display: flex;
+  }
+}
+
+@include b(operation-box) {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  .el-button {
+    padding: 0;
+    height: 22px;
+  }
+  .el-button + .el-button {
+    margin: 0;
+  }
+}
