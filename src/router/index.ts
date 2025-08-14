@@ -3,7 +3,7 @@
  * @Description:
  * @Date: 2025-06-30 14:11:45
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-07-03 16:38:48
+ * @LastEditTime: 2025-08-13 09:50:04
  * @FilePath: /orange-man/src/router/index.ts
  */
 import { createRouter, createWebHistory } from 'vue-router'
@@ -11,6 +11,10 @@ import { createRouter, createWebHistory } from 'vue-router'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: '/',
+      redirect: '/ware',
+    },
     {
       path: '/ware',
       name: 'WareList',

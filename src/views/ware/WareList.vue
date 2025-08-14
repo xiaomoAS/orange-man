@@ -3,7 +3,7 @@
  * @Description: 
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-07-03 16:39:49
+ * @LastEditTime: 2025-08-14 10:32:33
  * @FilePath: /orange-man/src/views/ware/WareList.vue
 -->
 <template>
@@ -72,8 +72,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { TAB_ID } from './constants.ts'
+import * as apis from '@/api/services'
 
 const activeTab = ref(TAB_ID.ONSALE)
 const searchForm = ref({
@@ -82,7 +83,7 @@ const searchForm = ref({
   price: undefined,
   wareNum: undefined,
 })
-const tableData = [
+const tableData = ref([
   {
     name: '威拓森 (weitousen) 游钓中国鱼竿维把带硅胶手把带钓鱼竿龙骨吸汗带防滑防电',
     code: '10026126154955',
@@ -91,9 +92,25 @@ const tableData = [
     updateTime: '2025-04-10 15:32:23',
     status: '上架',
   },
-]
+])
+const totalCount = ref(0)
 
 const onSubmit = () => {}
+
+const getWareList = async () => {
+  try {
+    const { rows, total } = await apis.getWareList({})
+    tableData.value = rows
+    totalCount.value = total
+  } catch {
+    tableData.value = []
+    totalCount.value = 0
+  }
+}
+
+onMounted(() => {
+  getWareList()
+})
 </script>
 
 <style scoped lang="scss">

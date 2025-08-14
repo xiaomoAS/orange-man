@@ -3,11 +3,11 @@
  * @Description: 菜单
  * @Date: 2025-06-30 14:57:13
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-07-03 15:42:31
- * @FilePath: /orange-man/src/views/menu/MainMenue.vue
+ * @LastEditTime: 2025-08-14 10:51:32
+ * @FilePath: /orange-man/src/views/menu/MainMenu.vue
 -->
 <template>
-  <el-menu default-active="/ware" router class="main-menue">
+  <el-menu :default-active="currentRoute" router class="main-menue">
     <el-menu-item index="/ware">
       <span>商品</span>
     </el-menu-item>
@@ -23,7 +23,17 @@
   </el-menu>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+
+// 根据当前路由动态设置菜单高亮
+const currentRoute = computed(() => {
+  return route.path
+})
+</script>
 
 <style scoped lang="scss">
 @use './index.scss';
