@@ -3,7 +3,7 @@
  * @Description: 
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-08-14 10:32:33
+ * @LastEditTime: 2025-08-15 17:34:34
  * @FilePath: /orange-man/src/views/ware/WareList.vue
 -->
 <template>
@@ -11,28 +11,66 @@
     <!-- 导航栏 -->
     <div>
       <el-tabs v-model="activeTab">
-        <el-tab-pane label="全部商品(999+)" :name="TAB_ID.ALL"></el-tab-pane>
-        <el-tab-pane label="售卖中(757)" :name="TAB_ID.ONSALE"></el-tab-pane>
-        <el-tab-pane label="已下架(999+)" :name="TAB_ID.OFFLINE"></el-tab-pane>
+        <el-tab-pane label="全部商品" :name="TAB_ID.ALL"></el-tab-pane>
       </el-tabs>
     </div>
 
     <!-- 筛选条件 -->
-    <el-form class="form-box" :model="searchForm" label-width="120px">
-      <el-form-item label="商品编码">
-        <el-input v-model="searchForm.productId" />
+    <el-form ref="wareForm" class="form-box" :model="searchForm" label-width="120px">
+      <el-form-item label="商品编码" prop="productId">
+        <el-input v-model="searchForm.productId" placeholder="请输入商品Id" />
       </el-form-item>
-      <el-form-item label="类目">
-        <el-input v-model="searchForm.categoryId" />
+      <el-form-item label="商品状态" prop="productStatus">
+        <el-select v-model="searchForm.productStatus" placeholder="请选择状态">
+          <el-option
+            v-for="item in PRODUCT_STATUS_LIST"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="价格">
-        <el-input v-model="searchForm.price" />
+      <el-form-item label="类目" prop="categoryId">
+        <el-input v-model="searchForm.categoryId" placeholder="请输入类目" />
       </el-form-item>
-      <el-form-item label="库存">
-        <el-input v-model="searchForm.wareNum" />
+      <el-form-item label="价格" prop="priceMin">
+        <el-input-number
+          v-model="searchForm.priceMin"
+          step-strictly
+          controls-position="right"
+          placeholder="请输入最小价格"
+          :step="0.01"
+        />
+        <span>-</span>
+        <el-input-number
+          v-model="searchForm.priceMax"
+          step-strictly
+          controls-position="right"
+          placeholder="请输入最大价格"
+          :step="0.01"
+        />
+      </el-form-item>
+      <el-form-item label="库存" prop="inventoryMin">
+        <el-input-number
+          v-model="searchForm.inventoryMin"
+          step-strictly
+          controls-position="right"
+          placeholder="请输入最小库存"
+          :step="1"
+        />
+        <span>-</span>
+        <el-input-number
+          v-model="searchForm.inventoryMax"
+          step-strictly
+          controls-position="right"
+          placeholder="请输入最大库存"
+          :step="1"
+        />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">查询</el-button>
+        <el-button type="primary" @click="getWareList">查询</el-button>
+        <el-button @click="reset">重置</el-button>
       </el-form-item>
     </el-form>
 
@@ -53,19 +91,53 @@
     <!-- 表格 -->
     <el-table :data="tableData">
       <el-table-column type="selection" width="55" />
-      <el-table-column prop="name" label="商品信息"></el-table-column>
-      <el-table-column prop="code" label="商品编码"></el-table-column>
-      <el-table-column prop="stock" label="总库存"></el-table-column>
-      <el-table-column prop="price" label="价格"></el-table-column>
-      <el-table-column prop="updateTime" label="修改时间"></el-table-column>
-      <el-table-column prop="status" label="商品状态"></el-table-column>
+      <el-table-column label="商品信息" width="400">
+        <template #default="{ row }">
+          <div class="product-info">
+            <img class="product-info__img" :src="row?.imgUrl" alt="商品图" />
+            <div>
+              <AdvCustomTooltip :showLine="2" :content="row.name">
+                <span class="product-info__title">{{ row.name }}</span>
+              </AdvCustomTooltip>
+              <span>商品编码：{{ row.id }}</span>
+            </div>
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column prop="inventory" label="总库存"></el-table-column>
+      <el-table-column label="价格">
+        <template #default="{ row }">
+          <span>¥{{ row?.priceMin }} - ¥{{ row?.priceMax }}</span>
+        </template>
+      </el-table-column>
+      <!-- TODO 字段 -->
+      <el-table-column prop="modified" label="修改时间"></el-table-column>
+      <el-table-column prop="productStatus" label="商品状态">
+        <template #default="{ row }">
+          {{ PRODUCT_STATUS_LIST?.find((item) => item.value === row?.productStatus)?.label }}
+        </template>
+      </el-table-column>
       <el-table-column label="操作">
-        <div class="operation-box">
-          <el-button link type="primary">修改商品</el-button>
-          <el-button link type="primary">上架/下架商品</el-button>
-          <el-button link type="primary">修改检测报告</el-button>
-          <el-button link type="primary">删除商品</el-button>
-        </div>
+        <template #default="{ row }">
+          <div class="operation-box">
+            <el-button link type="primary">修改商品</el-button>
+            <el-button
+              v-if="
+                [
+                  PRODUCT_STATUS.IS_OFF_SHELF,
+                  PRODUCT_STATUS.WAIT_ON_SHELF,
+                  PRODUCT_STATUS.IS_ON_SHELF,
+                ].includes(row.productStatus)
+              "
+              link
+              type="primary"
+              @click="shelfHandler(row)"
+              >上架/下架商品</el-button
+            >
+            <el-button link type="primary">修改检测报告</el-button>
+            <el-button link type="primary" @click="deleteWare(row)">删除商品</el-button>
+          </div>
+        </template>
       </el-table-column>
     </el-table>
   </div>
@@ -73,39 +145,103 @@
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
-import { TAB_ID } from './constants.ts'
+import { AdvCustomTooltip } from '@/components/advance'
+import { TAB_ID, PRODUCT_STATUS_LIST, PRODUCT_STATUS } from './constants.ts'
 import * as apis from '@/api/services'
+import { ElMessage, ElMessageBox } from 'element-plus'
 
-const activeTab = ref(TAB_ID.ONSALE)
+const activeTab = ref(TAB_ID.ALL)
+const wareForm = ref()
 const searchForm = ref({
   productId: undefined,
+  productStatus: undefined,
   categoryId: undefined,
-  price: undefined,
-  wareNum: undefined,
+  priceMin: undefined,
+  priceMax: undefined,
+  inventoryMin: undefined,
+  inventoryMax: undefined,
 })
-const tableData = ref([
-  {
-    name: '威拓森 (weitousen) 游钓中国鱼竿维把带硅胶手把带钓鱼竿龙骨吸汗带防滑防电',
-    code: '10026126154955',
-    stock: 15,
-    price: '¥22.80 - ¥44.80',
-    updateTime: '2025-04-10 15:32:23',
-    status: '上架',
-  },
-])
+const tableData = ref()
 const totalCount = ref(0)
-
-const onSubmit = () => {}
 
 const getWareList = async () => {
   try {
-    const { rows, total } = await apis.getWareList({})
+    const { rows, total } = await apis.getWareList({
+      ...searchForm.value,
+    })
     tableData.value = rows
     totalCount.value = total
   } catch {
     tableData.value = []
     totalCount.value = 0
   }
+}
+
+/**
+ * @description: 上下架
+ */
+const shelfHandler = async (row: Record<string, any>) => {
+  try {
+    let res = true
+    let apiName = ''
+    // 待上架&已下架
+    if ([PRODUCT_STATUS.IS_OFF_SHELF, PRODUCT_STATUS.WAIT_ON_SHELF].includes(row.productStatus)) {
+      apiName = 'wareOnline'
+    }
+    // 已上架
+    else if ([PRODUCT_STATUS.IS_ON_SHELF].includes(row.productStatus)) {
+      apiName = 'wareOffline'
+    }
+    if (!apiName) {
+      ElMessage.warning('非目标状态')
+      return
+    }
+    await ElMessageBox.confirm(
+      `确认${[PRODUCT_STATUS.IS_ON_SHELF].includes(row.productStatus) ? '下架' : '上架'}吗`,
+      '提示',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      },
+    ).then(() => true)
+    res = await (apis as any)?.[apiName]({
+      productStatus: row?.productStatus,
+      productid: Number(row?.id),
+    })
+    if (res) {
+      ElMessage.success('处理成功')
+    } else {
+      ElMessage.error('处理失败')
+    }
+  } catch {}
+}
+
+/**
+ * @description: 删除商品
+ */
+const deleteWare = async (row: Record<string, any>) => {
+  try {
+    await ElMessageBox.confirm(`确认删除吗`, '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }).then(() => true)
+    const res = await apis.wareDelete({
+      productStatus: row?.productStatus,
+      productid: Number(row?.id),
+    })
+    if (res) {
+      ElMessage.success('删除成功')
+    } else {
+      ElMessage.error('删除失败')
+    }
+  } catch {}
+}
+
+const reset = () => {
+  wareForm.value?.resetFields()
+  getWareList()
 }
 
 onMounted(() => {

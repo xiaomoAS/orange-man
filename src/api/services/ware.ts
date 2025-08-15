@@ -6,3 +6,24 @@ import request, { BASE_API_URL } from '../server'
 export const getWareList: any = (params = {}) => {
   return request.post(`${BASE_API_URL}/admin/product/list`, params)
 }
+
+/**
+ * @description: 商品上架接口
+ */
+export const wareOnline: any = (params = {}) => {
+  return request.post(`${BASE_API_URL}/admin/product/online`, params)
+}
+
+/**
+ * @description: 商品下架接口
+ */
+export const wareOffline: any = (params = {}) => {
+  return request.post(`${BASE_API_URL}/admin/product/offline`, params)
+}
+
+/**
+ * @description: 商品删除接口
+ */
+export const wareDelete: any = (params = {}) => {
+  return request.post(`${BASE_API_URL}/admin/product/delete`, params)
+}

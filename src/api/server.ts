@@ -19,6 +19,7 @@ server.interceptors.response.use(
     return Promise.reject(data.message)
   },
   (error) => {
+    ElMessage.error(error)
     return Promise.reject(error)
   },
 )
