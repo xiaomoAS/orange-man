@@ -3,7 +3,7 @@
  * @Description: 
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-08-15 17:34:34
+ * @LastEditTime: 2025-08-20 15:44:40
  * @FilePath: /orange-man/src/views/ware/WareList.vue
 -->
 <template>
@@ -16,7 +16,7 @@
     </div>
 
     <!-- 筛选条件 -->
-    <el-form ref="wareForm" class="form-box" :model="searchForm" label-width="120px">
+    <el-form ref="wareFormRef" class="form-box" :model="searchForm" label-width="120px">
       <el-form-item label="商品编码" prop="productId">
         <el-input v-model="searchForm.productId" placeholder="请输入商品Id" />
       </el-form-item>
@@ -69,7 +69,7 @@
         />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="getWareList">查询</el-button>
+        <el-button type="primary" @click="getTableData">查询</el-button>
         <el-button @click="reset">重置</el-button>
       </el-form-item>
     </el-form>
@@ -77,19 +77,19 @@
     <!-- 批量操作 -->
     <div class="batch-buttons">
       <div class="batch-buttons__left">
-        <el-button>批量上架</el-button>
+        <!-- <el-button>批量上架</el-button>
         <el-button>批量下架</el-button>
-        <el-button>批量删除</el-button>
+        <el-button>批量删除</el-button> -->
       </div>
 
       <div class="batch-buttons__right">
-        <el-button type="primary" link>类目设置</el-button>
+        <el-button type="primary" link @click="cateConfigHandler">类目设置</el-button>
         <el-button type="primary" link>+ 添加新商品</el-button>
       </div>
     </div>
 
     <!-- 表格 -->
-    <el-table :data="tableData">
+    <el-table :data="tableData" current-row-key="id" class="ware-table">
       <el-table-column type="selection" width="55" />
       <el-table-column label="商品信息" width="400">
         <template #default="{ row }">
@@ -140,18 +140,33 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <div class="page-box">
+      <el-pagination
+        v-model:current-page="currentPage"
+        v-model:page-size="pageSize"
+        :page-sizes="[10, 20, 50, 100]"
+        background
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="totalCount"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { AdvCustomTooltip } from '@/components/advance'
 import { TAB_ID, PRODUCT_STATUS_LIST, PRODUCT_STATUS } from './constants.ts'
 import * as apis from '@/api/services'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
+const router = useRouter()
 const activeTab = ref(TAB_ID.ALL)
-const wareForm = ref()
+const wareFormRef = ref()
 const searchForm = ref({
   productId: undefined,
   productStatus: undefined,
@@ -162,12 +177,16 @@ const searchForm = ref({
   inventoryMax: undefined,
 })
 const tableData = ref()
+const currentPage = ref(1)
+const pageSize = ref(10)
 const totalCount = ref(0)
 
-const getWareList = async () => {
+const getTableData = async () => {
   try {
     const { rows, total } = await apis.getWareList({
       ...searchForm.value,
+      page: currentPage.value,
+      pageSize: pageSize.value,
     })
     tableData.value = rows
     totalCount.value = total
@@ -175,6 +194,15 @@ const getWareList = async () => {
     tableData.value = []
     totalCount.value = 0
   }
+}
+
+const handleSizeChange = (val: number) => {
+  pageSize.value = val
+  getTableData()
+}
+const handleCurrentChange = (val: number) => {
+  currentPage.value = val
+  getTableData()
 }
 
 /**
@@ -240,12 +268,16 @@ const deleteWare = async (row: Record<string, any>) => {
 }
 
 const reset = () => {
-  wareForm.value?.resetFields()
-  getWareList()
+  wareFormRef.value?.resetFields()
+  getTableData()
+}
+
+const cateConfigHandler = () => {
+  router.push('/cateConfig')
 }
 
 onMounted(() => {
-  getWareList()
+  getTableData()
 })
 </script>
 

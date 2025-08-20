@@ -14,15 +14,7 @@
   }
 }
 
-@include b(form-box) {
-  display: flex;
-  flex-wrap: wrap;
-  .el-form-item {
-    min-width: 33%;
-  }
-}
-
-@include b(ware-table) {
+@include b(cate-table) {
   :deep(th) {
     color: #262626;
     .cell {
@@ -34,21 +26,6 @@
       vertical-align: top;
       color: #262626;
     }
-  }
-}
-
-@include b(product-info) {
-  display: flex;
-
-  @include e(img) {
-    min-width: 60px;
-    height: 60px;
-    margin-right: 4px;
-  }
-
-  @include e(title) {
-    font-weight: 600;
-    color: #262626;
   }
 }
 

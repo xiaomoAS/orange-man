@@ -3,7 +3,7 @@
  * @Description:
  * @Date: 2025-06-30 14:11:45
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-08-13 09:50:04
+ * @LastEditTime: 2025-08-20 15:38:25
  * @FilePath: /orange-man/src/router/index.ts
  */
 import { createRouter, createWebHistory } from 'vue-router'
@@ -25,7 +25,7 @@ const router = createRouter({
       name: 'PromotionsResource',
       component: () =>
         import(
-          /* webpackChunkName: "promotions-resource" */ '@/views/promotionsResource/PromotionsResource.vue'
+          /* webpackChunkName: "promotions-resource" */ '@/views/promotions-resource/PromotionsResource.vue'
         ),
     },
     {
@@ -33,7 +33,7 @@ const router = createRouter({
       name: 'PromotionsActivity',
       component: () =>
         import(
-          /* webpackChunkName: "promotions-activity" */ '@/views/promotionsActivity/PromotionsActivity.vue'
+          /* webpackChunkName: "promotions-activity" */ '@/views/promotions-activity/PromotionsActivity.vue'
         ),
     },
     {
@@ -41,6 +41,12 @@ const router = createRouter({
       name: 'OrderManage',
       component: () =>
         import(/* webpackChunkName: "order-manage" */ '@/views/orders/OrderManage.vue'),
+    },
+    {
+      path: '/cateConfig',
+      name: 'CateConfig',
+      component: () =>
+        import(/* webpackChunkName: "order-manage" */ '@/views/cate-config/CateConfig.vue'),
     },
   ],
 })

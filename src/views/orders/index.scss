@@ -16,10 +16,13 @@
 
 @include b(form-box) {
   display: flex;
-  justify-content: space-between;
   flex-wrap: wrap;
   .el-form-item {
     min-width: 33%;
+
+    &.double-span-item {
+      min-width: 66%;
+    }
   }
 }
 
@@ -33,5 +36,63 @@
   }
   .el-button + .el-button {
     margin: 0;
+  }
+}
+
+@include b(product-info) {
+  display: flex;
+  padding-bottom: 16px;
+
+  &:not(:first-of-type) {
+    border-top: 1px solid #ebeef5;
+  }
+
+  @include e(img) {
+    min-width: 60px;
+    height: 60px;
+    margin-right: 4px;
+  }
+
+  @include e(title) {
+    font-weight: 600;
+    color: #262626;
+    margin-bottom: 8px;
+  }
+
+  @include e(content-box) {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  @include e(price-box) {
+    margin-left: 24px;
+    color: #262626;
+    * {
+      font-weight: 600;
+    }
+  }
+}
+
+@include b(order-table) {
+  :deep(th) {
+    color: #262626;
+    .cell {
+      font-weight: 600;
+    }
+  }
+  :deep(.el-table__row) {
+    td {
+      vertical-align: top;
+      color: #262626;
+    }
+  }
+}
+
+@include b(page-box) {
+  margin-top: 24px;
+
+  .el-pagination {
+    width: fit-content;
+    margin-left: auto;
   }
 }
