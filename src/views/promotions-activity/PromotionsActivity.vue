@@ -3,48 +3,135 @@
  * @Description: 营销资源位
  * @Date: 2025-07-03 15:44:21
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-07-03 16:10:00
- * @FilePath: /orange-man/src/views/promotionsActivity/PromotionsActivity.vue
+ * @LastEditTime: 2025-08-21 15:17:27
+ * @FilePath: /orange-man/src/views/promotions-activity/PromotionsActivity.vue
 -->
 <template>
-  <!-- 批量操作 -->
-  <div class="batch-buttons">
-    <div class="batch-buttons__left"></div>
+  <div>
+    <!-- 批量操作 -->
+    <div class="batch-buttons">
+      <div class="batch-buttons__left"></div>
 
-    <div class="batch-buttons__right">
-      <el-button type="primary" link>新增资源位</el-button>
+      <div class="batch-buttons__right">
+        <!-- TODO -->
+        <el-button type="primary" link>新增活动场</el-button>
+      </div>
+    </div>
+
+    <!-- 表格 -->
+    <el-table :data="tableData" class="activity-table">
+      <el-table-column prop="id" label="活动场id"></el-table-column>
+      <el-table-column prop="name" label="活动名称"></el-table-column>
+      <el-table-column prop="wayType" label="活动投放渠道">
+        <template #default="{ row }">
+          <div>{{ WAY_TYPE_MAP?.[row?.wayType as keyof typeof WAY_TYPE_MAP] }}</div>
+        </template>
+      </el-table-column>
+      <el-table-column prop="startTime" label="活动开始时间">
+        <template #default="{ row }">
+          <div>{{ formatDate(row?.startTime) }}</div>
+        </template>
+      </el-table-column>
+      <el-table-column prop="endTime" label="活动结束时间">
+        <template #default="{ row }">
+          <div>{{ formatDate(row?.endTime) }}</div>
+        </template>
+      </el-table-column>
+      <el-table-column prop="status" label="活动状态">
+        <template #default="{ row }">
+          <div>{{ ACTIVITY_STATUS_MAP?.[row?.status as keyof typeof ACTIVITY_STATUS_MAP] }}</div>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作">
+        <template #default="{ row }">
+          <div class="operation-box">
+            <!-- TODO -->
+            <el-button size="mini" type="text">编辑</el-button>
+            <el-button size="mini" type="text" @click="statusChange(row)">关闭</el-button>
+            <el-button size="mini" type="text" @click="statusChange(row)">开启</el-button>
+          </div>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <div class="page-box">
+      <el-pagination
+        v-model:current-page="currentPage"
+        v-model:page-size="pageSize"
+        :page-sizes="[10, 20, 50, 100]"
+        background
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="totalCount"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
     </div>
   </div>
-
-  <!-- 表格 -->
-  <el-table :data="tableData">
-    <el-table-column prop="activityId" label="活动场id"></el-table-column>
-    <el-table-column prop="activityName" label="活动名称"></el-table-column>
-    <el-table-column prop="channel" label="活动投放渠道"></el-table-column>
-    <el-table-column prop="startTime" label="活动开始时间"></el-table-column>
-    <el-table-column prop="endTime" label="活动结束时间"></el-table-column>
-    <el-table-column prop="status" label="活动状态"></el-table-column>
-    <el-table-column label="操作">
-      <div class="operation-box">
-        <el-button size="mini" type="text">编辑</el-button>
-        <el-button size="mini" type="text">关闭</el-button>
-        <el-button size="mini" type="text">开启</el-button>
-      </div>
-    </el-table-column>
-  </el-table>
 </template>
 
 <script setup lang="ts">
-const tableData = [
-  {
-    activityId: 1123451123,
-    activityName: '活动1',
-    channel: '渠道',
-    startTime: '06-29',
-    endTime: '06-30',
-    status: '成功',
-  },
-]
+import { ref, onMounted } from 'vue'
+import * as apis from '@/api/services'
+import { WAY_TYPE_MAP, ACTIVITY_STATUS_MAP, ACTIVITY_STATUS } from './constants'
+import { formatDate } from '@/utils/index.ts'
+import { ElMessage, ElMessageBox } from 'element-plus'
+
+const tableData = ref()
+const currentPage = ref(1)
+const pageSize = ref(10)
+const totalCount = ref(0)
+
+const getTableData = async () => {
+  try {
+    const { rows, total } = await apis.getActivityList({
+      page: currentPage.value,
+      pageSize: pageSize.value,
+    })
+    tableData.value = rows
+    totalCount.value = total
+  } catch {
+    tableData.value = []
+    totalCount.value = 0
+  }
+}
+
+const handleSizeChange = (val: number) => {
+  pageSize.value = val
+  getTableData()
+}
+const handleCurrentChange = (val: number) => {
+  currentPage.value = val
+  getTableData()
+}
+
+/**
+ * @description: 开启状态改变
+ */
+const statusChange = async (row: Record<string, any>) => {
+  try {
+    await ElMessageBox.confirm(
+      `确认${row?.status === ACTIVITY_STATUS.NO ? '开启' : '关闭'}活动吗`,
+      '提示',
+      {
+        confirmButtonText: '确 定',
+        cancelButtonText: '取 消',
+        type: 'warning',
+      },
+    ).then(() => true)
+    const apiName = row?.status === ACTIVITY_STATUS.NO ? 'openActivity' : 'closeActivity'
+    const res = await apis?.[apiName]({ id: Number(row?.id) })
+    if (res) {
+      ElMessage.success('取消成功')
+      getTableData()
+    } else {
+      ElMessage.error('取消失败')
+    }
+  } catch {}
+}
+
+onMounted(() => {
+  getTableData()
+})
 </script>
 
 <style scoped lang="scss">

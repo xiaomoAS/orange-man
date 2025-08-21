@@ -3,8 +3,8 @@
  * @Description: 
  * @Date: 2025-07-03 15:48:18
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-07-03 16:14:53
- * @FilePath: /orange-man/src/views/promotionsActivity/index.scss
+ * @LastEditTime: 2025-08-21 15:05:44
+ * @FilePath: /orange-man/src/views/promotions-activity/index.scss
  */
 @use '@/assets/style/mixin' as *;
 
@@ -32,5 +32,29 @@
   }
   .el-button + .el-button {
     margin: 0;
+  }
+}
+
+@include b(activity-table) {
+  :deep(th) {
+    color: #262626;
+    .cell {
+      font-weight: 600;
+    }
+  }
+  :deep(.el-table__row) {
+    td {
+      vertical-align: top;
+      color: #262626;
+    }
+  }
+}
+
+@include b(page-box) {
+  margin-top: 24px;
+
+  .el-pagination {
+    width: fit-content;
+    margin-left: auto;
   }
 }
