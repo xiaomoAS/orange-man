@@ -1,7 +1,7 @@
 <template>
   <el-dialog v-model="dialogVisible" title="新增资源位" @close="closeHandler">
     <div>
-      <el-form ref="fromRef" :model="form" :rules="rules" label-width="120px">
+      <el-form ref="formRef" :model="form" :rules="rules" label-width="120px">
         <el-form-item v-if="isEdit" label="资源位ID" prop="name">
           <el-input v-model="form.id" placeholder="请输入资源位ID" disabled></el-input>
         </el-form-item>
@@ -60,7 +60,7 @@ const rules = {
 const emits = defineEmits(['getTableData'])
 const dialogVisible = ref<boolean>(false)
 const rowData = ref()
-const fromRef = ref()
+const formRef = ref()
 const form = reactive({
   id: undefined,
   name: null,
@@ -77,11 +77,11 @@ const open = (data = null) => {
 }
 
 const closeHandler = () => {
-  fromRef.value?.resetFields()
+  formRef.value?.resetFields()
 }
 
 const submitHandler = () => {
-  fromRef.value?.validate(async (valid: boolean) => {
+  formRef.value?.validate(async (valid: boolean) => {
     if (!valid) return
     try {
       const apiName = isEdit.value ? 'updateResource' : 'addResource'

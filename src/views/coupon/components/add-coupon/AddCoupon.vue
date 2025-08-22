@@ -1,0 +1,157 @@
+<template>
+  <el-dialog
+    v-model="dialogVisible"
+    title="新增优惠券"
+    :close-on-click-modal="false"
+    @close="closeHandler"
+  >
+    <div>
+      <el-form ref="formRef" :model="form" :rules="rules" label-width="120px">
+        <el-form-item v-if="isEdit" label="券ID" prop="id">
+          <el-input v-model="form.id" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="券名称" prop="name">
+          <el-input v-model="form.name" placeholder="请输入券名称"></el-input>
+        </el-form-item>
+        <el-form-item label="券类型" prop="type">
+          <el-select v-model="form.type" placeholder="请选择券类型">
+            <el-option
+              v-for="item in COUPON_LIST"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="覆盖商品" prop="productId">
+          <el-input v-model="form.productId" placeholder="请输入商品id,英文逗号分隔"></el-input>
+        </el-form-item>
+        <!-- TODO：字段 -->
+        <el-form-item
+          v-if="form?.type === COUPON_TYPE.NEW_DISCOUNT"
+          label="新人专享券"
+          prop="newCoupon"
+        >
+          <el-input-number
+            v-model="form.newCoupon"
+            placeholder="请输入"
+            :min="0"
+            :step="0.01"
+            step-strictly
+          ></el-input-number>
+        </el-form-item>
+        <el-form-item
+          v-if="form?.type === COUPON_TYPE.FREIGHT"
+          label="包邮运费上限"
+          prop="waybillPriceLimit"
+        >
+          <el-input-number
+            v-model="form.waybillPriceLimit"
+            placeholder="请输入"
+            :min="0"
+            :step="0.01"
+            step-strictly
+          ></el-input-number>
+        </el-form-item>
+        <el-form-item label="生效时间范围" prop="timeRange">
+          <el-date-picker
+            v-model="form.timeRange"
+            type="datetimerange"
+            start-placeholder="开始时间"
+            end-placeholder="结束时间"
+            value-format="x"
+            :teleported="false"
+            :default-time="[new Date(2000, 1, 1, 0, 0, 0), new Date(2000, 1, 1, 23, 59, 59)]"
+          />
+        </el-form-item>
+        <el-form-item label="发放方式" prop="publishType">
+          <el-radio-group v-model="form.publishType">
+            <el-radio v-for="item in PUBLISH_LIST" :value="item.value" :key="item.value">{{
+              item?.label
+            }}</el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </el-form>
+    </div>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submitHandler">确 定</el-button>
+      </span>
+    </template>
+  </el-dialog>
+</template>
+
+<script setup lang="ts">
+import { ref, reactive, computed } from 'vue'
+import * as apis from '@/api/services'
+import { ElMessage } from 'element-plus'
+import { COUPON_LIST, PUBLISH_LIST, COUPON_TYPE } from '../../constants'
+
+const rules = {
+  name: [{ required: true, message: '请输入名称', trigger: 'change' }],
+  type: [{ required: true, message: '请选择类型', trigger: 'change' }],
+  productId: [{ required: true, message: '请输入覆盖商品', trigger: 'change' }],
+  waybillPriceLimit: [{ required: true, message: '请输入价格', trigger: 'change' }],
+  newCoupon: [{ required: true, message: '请输入价格', trigger: 'change' }],
+  timeRange: [{ required: true, message: '请选择时间', trigger: 'change' }],
+  publishType: [{ required: true, message: '请选择发放方式', trigger: 'change' }],
+}
+
+const emits = defineEmits(['getTableData'])
+const dialogVisible = ref<boolean>(false)
+const rowData = ref()
+const formRef = ref()
+const form = reactive({
+  id: undefined,
+  name: null,
+  type: null,
+  productId: null,
+  waybillPriceLimit: null,
+  newCoupon: null,
+  publishType: null,
+  timeRange: [],
+})
+const isEdit = computed(() => rowData.value)
+
+const open = (data: Record<string, any>) => {
+  rowData.value = data
+  Object.assign(form, data)
+  dialogVisible.value = true
+}
+
+const closeHandler = () => {
+  formRef.value?.resetFields()
+}
+
+const submitHandler = () => {
+  formRef.value?.validate(async (valid: boolean) => {
+    if (!valid) return
+    try {
+      const apiName = isEdit.value ? 'updateCoupon' : 'addCoupon'
+      const res = await apis?.[apiName]({
+        ...form,
+        productIdList: form?.productId ? (form.productId as any).split(',') : [],
+        startTime: form?.timeRange?.[0],
+        endTime: form?.timeRange?.[1],
+      })
+      if (res) {
+        ElMessage.success('添加成功')
+        emits('getTableData')
+        dialogVisible.value = false
+      } else {
+        ElMessage.error('添加失败')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  })
+}
+
+defineExpose({ open })
+</script>
+
+<style scoped lang="scss">
+@use './index.scss';
+</style>

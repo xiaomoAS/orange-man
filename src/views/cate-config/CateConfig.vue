@@ -64,7 +64,7 @@ const addCateRef = ref()
 
 const getTableData = async () => {
   try {
-    const { rows, total } = await apis.getCatelList({
+    const { rows, total } = await apis.getCateList({
       page: currentPage.value,
       pageSize: pageSize.value,
     })

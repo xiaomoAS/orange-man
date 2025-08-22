@@ -1,0 +1,52 @@
+@use '@/assets/style/mixin' as *;
+
+@include b(batch-buttons) {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+
+  @include e(left) {
+    display: flex;
+  }
+
+  @include e(right) {
+    display: flex;
+  }
+}
+
+@include b(coupon-table) {
+  :deep(th) {
+    color: #262626;
+    .cell {
+      font-weight: 600;
+    }
+  }
+  :deep(.el-table__row) {
+    td {
+      vertical-align: top;
+      color: #262626;
+    }
+  }
+}
+
+@include b(operation-box) {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  .el-button {
+    padding: 0;
+    height: 22px;
+  }
+  .el-button + .el-button {
+    margin: 0;
+  }
+}
+
+@include b(page-box) {
+  margin-top: 24px;
+
+  .el-pagination {
+    width: fit-content;
+    margin-left: auto;
+  }
+}

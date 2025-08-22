@@ -3,7 +3,7 @@
  * @Description: 菜单
  * @Date: 2025-06-30 14:57:13
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-08-14 10:51:32
+ * @LastEditTime: 2025-08-22 15:22:37
  * @FilePath: /orange-man/src/views/menu/MainMenu.vue
 -->
 <template>
@@ -18,7 +18,10 @@
       <span>营销活动场</span>
     </el-menu-item>
     <el-menu-item index="/orders">
-      <span>履约</span>
+      <span>订单</span>
+    </el-menu-item>
+    <el-menu-item index="/couponList">
+      <span>优惠券</span>
     </el-menu-item>
   </el-menu>
 </template>
