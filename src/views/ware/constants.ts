@@ -3,7 +3,7 @@
  * @Description:
  * @Date: 2025-06-30 17:24:04
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-08-15 16:54:08
+ * @LastEditTime: 2025-08-27 20:12:25
  * @FilePath: /orange-man/src/views/ware/constants.ts
  */
 export enum TAB_ID {
@@ -28,4 +28,15 @@ export const PRODUCT_STATUS_LIST = [
   { label: '审核驳回', value: 4 },
   { label: '已上架', value: 5 },
   { label: '已下架', value: 6 },
+]
+
+// 检测报告类型
+export const enum REPORT_TYPE {
+  IMG = 1, // 图片
+  FILE = 2, // pdf文件
+}
+
+export const REPORT_TYPE_LIST = [
+  { label: '图片', value: 1 },
+  { label: 'pdf', value: 2 },
 ]

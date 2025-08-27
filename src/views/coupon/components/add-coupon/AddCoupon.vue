@@ -3,6 +3,7 @@
     v-model="dialogVisible"
     title="新增优惠券"
     :close-on-click-modal="false"
+    :close-on-press-escape="false"
     @close="closeHandler"
   >
     <div>
@@ -27,7 +28,6 @@
         <el-form-item label="覆盖商品" prop="productId">
           <el-input v-model="form.productId" placeholder="请输入商品id,英文逗号分隔"></el-input>
         </el-form-item>
-        <!-- TODO：字段 -->
         <el-form-item
           v-if="form?.type === COUPON_TYPE.NEW_DISCOUNT"
           label="新人专享券"
@@ -122,7 +122,16 @@ const open = (data: Record<string, any>) => {
 }
 
 const closeHandler = () => {
-  formRef.value?.resetFields()
+  Object.assign(form, {
+    id: undefined,
+    name: null,
+    type: null,
+    productId: null,
+    waybillPriceLimit: null,
+    newCoupon: null,
+    publishType: null,
+    timeRange: [],
+  })
 }
 
 const submitHandler = () => {

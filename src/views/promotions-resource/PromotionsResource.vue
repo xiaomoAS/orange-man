@@ -3,7 +3,7 @@
  * @Description: 营销资源位
  * @Date: 2025-07-03 15:44:21
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-08-21 14:46:34
+ * @LastEditTime: 2025-08-27 18:14:16
  * @FilePath: /orange-man/src/views/promotions-resource/PromotionsResource.vue
 -->
 <template>
@@ -34,8 +34,8 @@
       <el-table-column label="操作">
         <template #default="{ row }">
           <div class="operation-box">
-            <el-button size="mini" type="text" @click="editResourceHandler(row)">编辑</el-button>
-            <el-button size="mini" type="text" @click="deleteHandler(row)">删除</el-button>
+            <el-button type="primary" link @click="editResourceHandler(row)">编辑</el-button>
+            <el-button type="primary" link @click="deleteHandler(row)">删除</el-button>
           </div>
         </template>
       </el-table-column>

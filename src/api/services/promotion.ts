@@ -15,7 +15,7 @@ export const updateResource: any = (params = {}) => {
 }
 
 /**
- * @description: 新增资源位 TODO: 接口名
+ * @description: 新增资源位
  */
 export const addResource: any = (params = {}) => {
   return request.post(`${BASE_API_URL}/admin/resource/add`, params)

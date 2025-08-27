@@ -1,5 +1,12 @@
 <template>
-  <el-dialog v-model="dialogVisible" title="添加商品" width="800px" :before-close="handleClose">
+  <el-dialog
+    v-model="dialogVisible"
+    title="添加商品"
+    width="800px"
+    :close-on-click-modal="false"
+    :close-on-press-escape="false"
+    @close="handleClose"
+  >
     <div v-if="dialogVisible">
       <el-form
         ref="addCateFormRef"
@@ -56,10 +63,17 @@
             </template>
           </el-input>
         </el-form-item>
+        <el-form-item label="检测报告类型" prop="reportType">
+          <el-radio-group v-model="addCateForm.reportType">
+            <el-radio v-for="item in REPORT_TYPE_LIST" :value="item.value" :key="item.value">{{
+              item?.label
+            }}</el-radio>
+          </el-radio-group>
+        </el-form-item>
         <el-form-item label="检测报告" prop="reportFiles">
           <CommonUpload
             v-model:fileList="addCateForm.reportFiles"
-            type="file"
+            :type="addCateForm.reportType === REPORT_TYPE.IMG ? 'image' : 'file'"
             :action="`${BASE_API_URL}/admin/file/upload`"
             @change="validateField('reportFiles')"
           />
@@ -71,7 +85,7 @@
     </div>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="handleClose">取 消</el-button>
+        <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="submitHandler">添加商品</el-button>
       </span>
     </template>
@@ -84,6 +98,7 @@ import { CommonUpload } from '@/components/advance'
 import { BASE_API_URL } from '@/api/server'
 import * as apis from '@/api/services'
 import { ElMessage } from 'element-plus'
+import { REPORT_TYPE_LIST, REPORT_TYPE } from '../../constants'
 
 const emit = defineEmits(['getTableData'])
 const dialogVisible = ref<boolean>(false)
@@ -98,6 +113,7 @@ const addCateForm = reactive<Record<string, any>>({
   videoFiles: [],
   presaleTime: [],
   deliveryDays: null,
+  reportType: REPORT_TYPE.FILE,
   reportFiles: [],
   tags: null,
 })
@@ -108,12 +124,24 @@ const rules = {
   categoryId: [{ required: true, message: '请输入商品类目Id', trigger: 'blur' }],
   mainImgFiles: [{ required: true, message: '请上传商品主图', trigger: 'change' }],
   detailImgFiles: [{ required: true, message: '请上传商品详情图片', trigger: 'change' }],
+  reportType: [{ required: true, message: '请上传商品详情图片', trigger: 'change' }],
   reportFiles: [{ required: true, message: '请上传检测报告', trigger: 'change' }],
 }
 
 const handleClose = () => {
-  addCateFormRef.value?.resetFields()
-  dialogVisible.value = false
+  Object.assign(addCateForm, {
+    title: null,
+    desc: null,
+    categoryId: null,
+    mainImgFiles: [],
+    detailImgFiles: [],
+    videoFiles: [],
+    presaleTime: [],
+    deliveryDays: null,
+    reportType: REPORT_TYPE.FILE,
+    reportFiles: [],
+    tags: null,
+  })
 }
 
 const open = () => {
@@ -139,6 +167,7 @@ const submitHandler = () => {
         presaleStartTime: addCateForm?.presaleTime?.[0],
         presaleEndTime: addCateForm?.presaleTime?.[1],
         deliveryDays: addCateForm?.deliveryDays,
+        reportType: addCateForm?.reportType,
         reportUrl: addCateForm?.reportFiles?.[0]?.response,
         tagList: addCateForm?.tags ? (addCateForm.tags as string).split(',') : null,
       })

@@ -135,7 +135,7 @@
     </div>
   </div>
 
-  <UploadWayBill ref="uploadWayBillRef" @getTableData="getTableData" />
+  <UploadWaybill ref="uploadWayBillRef" @getTableData="getTableData" />
 </template>
 
 <script lang="ts" setup>
@@ -144,7 +144,7 @@ import { TAB_ID, ORDER_STATUS_LIST } from './constants.ts'
 import * as apis from '@/api/services'
 import { AdvCustomTooltip } from '@/components/advance/index.ts'
 import { formatDate } from '@/utils/index.ts'
-import { UploadWayBill } from './components/index.ts'
+import { UploadWaybill } from './components/index.ts'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 const defaultTime = [new Date(2000, 1, 1, 0, 0, 0), new Date(2000, 1, 1, 23, 59, 59)]

@@ -1,5 +1,11 @@
 <template>
-  <el-dialog v-model="dialogVisible" title="新增类目" @close="closeHandler">
+  <el-dialog
+    v-model="dialogVisible"
+    title="新增类目"
+    :close-on-click-modal="false"
+    :close-on-press-escape="false"
+    @close="closeHandler"
+  >
     <div>
       <el-form ref="formRef" :model="form" :rules="rules" label-width="120px">
         <el-form-item v-if="isEdit" label="类目ID" prop="id">
@@ -22,8 +28,8 @@
         <el-form-item label="父类目id" prop="parentId">
           <el-input v-model="form.parentId" placeholder="请输入父类目id"></el-input>
         </el-form-item>
-        <el-form-item label="logoUrl" prop="logoUrl">
-          <!-- TODO: 上传 -->
+        <el-form-item label="logo图片" prop="logoFiles">
+          <CommonUpload v-model:fileList="form.logoFiles" @change="validateField('logoFiles')" />
         </el-form-item>
       </el-form>
     </div>
@@ -40,33 +46,56 @@
 import { ref, reactive, computed } from 'vue'
 import * as apis from '@/api/services'
 import { ElMessage } from 'element-plus'
+import { CommonUpload } from '@/components/advance'
 import { CATE_TYPE_LIST } from './constants'
 
 const rules = {
   name: [{ required: true, message: '请输入类目名称', trigger: 'change' }],
   type: [{ required: true, message: '请选择类目类型', trigger: 'change' }],
+  logoFiles: [{ required: true, message: '请上传logo图片', trigger: 'change' }],
 }
 
 const emits = defineEmits(['getTableData'])
 const dialogVisible = ref<boolean>(false)
 const rowData = ref()
 const formRef = ref()
-const form = reactive({
+const form = reactive<Record<string, any>>({
   id: undefined,
   name: null,
   type: null,
   parentId: null,
+  logoFiles: [],
 })
 const isEdit = computed(() => rowData.value)
 
 const open = (data: Record<string, any>) => {
   rowData.value = data
   Object.assign(form, data)
+  form.logoFiles = data?.logoUrl
+    ? [
+        {
+          name: data?.name,
+          url: data?.logoUrl,
+          response: data?.logoUrl,
+        },
+      ]
+    : []
   dialogVisible.value = true
 }
 
 const closeHandler = () => {
-  formRef.value?.resetFields()
+  Object.assign(form, {
+    id: undefined,
+    name: null,
+    type: null,
+    parentId: null,
+    logoFiles: [],
+  })
+}
+
+// 手动触发表单验证
+const validateField = (field: string) => {
+  formRef.value?.validateField(field)
 }
 
 const submitHandler = () => {
@@ -76,6 +105,7 @@ const submitHandler = () => {
       const apiName = isEdit.value ? 'updateCate' : 'addCate'
       const res = await apis?.[apiName]({
         ...form,
+        logoUrl: form?.logoFiles?.[0]?.response,
       })
       if (res) {
         ElMessage.success('添加成功')

@@ -1,1 +1,1 @@
-export { default as UploadWayBill } from './uploadWayBill/UploadWayBill.vue'
+export { default as UploadWaybill } from './upload-waybill/UploadWayBill.vue'

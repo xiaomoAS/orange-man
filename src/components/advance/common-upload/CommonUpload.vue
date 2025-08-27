@@ -87,6 +87,7 @@ import { ref, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import type { UploadFile, UploadFiles, UploadUserFile, UploadRequestOptions } from 'element-plus'
 import axios from 'axios'
+import { BASE_API_URL } from '@/api/server'
 
 // 定义组件属性
 interface Props {
@@ -97,7 +98,7 @@ interface Props {
   /**
    * 上传地址
    */
-  action: string
+  action?: string
   /**
    * 是否支持多选
    */
@@ -142,6 +143,7 @@ const props = withDefaults(defineProps<Props>(), {
   fileList: () => [],
   disabled: false,
   maxSize: 100,
+  action: `${BASE_API_URL}/admin/file/upload`,
 })
 
 // 定义事件
@@ -342,6 +344,7 @@ const customUpload = async (options: UploadRequestOptions) => {
           method: 'POST',
           url: props.action,
         })
+        ElMessage.error('上传失败')
       }
     } catch (error) {
       // 上传失败
@@ -353,6 +356,7 @@ const customUpload = async (options: UploadRequestOptions) => {
         url: props.action,
       } as any
       onError(ajaxError)
+      ElMessage.error('上传失败')
     }
   }
 

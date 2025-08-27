@@ -3,7 +3,7 @@
  * @Description: 营销资源位
  * @Date: 2025-07-03 15:44:21
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-08-22 15:56:43
+ * @LastEditTime: 2025-08-27 18:14:10
  * @FilePath: /orange-man/src/views/promotions-activity/PromotionsActivity.vue
 -->
 <template>
@@ -45,19 +45,19 @@
       <el-table-column label="操作">
         <template #default="{ row }">
           <div class="operation-box">
-            <!-- TODO -->
-            <el-button size="mini" type="text">编辑</el-button>
+            <!-- TODO 编辑活动-->
+            <el-button type="primary" link>编辑</el-button>
             <el-button
               v-if="row?.statys === ACTIVITY_STATUS.ACTIVE"
-              size="mini"
-              type="text"
+              type="primary"
+              link
               @click="statusChange(row)"
               >关闭</el-button
             >
             <el-button
               v-if="row?.statys === ACTIVITY_STATUS.CLOSED"
-              size="mini"
-              type="text"
+              type="primary"
+              link
               @click="statusChange(row)"
               >开启</el-button
             >
