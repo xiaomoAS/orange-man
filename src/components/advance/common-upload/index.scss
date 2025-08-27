@@ -1,0 +1,73 @@
+@use '@/assets/style/mixin' as *;
+
+.common-upload {
+  width: 100%;
+
+  .el-upload {
+    &--picture-card {
+      width: 148px;
+      height: 148px;
+      line-height: 148px;
+    }
+
+    &-list {
+      &__item {
+        transition: all 0.3s;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+        }
+      }
+    }
+  }
+
+  .image-uploader-plus {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+
+    &:hover {
+      border-color: #409eff;
+    }
+  }
+
+  .preview-container {
+    padding: 20px;
+
+    .preview-image,
+    .preview-video {
+      width: 100%;
+      border-radius: 4px;
+      box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    .preview-file {
+      padding: 20px;
+      text-align: center;
+
+      .file-icon {
+        color: #909399;
+      }
+
+      .file-info {
+        font-size: 14px;
+      }
+    }
+  }
+
+  .upload-disabled {
+    .el-upload {
+      cursor: not-allowed;
+    }
+  }
+
+  .el-upload__tip {
+    font-size: 12px;
+    color: #909399;
+    margin-top: 8px;
+  }
+}

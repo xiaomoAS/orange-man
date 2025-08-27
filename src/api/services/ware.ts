@@ -27,3 +27,17 @@ export const wareOffline: any = (params = {}) => {
 export const wareDelete: any = (params = {}) => {
   return request.post(`${BASE_API_URL}/admin/product/delete`, params)
 }
+
+/**
+ * @description: 修改商品检测报告接口
+ */
+export const updateReport: any = (params = {}) => {
+  return request.post(`${BASE_API_URL}/admin/product/report/update`, params)
+}
+
+/**
+ * @description: 添加商品接口
+ */
+export const addProduct: any = (params = {}) => {
+  return request.post(`${BASE_API_URL}/admin/product/add`, params)
+}

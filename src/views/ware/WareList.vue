@@ -3,7 +3,7 @@
  * @Description: 
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-08-20 15:44:40
+ * @LastEditTime: 2025-08-26 17:34:35
  * @FilePath: /orange-man/src/views/ware/WareList.vue
 -->
 <template>
@@ -84,7 +84,7 @@
 
       <div class="batch-buttons__right">
         <el-button type="primary" link @click="cateConfigHandler">类目设置</el-button>
-        <el-button type="primary" link>+ 添加新商品</el-button>
+        <el-button type="primary" link @click="addCateHandler">+ 添加新商品</el-button>
       </div>
     </div>
 
@@ -154,6 +154,8 @@
       />
     </div>
   </div>
+
+  <AddCateDialog ref="addCateDialogRef" @getTableData="getTableData" />
 </template>
 
 <script lang="ts" setup>
@@ -163,6 +165,7 @@ import { AdvCustomTooltip } from '@/components/advance'
 import { TAB_ID, PRODUCT_STATUS_LIST, PRODUCT_STATUS } from './constants.ts'
 import * as apis from '@/api/services'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { AddCateDialog } from './components'
 
 const router = useRouter()
 const activeTab = ref(TAB_ID.ALL)
@@ -180,6 +183,7 @@ const tableData = ref()
 const currentPage = ref(1)
 const pageSize = ref(10)
 const totalCount = ref(0)
+const addCateDialogRef = ref()
 
 const getTableData = async () => {
   try {
@@ -274,6 +278,10 @@ const reset = () => {
 
 const cateConfigHandler = () => {
   router.push('/cateConfig')
+}
+
+const addCateHandler = () => {
+  addCateDialogRef.value?.open()
 }
 
 onMounted(() => {

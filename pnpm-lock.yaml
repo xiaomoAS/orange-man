@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@element-plus/icons-vue':
+        specifier: ^2.3.2
+        version: 2.3.2(vue@3.5.17(typescript@5.8.3))
       element-plus:
         specifier: ^2.10.2
         version: 2.10.2(@vue/composition-api@1.7.2(vue@3.5.17(typescript@5.8.3)))(vue@3.5.17(typescript@5.8.3))
@@ -225,8 +228,8 @@ packages:
     resolution: {integrity: sha1-tsdaVqGUfMkW6gWHctZmosiTLzE=, tarball: http://registry.m.jd.com/@ctrl/tinycolor/download/@ctrl/tinycolor-3.6.1.tgz}
     engines: {node: '>=10'}
 
-  '@element-plus/icons-vue@2.3.1':
-    resolution: {integrity: sha1-H2Na1f3VyF7ZNkgVJVcOgrWoMHo=, tarball: http://registry.m.jd.com/@element-plus/icons-vue/download/@element-plus/icons-vue-2.3.1.tgz}
+  '@element-plus/icons-vue@2.3.2':
+    resolution: {integrity: sha1-fpyyMftziyBW8z4iw6KeIUtTjc8=, tarball: http://registry.m.jd.com/@element-plus/icons-vue/download/@element-plus/icons-vue-2.3.2.tgz}
     peerDependencies:
       vue: ^3.2.0
 
@@ -517,11 +520,62 @@ packages:
       rollup:
         optional: true
 
+  '@rollup/rollup-android-arm-eabi@4.44.1':
+    resolution: {integrity: sha1-92jjsrDmtVxZXXoFNlLAZBNxOYM=, tarball: http://registry.m.jd.com/@rollup/rollup-android-arm-eabi/download/@rollup/rollup-android-arm-eabi-4.44.1.tgz}
+
+  '@rollup/rollup-android-arm64@4.44.1':
+    resolution: {integrity: sha1-QDef1VAc/f19j4bfodPOjTpglJM=, tarball: http://registry.m.jd.com/@rollup/rollup-android-arm64/download/@rollup/rollup-android-arm64-4.44.1.tgz}
+
   '@rollup/rollup-darwin-arm64@4.44.1':
     resolution: {integrity: sha1-lywie8if6KOKPwxJPhlmkA5OH/c=, tarball: http://registry.m.jd.com/@rollup/rollup-darwin-arm64/download/@rollup/rollup-darwin-arm64-4.44.1.tgz}
 
+  '@rollup/rollup-darwin-x64@4.44.1':
+    resolution: {integrity: sha1-lskZ3Lh6Wqfexff3fZDeiB5Xj90=, tarball: http://registry.m.jd.com/@rollup/rollup-darwin-x64/download/@rollup/rollup-darwin-x64-4.44.1.tgz}
+
+  '@rollup/rollup-freebsd-arm64@4.44.1':
+    resolution: {integrity: sha1-0ZnY6u+DAXnAyVt6blRV6JPRECw=, tarball: http://registry.m.jd.com/@rollup/rollup-freebsd-arm64/download/@rollup/rollup-freebsd-arm64-4.44.1.tgz}
+
+  '@rollup/rollup-freebsd-x64@4.44.1':
+    resolution: {integrity: sha1-yrAfngbKdWwfq+h9ZIJa4BavRxM=, tarball: http://registry.m.jd.com/@rollup/rollup-freebsd-x64/download/@rollup/rollup-freebsd-x64-4.44.1.tgz}
+
+  '@rollup/rollup-linux-arm-gnueabihf@4.44.1':
+    resolution: {integrity: sha1-9vHEIDbboOWNwjFTBUKb7/DQLHg=, tarball: http://registry.m.jd.com/@rollup/rollup-linux-arm-gnueabihf/download/@rollup/rollup-linux-arm-gnueabihf-4.44.1.tgz}
+
+  '@rollup/rollup-linux-arm-musleabihf@4.44.1':
+    resolution: {integrity: sha1-EVfpjnQPrPhYmT+1FDHc46SpYjk=, tarball: http://registry.m.jd.com/@rollup/rollup-linux-arm-musleabihf/download/@rollup/rollup-linux-arm-musleabihf-4.44.1.tgz}
+
+  '@rollup/rollup-linux-arm64-gnu@4.44.1':
+    resolution: {integrity: sha1-s523P4pMIufbMaTz/UUXAQXzMmU=, tarball: http://registry.m.jd.com/@rollup/rollup-linux-arm64-gnu/download/@rollup/rollup-linux-arm64-gnu-4.44.1.tgz}
+
+  '@rollup/rollup-linux-arm64-musl@4.44.1':
+    resolution: {integrity: sha1-QEM5gEn+REnBSFMS0a6a2K9AVt0=, tarball: http://registry.m.jd.com/@rollup/rollup-linux-arm64-musl/download/@rollup/rollup-linux-arm64-musl-4.44.1.tgz}
+
+  '@rollup/rollup-linux-loongarch64-gnu@4.44.1':
+    resolution: {integrity: sha1-hVqA5+hkkNoVqF3M4kfbwlJlvAg=, tarball: http://registry.m.jd.com/@rollup/rollup-linux-loongarch64-gnu/download/@rollup/rollup-linux-loongarch64-gnu-4.44.1.tgz}
+
+  '@rollup/rollup-linux-powerpc64le-gnu@4.44.1':
+    resolution: {integrity: sha1-jPhDy3qx1C4d2mgJN88KLbbVkEc=, tarball: http://registry.m.jd.com/@rollup/rollup-linux-powerpc64le-gnu/download/@rollup/rollup-linux-powerpc64le-gnu-4.44.1.tgz}
+
+  '@rollup/rollup-linux-riscv64-gnu@4.44.1':
+    resolution: {integrity: sha1-KHwIVHKXbIcR8WcAMm9zalJ/Lzg=, tarball: http://registry.m.jd.com/@rollup/rollup-linux-riscv64-gnu/download/@rollup/rollup-linux-riscv64-gnu-4.44.1.tgz}
+
+  '@rollup/rollup-linux-riscv64-musl@4.44.1':
+    resolution: {integrity: sha1-CVrV5TpUukdZefGzImuSRAyVyJI=, tarball: http://registry.m.jd.com/@rollup/rollup-linux-riscv64-musl/download/@rollup/rollup-linux-riscv64-musl-4.44.1.tgz}
+
+  '@rollup/rollup-linux-s390x-gnu@4.44.1':
+    resolution: {integrity: sha1-o97IKB2PKu8XA+SOvGXSn+hHkzw=, tarball: http://registry.m.jd.com/@rollup/rollup-linux-s390x-gnu/download/@rollup/rollup-linux-s390x-gnu-4.44.1.tgz}
+
   '@rollup/rollup-linux-x64-gnu@4.44.1':
     resolution: {integrity: sha1-SyEeb9V+3WoTR0D0+OjqYZcv8sU=, tarball: http://registry.m.jd.com/@rollup/rollup-linux-x64-gnu/download/@rollup/rollup-linux-x64-gnu-4.44.1.tgz}
+
+  '@rollup/rollup-linux-x64-musl@4.44.1':
+    resolution: {integrity: sha1-Psv44htBV+V7sV3Gg3ttuFH5ozY=, tarball: http://registry.m.jd.com/@rollup/rollup-linux-x64-musl/download/@rollup/rollup-linux-x64-musl-4.44.1.tgz}
+
+  '@rollup/rollup-win32-arm64-msvc@4.44.1':
+    resolution: {integrity: sha1-1KrjhGWyrSAFV7U8jIFyZqPdv9A=, tarball: http://registry.m.jd.com/@rollup/rollup-win32-arm64-msvc/download/@rollup/rollup-win32-arm64-msvc-4.44.1.tgz}
+
+  '@rollup/rollup-win32-ia32-msvc@4.44.1':
+    resolution: {integrity: sha1-AljoygUqvUiyP9YRM2D6DNHsPiM=, tarball: http://registry.m.jd.com/@rollup/rollup-win32-ia32-msvc/download/@rollup/rollup-win32-ia32-msvc-4.44.1.tgz}
 
   '@rollup/rollup-win32-x64-msvc@4.44.1':
     resolution: {integrity: sha1-HJgvalBE/8KjXNdUoJUb3LRNW6A=, tarball: http://registry.m.jd.com/@rollup/rollup-win32-x64-msvc/download/@rollup/rollup-win32-x64-msvc-4.44.1.tgz}
@@ -1622,12 +1676,20 @@ packages:
     resolution: {integrity: sha1-VxULd2dtTYLoSyGY9faYNBj/8E4=, tarball: http://registry.m.jd.com/sass-embedded-darwin-arm64/download/sass-embedded-darwin-arm64-1.89.2.tgz}
     engines: {node: '>=14.0.0'}
 
+  sass-embedded-darwin-x64@1.89.2:
+    resolution: {integrity: sha1-sLHFq7HQV9qqj4oeKySXR4hloi0=, tarball: http://registry.m.jd.com/sass-embedded-darwin-x64/download/sass-embedded-darwin-x64-1.89.2.tgz}
+    engines: {node: '>=14.0.0'}
+
   sass-embedded-linux-musl-x64@1.89.2:
     resolution: {integrity: sha1-L9RBWXqV9X1w0MRuDowYq09SxZY=, tarball: http://registry.m.jd.com/sass-embedded-linux-musl-x64/download/sass-embedded-linux-musl-x64-1.89.2.tgz}
     engines: {node: '>=14.0.0'}
 
   sass-embedded-linux-x64@1.89.2:
     resolution: {integrity: sha1-mlgSejEufAEeOiBHD/Vwe5qnhTY=, tarball: http://registry.m.jd.com/sass-embedded-linux-x64/download/sass-embedded-linux-x64-1.89.2.tgz}
+    engines: {node: '>=14.0.0'}
+
+  sass-embedded-win32-x64@1.89.2:
+    resolution: {integrity: sha1-n1xxthGo7bxA4cjMR70g2KS98To=, tarball: http://registry.m.jd.com/sass-embedded-win32-x64/download/sass-embedded-win32-x64-1.89.2.tgz}
     engines: {node: '>=14.0.0'}
 
   sass-embedded@1.89.2:
@@ -1903,6 +1965,9 @@ packages:
     peerDependencies:
       '@vue/composition-api': ^1.0.0-rc.1
       vue: ^3.0.0-0 || ^2.6.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
 
   vue-eslint-parser@10.1.4:
     resolution: {integrity: sha1-OZKxPTDfRjnwfDLds4ShIyv5EUU=, tarball: http://registry.m.jd.com/vue-eslint-parser/download/vue-eslint-parser-10.1.4.tgz}
@@ -2177,7 +2242,7 @@ snapshots:
 
   '@ctrl/tinycolor@3.6.1': {}
 
-  '@element-plus/icons-vue@2.3.1(vue@3.5.17(typescript@5.8.3))':
+  '@element-plus/icons-vue@2.3.2(vue@3.5.17(typescript@5.8.3))':
     dependencies:
       vue: 3.5.17(typescript@5.8.3)
 
@@ -2451,10 +2516,61 @@ snapshots:
     optionalDependencies:
       rollup: 4.44.1
 
+  '@rollup/rollup-android-arm-eabi@4.44.1':
+    optional: true
+
+  '@rollup/rollup-android-arm64@4.44.1':
+    optional: true
+
   '@rollup/rollup-darwin-arm64@4.44.1':
     optional: true
 
+  '@rollup/rollup-darwin-x64@4.44.1':
+    optional: true
+
+  '@rollup/rollup-freebsd-arm64@4.44.1':
+    optional: true
+
+  '@rollup/rollup-freebsd-x64@4.44.1':
+    optional: true
+
+  '@rollup/rollup-linux-arm-gnueabihf@4.44.1':
+    optional: true
+
+  '@rollup/rollup-linux-arm-musleabihf@4.44.1':
+    optional: true
+
+  '@rollup/rollup-linux-arm64-gnu@4.44.1':
+    optional: true
+
+  '@rollup/rollup-linux-arm64-musl@4.44.1':
+    optional: true
+
+  '@rollup/rollup-linux-loongarch64-gnu@4.44.1':
+    optional: true
+
+  '@rollup/rollup-linux-powerpc64le-gnu@4.44.1':
+    optional: true
+
+  '@rollup/rollup-linux-riscv64-gnu@4.44.1':
+    optional: true
+
+  '@rollup/rollup-linux-riscv64-musl@4.44.1':
+    optional: true
+
+  '@rollup/rollup-linux-s390x-gnu@4.44.1':
+    optional: true
+
   '@rollup/rollup-linux-x64-gnu@4.44.1':
+    optional: true
+
+  '@rollup/rollup-linux-x64-musl@4.44.1':
+    optional: true
+
+  '@rollup/rollup-win32-arm64-msvc@4.44.1':
+    optional: true
+
+  '@rollup/rollup-win32-ia32-msvc@4.44.1':
     optional: true
 
   '@rollup/rollup-win32-x64-msvc@4.44.1':
@@ -2677,6 +2793,7 @@ snapshots:
   '@vue/composition-api@1.7.2(vue@3.5.17(typescript@5.8.3))':
     dependencies:
       vue: 3.5.17(typescript@5.8.3)
+    optional: true
 
   '@vue/devtools-api@6.6.4': {}
 
@@ -2942,7 +3059,7 @@ snapshots:
   element-plus@2.10.2(@vue/composition-api@1.7.2(vue@3.5.17(typescript@5.8.3)))(vue@3.5.17(typescript@5.8.3)):
     dependencies:
       '@ctrl/tinycolor': 3.6.1
-      '@element-plus/icons-vue': 2.3.1(vue@3.5.17(typescript@5.8.3))
+      '@element-plus/icons-vue': 2.3.2(vue@3.5.17(typescript@5.8.3))
       '@floating-ui/dom': 1.7.2
       '@popperjs/core': '@sxzz/popperjs-es@2.11.7'
       '@types/lodash': 4.17.19
@@ -3622,8 +3739,25 @@ snapshots:
     dependencies:
       '@types/estree': 1.0.8
     optionalDependencies:
+      '@rollup/rollup-android-arm-eabi': 4.44.1
+      '@rollup/rollup-android-arm64': 4.44.1
       '@rollup/rollup-darwin-arm64': 4.44.1
+      '@rollup/rollup-darwin-x64': 4.44.1
+      '@rollup/rollup-freebsd-arm64': 4.44.1
+      '@rollup/rollup-freebsd-x64': 4.44.1
+      '@rollup/rollup-linux-arm-gnueabihf': 4.44.1
+      '@rollup/rollup-linux-arm-musleabihf': 4.44.1
+      '@rollup/rollup-linux-arm64-gnu': 4.44.1
+      '@rollup/rollup-linux-arm64-musl': 4.44.1
+      '@rollup/rollup-linux-loongarch64-gnu': 4.44.1
+      '@rollup/rollup-linux-powerpc64le-gnu': 4.44.1
+      '@rollup/rollup-linux-riscv64-gnu': 4.44.1
+      '@rollup/rollup-linux-riscv64-musl': 4.44.1
+      '@rollup/rollup-linux-s390x-gnu': 4.44.1
       '@rollup/rollup-linux-x64-gnu': 4.44.1
+      '@rollup/rollup-linux-x64-musl': 4.44.1
+      '@rollup/rollup-win32-arm64-msvc': 4.44.1
+      '@rollup/rollup-win32-ia32-msvc': 4.44.1
       '@rollup/rollup-win32-x64-msvc': 4.44.1
       fsevents: 2.3.3
 
@@ -3644,10 +3778,16 @@ snapshots:
   sass-embedded-darwin-arm64@1.89.2:
     optional: true
 
+  sass-embedded-darwin-x64@1.89.2:
+    optional: true
+
   sass-embedded-linux-musl-x64@1.89.2:
     optional: true
 
   sass-embedded-linux-x64@1.89.2:
+    optional: true
+
+  sass-embedded-win32-x64@1.89.2:
     optional: true
 
   sass-embedded@1.89.2:
@@ -3662,8 +3802,10 @@ snapshots:
       varint: 6.0.0
     optionalDependencies:
       sass-embedded-darwin-arm64: 1.89.2
+      sass-embedded-darwin-x64: 1.89.2
       sass-embedded-linux-musl-x64: 1.89.2
       sass-embedded-linux-x64: 1.89.2
+      sass-embedded-win32-x64: 1.89.2
     optional: true
 
   sass@1.89.2:
@@ -3934,8 +4076,9 @@ snapshots:
 
   vue-demi@0.14.10(@vue/composition-api@1.7.2(vue@3.5.17(typescript@5.8.3)))(vue@3.5.17(typescript@5.8.3)):
     dependencies:
-      '@vue/composition-api': 1.7.2(vue@3.5.17(typescript@5.8.3))
       vue: 3.5.17(typescript@5.8.3)
+    optionalDependencies:
+      '@vue/composition-api': 1.7.2(vue@3.5.17(typescript@5.8.3))
 
   vue-eslint-parser@10.1.4(eslint@9.30.0(jiti@2.4.2)):
     dependencies:
