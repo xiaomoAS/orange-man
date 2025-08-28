@@ -3,7 +3,7 @@
  * @Description: 类目设置
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-08-22 15:23:10
+ * @LastEditTime: 2025-08-28 17:49:02
  * @FilePath: /orange-man/src/views/coupon/CouponList.vue
 -->
 <template>
@@ -35,20 +35,21 @@
       <el-table-column label="覆盖用户数" prop="converUserCount"></el-table-column>
       <el-table-column label="生效时间段">
         <template #default="{ row }">
+          <!-- TODO 字段 -->
           <div>{{ row?.effectiveTimeInterval }}</div>
         </template>
       </el-table-column>
       <el-table-column label="状态">
         <template #default="{ row }">
           <div>
-            {{ STATUS_NAME_MAP[row?.effectiveTimeInterval as keyof typeof STATUS_NAME_MAP] }}
+            {{ STATUS_NAME_MAP[row?.status as keyof typeof STATUS_NAME_MAP] }}
           </div>
         </template>
       </el-table-column>
       <el-table-column label="操作">
         <template #default="{ row }">
           <div class="operation-box">
-            <el-button link type="primary" @click="closeHandler">停用</el-button>
+            <el-button link type="primary" @click="closeHandler(row)">停用</el-button>
             <el-button link type="primary" @click="editCateHandler(row)">修改</el-button>
           </div>
         </template>

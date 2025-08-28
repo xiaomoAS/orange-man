@@ -13,3 +13,13 @@ export const CATE_TYPE_LIST = [
     value: CATE_TYPE.ACTIVITY,
   },
 ]
+
+export enum CATE_STATUS {
+  SHOW = 1, // 展示
+  HIDE = 2, // 隐藏
+}
+
+export const CATE_STATUS_NAME = {
+  [CATE_STATUS.SHOW]: '展示',
+  [CATE_STATUS.HIDE]: '隐藏',
+}

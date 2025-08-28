@@ -3,7 +3,7 @@
  * @Description: 
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-08-27 18:40:48
+ * @LastEditTime: 2025-08-28 17:47:21
  * @FilePath: /orange-man/src/views/ware/WareList.vue
 -->
 <template>
@@ -22,51 +22,21 @@
       </el-form-item>
       <el-form-item label="商品状态" prop="productStatus">
         <el-select v-model="searchForm.productStatus" placeholder="请选择状态">
-          <el-option
-            v-for="item in PRODUCT_STATUS_LIST"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
+          <el-option v-for="item in PRODUCT_STATUS_LIST" :key="item.value" :label="item.label" :value="item.value"> </el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="类目" prop="categoryId">
         <el-input v-model="searchForm.categoryId" placeholder="请输入类目" />
       </el-form-item>
       <el-form-item label="价格" prop="priceMin">
-        <el-input-number
-          v-model="searchForm.priceMin"
-          step-strictly
-          controls-position="right"
-          placeholder="请输入最小价格"
-          :step="0.01"
-        />
+        <el-input-number v-model="searchForm.priceMin" step-strictly controls-position="right" placeholder="请输入最小价格" :step="0.01" />
         <span>-</span>
-        <el-input-number
-          v-model="searchForm.priceMax"
-          step-strictly
-          controls-position="right"
-          placeholder="请输入最大价格"
-          :step="0.01"
-        />
+        <el-input-number v-model="searchForm.priceMax" step-strictly controls-position="right" placeholder="请输入最大价格" :step="0.01" />
       </el-form-item>
       <el-form-item label="库存" prop="inventoryMin">
-        <el-input-number
-          v-model="searchForm.inventoryMin"
-          step-strictly
-          controls-position="right"
-          placeholder="请输入最小库存"
-          :step="1"
-        />
+        <el-input-number v-model="searchForm.inventoryMin" step-strictly controls-position="right" placeholder="请输入最小库存" :step="1" />
         <span>-</span>
-        <el-input-number
-          v-model="searchForm.inventoryMax"
-          step-strictly
-          controls-position="right"
-          placeholder="请输入最大库存"
-          :step="1"
-        />
+        <el-input-number v-model="searchForm.inventoryMax" step-strictly controls-position="right" placeholder="请输入最大库存" :step="1" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="getTableData">查询</el-button>
@@ -110,8 +80,11 @@
           <span>¥{{ row?.priceMin }} - ¥{{ row?.priceMax }}</span>
         </template>
       </el-table-column>
-      <!-- TODO 字段 -->
-      <el-table-column prop="modified" label="修改时间"></el-table-column>
+      <el-table-column prop="modified" label="修改时间">
+        <template #default="{ row }">
+          <span>{{ formatDate(row?.modified) }}</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="productStatus" label="商品状态">
         <template #default="{ row }">
           {{ PRODUCT_STATUS_LIST?.find((item) => item.value === row?.productStatus)?.label }}
@@ -120,21 +93,16 @@
       <el-table-column label="操作">
         <template #default="{ row }">
           <div class="operation-box">
+            <!-- TODO 编辑 -->
             <el-button link type="primary">修改商品</el-button>
             <el-button
-              v-if="
-                [
-                  PRODUCT_STATUS.IS_OFF_SHELF,
-                  PRODUCT_STATUS.WAIT_ON_SHELF,
-                  PRODUCT_STATUS.IS_ON_SHELF,
-                ].includes(row.productStatus)
-              "
+              v-if="[PRODUCT_STATUS.IS_OFF_SHELF, PRODUCT_STATUS.WAIT_ON_SHELF, PRODUCT_STATUS.IS_ON_SHELF].includes(row.productStatus)"
               link
               type="primary"
               @click="shelfHandler(row)"
               >上架/下架商品</el-button
             >
-            <el-button link type="primary">修改检测报告</el-button>
+            <!-- <el-button link type="primary">修改检测报告</el-button> -->
             <el-button link type="primary" @click="deleteWare(row)">删除商品</el-button>
           </div>
         </template>
@@ -166,6 +134,7 @@ import { TAB_ID, PRODUCT_STATUS_LIST, PRODUCT_STATUS } from './constants.ts'
 import * as apis from '@/api/services'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { AddGoodsDialog } from './components'
+import { formatDate } from '@/utils'
 
 const router = useRouter()
 const activeTab = ref(TAB_ID.ALL)
@@ -228,15 +197,11 @@ const shelfHandler = async (row: Record<string, any>) => {
       ElMessage.warning('非目标状态')
       return
     }
-    await ElMessageBox.confirm(
-      `确认${[PRODUCT_STATUS.IS_ON_SHELF].includes(row.productStatus) ? '下架' : '上架'}吗`,
-      '提示',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      },
-    ).then(() => true)
+    await ElMessageBox.confirm(`确认${[PRODUCT_STATUS.IS_ON_SHELF].includes(row.productStatus) ? '下架' : '上架'}吗`, '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }).then(() => true)
     res = await (apis as any)?.[apiName]({
       productStatus: row?.productStatus,
       productid: Number(row?.id),

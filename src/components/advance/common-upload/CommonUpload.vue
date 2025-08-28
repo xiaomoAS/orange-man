@@ -62,12 +62,7 @@
         </div>
 
         <!-- 视频预览 -->
-        <video
-          v-if="type === 'video' && previewUrl"
-          :src="previewUrl"
-          class="preview-video"
-          controls
-        ></video>
+        <video v-if="type === 'video' && previewUrl" :src="previewUrl" class="preview-video" controls></video>
 
         <!-- 文件预览（显示文件名） -->
         <div v-if="type === 'file' && previewFile" class="preview-file">
@@ -147,15 +142,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 // 定义事件
-const emit = defineEmits([
-  'update:fileList',
-  'success',
-  'error',
-  'exceed',
-  'remove',
-  'change',
-  'preview',
-])
+const emit = defineEmits(['update:fileList', 'success', 'error', 'exceed', 'remove', 'change', 'preview'])
 // 预览相关
 const previewVisible = ref(false)
 const previewUrl = ref('')
@@ -248,12 +235,7 @@ const beforeUpload = (file: File) => {
 
 // 处理预览
 const handlePreview = (file: UploadFile) => {
-  console.log(
-    'file1',
-    Object.prototype.toString.call(file).split(' ')[1].split(']')[0],
-    '===',
-    file,
-  )
+  console.log('file1', Object.prototype.toString.call(file).split(' ')[1].split(']')[0], '===', file)
   previewFile.value = file
   previewTitle.value = file.name
 
@@ -333,7 +315,7 @@ const customUpload = async (options: UploadRequestOptions) => {
       )
 
       // 从响应数据中获取 url
-      if (status === 200 && data.success) {
+      if (status === 200 && data.success && data?.data?.url) {
         // 上传成功
         onSuccess(data?.data?.url)
       } else {

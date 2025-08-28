@@ -1,0 +1,17 @@
+.discount-unit {
+  margin-left: 8px;
+}
+
+.discount-box {
+  display: flex;
+}
+
+.discount-unit {
+  height: 32px;
+  line-height: 32px;
+  vertical-align: middle;
+}
+
+:deep(.hide-required-icon .el-form-item__label:before) {
+  content: none !important;
+}

@@ -27,3 +27,17 @@ export const updateCate: any = (params = {}) => {
 export const deleteCate: any = (params = {}) => {
   return request.post(`${BASE_API_URL}/admin/category/delete`, params)
 }
+
+/**
+ * @description: 类目下线
+ */
+export const cateOffline: any = (params = {}) => {
+  return request.post(`${BASE_API_URL}/admin/category/offline`, params)
+}
+
+/**
+ * @description: 类目上线
+ */
+export const cateOnline: any = (params = {}) => {
+  return request.post(`${BASE_API_URL}/admin/category/online`, params)
+}

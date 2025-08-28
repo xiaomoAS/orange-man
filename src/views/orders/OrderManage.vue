@@ -3,7 +3,7 @@
  * @Description: 
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-08-20 15:41:50
+ * @LastEditTime: 2025-08-28 17:48:25
  * @FilePath: /orange-man/src/views/orders/OrderManage.vue
 -->
 <template>
@@ -22,13 +22,7 @@
       </el-form-item>
       <el-form-item label="订单状态" prop="orderStatus">
         <el-select v-model="searchForm.orderStatus" placeholder="请选择状态">
-          <el-option
-            v-for="item in ORDER_STATUS_LIST"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
+          <el-option v-for="item in ORDER_STATUS_LIST" :key="item.value" :label="item.label" :value="item.value"> </el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="用户名" prop="username">
@@ -113,6 +107,7 @@
       <el-table-column label="操作">
         <template #default="{ row }">
           <div class="operation-box">
+            <!-- TODO 接口-->
             <el-button link type="primary">打印面单</el-button>
             <el-button link type="primary" @click="uploadWaybillNum(row)">上传运单号</el-button>
             <el-button link type="primary" @click="cancelOrder(row)">取消订单</el-button>

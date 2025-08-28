@@ -8,13 +8,7 @@
     @close="handleClose"
   >
     <div v-if="dialogVisible">
-      <el-form
-        ref="addCateFormRef"
-        class="form-box"
-        :model="addCateForm"
-        label-width="120px"
-        :rules="rules"
-      >
+      <el-form ref="addCateFormRef" class="form-box" :model="addCateForm" label-width="120px" :rules="rules">
         <el-form-item label="商品标题" prop="title">
           <el-input v-model="addCateForm.title" placeholder="请输入商品标题"></el-input>
         </el-form-item>
@@ -39,11 +33,7 @@
           />
         </el-form-item>
         <el-form-item label="商品详情视频" prop="videoFiles">
-          <CommonUpload
-            v-model:fileList="addCateForm.videoFiles"
-            type="video"
-            :action="`${BASE_API_URL}/admin/file/upload`"
-          />
+          <CommonUpload v-model:fileList="addCateForm.videoFiles" type="video" :action="`${BASE_API_URL}/admin/file/upload`" />
         </el-form-item>
         <el-form-item label="预售时间" prop="presaleTime">
           <el-date-picker
@@ -65,9 +55,7 @@
         </el-form-item>
         <el-form-item label="检测报告类型" prop="reportType">
           <el-radio-group v-model="addCateForm.reportType">
-            <el-radio v-for="item in REPORT_TYPE_LIST" :value="item.value" :key="item.value">{{
-              item?.label
-            }}</el-radio>
+            <el-radio v-for="item in REPORT_TYPE_LIST" :value="item.value" :key="item.value">{{ item?.label }}</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="检测报告" prop="reportFiles">
@@ -157,7 +145,7 @@ const submitHandler = () => {
   addCateFormRef.value?.validate(async (valid: boolean) => {
     if (!valid) return
     try {
-      await apis.addProduct({
+      const res = await apis.addProduct({
         title: addCateForm?.title,
         desc: addCateForm?.desc,
         categoryId: addCateForm?.categoryId,
@@ -171,9 +159,13 @@ const submitHandler = () => {
         reportUrl: addCateForm?.reportFiles?.[0]?.response,
         tagList: addCateForm?.tags ? (addCateForm.tags as string).split(',') : null,
       })
-      ElMessage.success('添加成功')
-      emit('getTableData')
-      dialogVisible.value = false
+      if (res) {
+        ElMessage.success('添加成功')
+        emit('getTableData')
+        dialogVisible.value = false
+      } else {
+        ElMessage.error('添加失败')
+      }
     } catch (error) {
       console.log(error)
     }

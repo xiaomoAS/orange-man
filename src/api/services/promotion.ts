@@ -48,3 +48,17 @@ export const openActivity: any = (params = {}) => {
 export const closeActivity: any = (params = {}) => {
   return request.post(`${BASE_API_URL}/admin/activity/close`, params)
 }
+
+/**
+ * @description: 新增活动
+ */
+export const addActivity: any = (params = {}) => {
+  return request.post(`${BASE_API_URL}/admin/activity/add`, params)
+}
+
+/**
+ * @description: 编辑活动
+ */
+export const updateActivity: any = (params = {}) => {
+  return request.post(`${BASE_API_URL}/admin/activity/update`, params)
+}
