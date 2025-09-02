@@ -1,5 +1,11 @@
 <template>
-  <el-dialog v-model="dialogVisible" title="新增优惠券" :close-on-click-modal="false" :close-on-press-escape="false" @close="closeHandler">
+  <el-dialog
+    v-model="dialogVisible"
+    title="新增优惠券"
+    :close-on-click-modal="false"
+    :close-on-press-escape="false"
+    @close="closeHandler"
+  >
     <div>
       <el-form ref="formRef" :model="form" :rules="rules" label-width="120px">
         <el-form-item v-if="isEdit" label="券ID" prop="id">
@@ -10,17 +16,33 @@
         </el-form-item>
         <el-form-item label="券类型" prop="type">
           <el-select v-model="form.type" placeholder="请选择券类型">
-            <el-option v-for="item in COUPON_LIST" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+            <el-option v-for="item in COUPON_LIST" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="覆盖商品" prop="productId">
           <el-input v-model="form.productId" placeholder="请输入商品id,英文逗号分隔"></el-input>
         </el-form-item>
+        <el-form-item label="覆盖用户数" prop="converUserCount">
+          <el-input v-model.number="form.converUserCount" placeholder="请输入覆盖用户数"></el-input>
+        </el-form-item>
         <el-form-item v-if="form?.type === COUPON_TYPE.NEW_DISCOUNT" label="新人专享券" prop="newCoupon">
-          <el-input-number v-model="form.newCoupon" placeholder="请输入" :min="0" :step="0.01" step-strictly></el-input-number>
+          <el-input-number
+            v-model="form.newCoupon"
+            placeholder="请输入"
+            :min="0"
+            :step="0.01"
+            step-strictly
+          ></el-input-number>
         </el-form-item>
         <el-form-item v-if="form?.type === COUPON_TYPE.FREIGHT" label="包邮运费上限" prop="waybillPriceLimit">
-          <el-input-number v-model="form.waybillPriceLimit" placeholder="请输入" :min="0" :step="0.01" step-strictly></el-input-number>
+          <el-input-number
+            v-model="form.waybillPriceLimit"
+            placeholder="请输入"
+            :min="0"
+            :step="0.01"
+            step-strictly
+          ></el-input-number>
         </el-form-item>
         <el-form-item label="生效时间范围" prop="couponTime">
           <el-date-picker
@@ -59,6 +81,7 @@ const rules = {
   name: [{ required: true, message: '请输入名称', trigger: 'change' }],
   type: [{ required: true, message: '请选择类型', trigger: 'change' }],
   productId: [{ required: true, message: '请输入覆盖商品', trigger: 'change' }],
+  converUserCount: [{ required: true, message: '请输入覆盖用户数', trigger: 'change' }],
   waybillPriceLimit: [{ required: true, message: '请输入价格', trigger: 'change' }],
   newCoupon: [{ required: true, message: '请输入价格', trigger: 'change' }],
   couponTime: [{ required: true, message: '请选择时间', trigger: 'change' }],
@@ -74,6 +97,7 @@ const form = reactive<Record<string, any>>({
   name: null,
   type: null,
   productId: null,
+  converUserCount: null,
   waybillPriceLimit: null,
   newCoupon: null,
   publishType: null,
@@ -95,6 +119,7 @@ const closeHandler = () => {
     name: null,
     type: null,
     productId: null,
+    converUserCount: null,
     waybillPriceLimit: null,
     newCoupon: null,
     publishType: null,

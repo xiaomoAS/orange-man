@@ -3,7 +3,7 @@
  * @Description: 
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-08-28 17:48:25
+ * @LastEditTime: 2025-09-02 14:09:36
  * @FilePath: /orange-man/src/views/orders/OrderManage.vue
 -->
 <template>
@@ -22,7 +22,8 @@
       </el-form-item>
       <el-form-item label="订单状态" prop="orderStatus">
         <el-select v-model="searchForm.orderStatus" placeholder="请选择状态">
-          <el-option v-for="item in ORDER_STATUS_LIST" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+          <el-option v-for="item in ORDER_STATUS_LIST" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="用户名" prop="username">
@@ -107,8 +108,7 @@
       <el-table-column label="操作">
         <template #default="{ row }">
           <div class="operation-box">
-            <!-- TODO 接口-->
-            <el-button link type="primary">打印面单</el-button>
+            <el-button link type="primary" @click="printExpress(row)">打印面单</el-button>
             <el-button link type="primary" @click="uploadWaybillNum(row)">上传运单号</el-button>
             <el-button link type="primary" @click="cancelOrder(row)">取消订单</el-button>
           </div>
@@ -131,6 +131,7 @@
   </div>
 
   <UploadWaybill ref="uploadWayBillRef" @getTableData="getTableData" />
+  <PrintWaybill ref="printWaybillRef" @getTableData="getTableData" />
 </template>
 
 <script lang="ts" setup>
@@ -139,7 +140,7 @@ import { TAB_ID, ORDER_STATUS_LIST } from './constants.ts'
 import * as apis from '@/api/services'
 import { AdvCustomTooltip } from '@/components/advance/index.ts'
 import { formatDate } from '@/utils/index.ts'
-import { UploadWaybill } from './components/index.ts'
+import { UploadWaybill, PrintWaybill } from './components/index.ts'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 const defaultTime = [new Date(2000, 1, 1, 0, 0, 0), new Date(2000, 1, 1, 23, 59, 59)]
@@ -157,6 +158,7 @@ const currentPage = ref(1)
 const pageSize = ref(10)
 const totalCount = ref(0)
 const uploadWayBillRef = ref()
+const printWaybillRef = ref()
 
 const getTableData = async () => {
   try {
@@ -182,6 +184,13 @@ const handleSizeChange = (val: number) => {
 const handleCurrentChange = (val: number) => {
   currentPage.value = val
   getTableData()
+}
+
+/**
+ * @description: 打印面单
+ */
+const printExpress = (row: Record<string, any>) => {
+  printWaybillRef.value?.open(row)
 }
 
 /**

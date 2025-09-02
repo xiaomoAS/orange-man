@@ -3,7 +3,7 @@
  * @Description: 类目设置
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-08-28 17:49:02
+ * @LastEditTime: 2025-09-02 15:07:49
  * @FilePath: /orange-man/src/views/coupon/CouponList.vue
 -->
 <template>
@@ -33,10 +33,9 @@
       <el-table-column label="包邮运费上限" prop="waybillPriceLimit"></el-table-column>
       <el-table-column label="领取用户数" prop="receiveUserCount"></el-table-column>
       <el-table-column label="覆盖用户数" prop="converUserCount"></el-table-column>
-      <el-table-column label="生效时间段">
+      <el-table-column label="生效时间段" width="200">
         <template #default="{ row }">
-          <!-- TODO 字段 -->
-          <div>{{ row?.effectiveTimeInterval }}</div>
+          <div>{{ formatDate(row?.startTime) }} 至 {{ formatDate(row?.endTime) }}</div>
         </template>
       </el-table-column>
       <el-table-column label="状态">
@@ -78,7 +77,7 @@ import * as apis from '@/api/services'
 import { AddCoupon } from './components'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { COUPON_NAME_MAP, STATUS_NAME_MAP } from './constants'
-// import { formatDate } from '@/utils'
+import { formatDate } from '@/utils'
 
 const tableData = ref()
 const currentPage = ref(1)
