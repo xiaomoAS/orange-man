@@ -3,17 +3,19 @@
  * @Description: 营销资源位
  * @Date: 2025-07-03 15:44:21
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-08-27 18:14:16
+ * @LastEditTime: 2025-09-02 17:16:16
  * @FilePath: /orange-man/src/views/promotions-resource/PromotionsResource.vue
 -->
 <template>
   <div>
+    <PageTitle title="营销资源位" />
+
     <!-- 批量操作 -->
     <div class="batch-buttons">
       <div class="batch-buttons__left"></div>
 
       <div class="batch-buttons__right">
-        <el-button type="primary" link @click="editResourceHandler()">新增资源位</el-button>
+        <el-button type="primary" @click="editResourceHandler()">新增资源位</el-button>
       </div>
     </div>
 
@@ -63,6 +65,7 @@ import * as apis from '@/api/services'
 import { RESOURCE_NAME_MAP, AREA_NAME_MAP } from './constants'
 import { AddResource } from './components'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { PageTitle } from '@/components'
 
 const tableData = ref()
 const currentPage = ref(1)

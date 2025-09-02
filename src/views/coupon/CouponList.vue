@@ -1,19 +1,21 @@
 <!--
  * @Autor: jiangzupei
- * @Description: 类目设置
+ * @Description: 优惠券列表
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-09-02 15:07:49
+ * @LastEditTime: 2025-09-02 17:18:24
  * @FilePath: /orange-man/src/views/coupon/CouponList.vue
 -->
 <template>
   <div>
+    <PageTitle title="优惠券列表" />
+
     <!-- 批量操作 -->
     <div class="batch-buttons">
       <div class="batch-buttons__left"></div>
 
       <div class="batch-buttons__right">
-        <el-button type="primary" link @click="editCateHandler()">新增券</el-button>
+        <el-button type="primary" @click="editCateHandler()">新增券</el-button>
       </div>
     </div>
 
@@ -78,6 +80,7 @@ import { AddCoupon } from './components'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { COUPON_NAME_MAP, STATUS_NAME_MAP } from './constants'
 import { formatDate } from '@/utils'
+import { PageTitle } from '@/components'
 
 const tableData = ref()
 const currentPage = ref(1)

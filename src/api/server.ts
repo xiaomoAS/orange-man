@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 
-export const BASE_API_URL = '//test-incentive-api.jd.com'
+export const BASE_API_URL = '//www.melon-bamboo.fun'
 
 const server = axios.create({
   withCredentials: true,

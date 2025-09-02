@@ -1,19 +1,21 @@
 <!--
  * @Autor: jiangzupei
- * @Description: 营销资源位
+ * @Description: 营销活动场
  * @Date: 2025-07-03 15:44:21
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-09-02 16:19:40
+ * @LastEditTime: 2025-09-02 17:16:58
  * @FilePath: /orange-man/src/views/promotions-activity/PromotionsActivity.vue
 -->
 <template>
   <div>
+    <PageTitle title="营销活动场" />
+
     <!-- 批量操作 -->
     <div class="batch-buttons">
       <div class="batch-buttons__left"></div>
 
       <div class="batch-buttons__right">
-        <el-button type="primary" link @click="editActivity()">新增活动场</el-button>
+        <el-button type="primary" @click="editActivity()">新增活动场</el-button>
       </div>
     </div>
 
@@ -80,6 +82,7 @@ import { WAY_TYPE_MAP, ACTIVITY_STATUS_MAP, ACTIVITY_STATUS } from './constants'
 import { formatDate } from '@/utils/index.ts'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { AddActivity } from './components'
+import { PageTitle } from '@/components'
 
 const tableData = ref()
 const currentPage = ref(1)

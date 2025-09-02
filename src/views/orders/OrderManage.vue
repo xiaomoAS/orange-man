@@ -1,13 +1,15 @@
 <!--
  * @Autor: jiangzupei
- * @Description: 
+ * @Description: 订单列表
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-09-02 17:03:28
+ * @LastEditTime: 2025-09-02 17:17:59
  * @FilePath: /orange-man/src/views/orders/OrderManage.vue
 -->
 <template>
   <div>
+    <PageTitle title="订单列表" />
+
     <!-- 导航栏 -->
     <div>
       <el-tabs v-model="activeTab">
@@ -138,7 +140,7 @@
 import { ref, onMounted, reactive } from 'vue'
 import { TAB_ID, ORDER_STATUS_LIST } from './constants.ts'
 import * as apis from '@/api/services'
-import { AdvCustomTooltip } from '@/components'
+import { AdvCustomTooltip, PageTitle } from '@/components'
 import { formatDate } from '@/utils/index.ts'
 import { UploadWaybill, PrintWaybill } from './components'
 import { ElMessage, ElMessageBox } from 'element-plus'

@@ -3,17 +3,18 @@
  * @Description: 类目设置
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-08-28 17:40:28
+ * @LastEditTime: 2025-09-02 17:19:16
  * @FilePath: /orange-man/src/views/cate-config/CateConfig.vue
 -->
 <template>
   <div>
+    <PageTitle title="类目设置" />
     <!-- 批量操作 -->
     <div class="batch-buttons">
       <div class="batch-buttons__left"></div>
 
       <div class="batch-buttons__right">
-        <el-button type="primary" link @click="editCateHandler()">新增类目</el-button>
+        <el-button type="primary" @click="editCateHandler()">新增类目</el-button>
       </div>
     </div>
 
@@ -61,6 +62,7 @@ import * as apis from '@/api/services'
 import { AddCate } from './components'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { CATE_STATUS_NAME, CATE_STATUS } from './constants'
+import { PageTitle } from '@/components'
 
 const tableData = ref()
 const currentPage = ref(1)

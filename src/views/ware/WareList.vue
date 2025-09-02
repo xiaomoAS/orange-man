@@ -3,11 +3,13 @@
  * @Description: 
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-09-02 16:20:32
+ * @LastEditTime: 2025-09-02 17:19:38
  * @FilePath: /orange-man/src/views/ware/WareList.vue
 -->
 <template>
   <div>
+    <PageTitle title="商品列表" />
+
     <!-- 导航栏 -->
     <div>
       <el-tabs v-model="activeTab">
@@ -78,8 +80,8 @@
       </div>
 
       <div class="batch-buttons__right">
-        <el-button type="primary" link @click="cateConfigHandler">类目设置</el-button>
-        <el-button type="primary" link @click="editGoodsHandler()">+ 添加新商品</el-button>
+        <el-button type="primary" @click="cateConfigHandler">类目设置</el-button>
+        <el-button type="primary" @click="editGoodsHandler()">+ 添加新商品</el-button>
       </div>
     </div>
 
@@ -157,7 +159,7 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { AdvCustomTooltip } from '@/components'
+import { AdvCustomTooltip, PageTitle } from '@/components'
 import { TAB_ID, PRODUCT_STATUS_LIST, PRODUCT_STATUS } from './constants.ts'
 import * as apis from '@/api/services'
 import { ElMessage, ElMessageBox } from 'element-plus'

@@ -1,0 +1,9 @@
+@use '@/assets/style/mixin' as *;
+
+@include b(page-title) {
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: 600;
+  color: #262626;
+  margin-bottom: 16px;
+}
