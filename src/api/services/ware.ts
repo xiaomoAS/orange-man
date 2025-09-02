@@ -41,3 +41,17 @@ export const updateReport: any = (params = {}) => {
 export const addProduct: any = (params = {}) => {
   return request.post(`${BASE_API_URL}/admin/product/add`, params)
 }
+
+/**
+ * @description: 更新商品接口
+ */
+export const updateProduct: any = (params = {}) => {
+  return request.post(`${BASE_API_URL}/admin/product/update`, params)
+}
+
+/**
+ * @description: 查询商品详情接口
+ */
+export const getProductDetail: any = (params = {}) => {
+  return request.post(`${BASE_API_URL}/admin/product/get`, params)
+}

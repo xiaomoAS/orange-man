@@ -62,3 +62,10 @@ export const addActivity: any = (params = {}) => {
 export const updateActivity: any = (params = {}) => {
   return request.post(`${BASE_API_URL}/admin/activity/update`, params)
 }
+
+/**
+ * @description: 查询活动详情
+ */
+export const getActivityDetail: any = (params = {}) => {
+  return request.post(`${BASE_API_URL}/admin/activity/get`, params)
+}

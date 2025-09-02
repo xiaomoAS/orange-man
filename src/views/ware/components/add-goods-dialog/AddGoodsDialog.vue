@@ -33,7 +33,11 @@
           />
         </el-form-item>
         <el-form-item label="商品详情视频" prop="videoFiles">
-          <CommonUpload v-model:fileList="addCateForm.videoFiles" type="video" :action="`${BASE_API_URL}/admin/file/upload`" />
+          <CommonUpload
+            v-model:fileList="addCateForm.videoFiles"
+            type="video"
+            :action="`${BASE_API_URL}/admin/file/upload`"
+          />
         </el-form-item>
         <el-form-item label="预售时间" prop="presaleTime">
           <el-date-picker
@@ -53,9 +57,12 @@
             </template>
           </el-input>
         </el-form-item>
+        <!-- TODO -->
         <el-form-item label="检测报告类型" prop="reportType">
           <el-radio-group v-model="addCateForm.reportType">
-            <el-radio v-for="item in REPORT_TYPE_LIST" :value="item.value" :key="item.value">{{ item?.label }}</el-radio>
+            <el-radio v-for="item in REPORT_TYPE_LIST" :value="item.value" :key="item.value">{{
+              item?.label
+            }}</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="检测报告" prop="reportFiles">
@@ -81,7 +88,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { reactive, ref, computed } from 'vue'
 import { CommonUpload } from '@/components/advance'
 import { BASE_API_URL } from '@/api/server'
 import * as apis from '@/api/services'
@@ -91,6 +98,9 @@ import { REPORT_TYPE_LIST, REPORT_TYPE } from '../../constants'
 const emit = defineEmits(['getTableData'])
 const dialogVisible = ref<boolean>(false)
 const addCateFormRef = ref()
+const rowData = ref()
+
+const isEdit = computed(() => !!rowData.value)
 
 const addCateForm = reactive<Record<string, any>>({
   title: null,
@@ -132,7 +142,33 @@ const handleClose = () => {
   })
 }
 
-const open = () => {
+/**
+ * @description: 获取详情数据
+ */
+const getDetailData = async () => {
+  try {
+    const data = await apis?.getProductDetail({
+      id: rowData.value?.id,
+    })
+    Object.assign(addCateForm, {
+      ...data,
+      mainImgFiles: data?.mainImgUrl ? [{ url: data?.mainImgUrl, response: data?.mainImgUrl }] : [],
+      detailImgFiles: data?.detailImgUrl ? [{ url: data?.detailImgUrl, response: data?.detailImgUrl }] : [],
+      videoFiles: data?.videoUrl ? [{ url: data?.videoUrl, response: data?.videoUrl, name: '商品详情视频' }] : [],
+      presaleTime: data?.presaleStartTime && data?.presaleEndTime ? [data?.presaleStartTime, data?.presaleEndTime] : [],
+      reportFiles: data?.reportUrl ? [{ url: data?.reportUrl, response: data?.reportUrl, name: '检测报告' }] : [],
+      tags: data?.tagList?.length ? data?.tagList.join(',') : null,
+    })
+  } catch {
+    ElMessage.error('获取商品详情失败')
+  }
+}
+
+const open = (row = null) => {
+  rowData.value = row
+  if (row) {
+    getDetailData()
+  }
   dialogVisible.value = true
 }
 
@@ -145,7 +181,9 @@ const submitHandler = () => {
   addCateFormRef.value?.validate(async (valid: boolean) => {
     if (!valid) return
     try {
-      const res = await apis.addProduct({
+      const apiName = isEdit.value ? 'updateProduct' : 'addProduct'
+      const res = await apis?.[apiName]({
+        id: rowData.value?.id || null,
         title: addCateForm?.title,
         desc: addCateForm?.desc,
         categoryId: addCateForm?.categoryId,

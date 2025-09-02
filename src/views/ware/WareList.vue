@@ -3,7 +3,7 @@
  * @Description: 
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-08-28 17:47:21
+ * @LastEditTime: 2025-09-02 16:20:32
  * @FilePath: /orange-man/src/views/ware/WareList.vue
 -->
 <template>
@@ -22,21 +22,46 @@
       </el-form-item>
       <el-form-item label="商品状态" prop="productStatus">
         <el-select v-model="searchForm.productStatus" placeholder="请选择状态">
-          <el-option v-for="item in PRODUCT_STATUS_LIST" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+          <el-option v-for="item in PRODUCT_STATUS_LIST" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="类目" prop="categoryId">
         <el-input v-model="searchForm.categoryId" placeholder="请输入类目" />
       </el-form-item>
       <el-form-item label="价格" prop="priceMin">
-        <el-input-number v-model="searchForm.priceMin" step-strictly controls-position="right" placeholder="请输入最小价格" :step="0.01" />
+        <el-input-number
+          v-model="searchForm.priceMin"
+          step-strictly
+          controls-position="right"
+          placeholder="请输入最小价格"
+          :step="0.01"
+        />
         <span>-</span>
-        <el-input-number v-model="searchForm.priceMax" step-strictly controls-position="right" placeholder="请输入最大价格" :step="0.01" />
+        <el-input-number
+          v-model="searchForm.priceMax"
+          step-strictly
+          controls-position="right"
+          placeholder="请输入最大价格"
+          :step="0.01"
+        />
       </el-form-item>
       <el-form-item label="库存" prop="inventoryMin">
-        <el-input-number v-model="searchForm.inventoryMin" step-strictly controls-position="right" placeholder="请输入最小库存" :step="1" />
+        <el-input-number
+          v-model="searchForm.inventoryMin"
+          step-strictly
+          controls-position="right"
+          placeholder="请输入最小库存"
+          :step="1"
+        />
         <span>-</span>
-        <el-input-number v-model="searchForm.inventoryMax" step-strictly controls-position="right" placeholder="请输入最大库存" :step="1" />
+        <el-input-number
+          v-model="searchForm.inventoryMax"
+          step-strictly
+          controls-position="right"
+          placeholder="请输入最大库存"
+          :step="1"
+        />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="getTableData">查询</el-button>
@@ -54,7 +79,7 @@
 
       <div class="batch-buttons__right">
         <el-button type="primary" link @click="cateConfigHandler">类目设置</el-button>
-        <el-button type="primary" link @click="addCateHandler">+ 添加新商品</el-button>
+        <el-button type="primary" link @click="editGoodsHandler()">+ 添加新商品</el-button>
       </div>
     </div>
 
@@ -93,10 +118,13 @@
       <el-table-column label="操作">
         <template #default="{ row }">
           <div class="operation-box">
-            <!-- TODO 编辑 -->
-            <el-button link type="primary">修改商品</el-button>
+            <el-button link type="primary" @click="editGoodsHandler(row)">修改商品</el-button>
             <el-button
-              v-if="[PRODUCT_STATUS.IS_OFF_SHELF, PRODUCT_STATUS.WAIT_ON_SHELF, PRODUCT_STATUS.IS_ON_SHELF].includes(row.productStatus)"
+              v-if="
+                [PRODUCT_STATUS.IS_OFF_SHELF, PRODUCT_STATUS.WAIT_ON_SHELF, PRODUCT_STATUS.IS_ON_SHELF].includes(
+                  row.productStatus,
+                )
+              "
               link
               type="primary"
               @click="shelfHandler(row)"
@@ -197,11 +225,15 @@ const shelfHandler = async (row: Record<string, any>) => {
       ElMessage.warning('非目标状态')
       return
     }
-    await ElMessageBox.confirm(`确认${[PRODUCT_STATUS.IS_ON_SHELF].includes(row.productStatus) ? '下架' : '上架'}吗`, '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }).then(() => true)
+    await ElMessageBox.confirm(
+      `确认${[PRODUCT_STATUS.IS_ON_SHELF].includes(row.productStatus) ? '下架' : '上架'}吗`,
+      '提示',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      },
+    ).then(() => true)
     res = await (apis as any)?.[apiName]({
       productStatus: row?.productStatus,
       productid: Number(row?.id),
@@ -245,8 +277,8 @@ const cateConfigHandler = () => {
   router.push('/cateConfig')
 }
 
-const addCateHandler = () => {
-  addGoodsDialogRef.value?.open()
+const editGoodsHandler = (row = null) => {
+  addGoodsDialogRef.value?.open(row)
 }
 
 onMounted(() => {

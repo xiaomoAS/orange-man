@@ -20,13 +20,8 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="覆盖商品" prop="productId">
-          <el-input v-model="form.productId" placeholder="请输入商品id,英文逗号分隔"></el-input>
-        </el-form-item>
-        <el-form-item label="覆盖用户数" prop="converUserCount">
-          <el-input v-model.number="form.converUserCount" placeholder="请输入覆盖用户数"></el-input>
-        </el-form-item>
         <el-form-item v-if="form?.type === COUPON_TYPE.NEW_DISCOUNT" label="新人专享券" prop="newCoupon">
+          <!-- TODO: 字段 -->
           <el-input-number
             v-model="form.newCoupon"
             placeholder="请输入"
@@ -34,6 +29,7 @@
             :step="0.01"
             step-strictly
           ></el-input-number>
+          <span class="unit">元</span>
         </el-form-item>
         <el-form-item v-if="form?.type === COUPON_TYPE.FREIGHT" label="包邮运费上限" prop="waybillPriceLimit">
           <el-input-number
@@ -43,7 +39,16 @@
             :step="0.01"
             step-strictly
           ></el-input-number>
+          <span class="unit">元</span>
         </el-form-item>
+
+        <el-form-item label="覆盖商品" prop="productId">
+          <el-input v-model="form.productId" placeholder="请输入商品id,英文逗号分隔"></el-input>
+        </el-form-item>
+        <el-form-item label="覆盖用户数" prop="converUserCount">
+          <el-input v-model.number="form.converUserCount" placeholder="请输入覆盖用户数"></el-input>
+        </el-form-item>
+
         <el-form-item label="生效时间范围" prop="couponTime">
           <el-date-picker
             v-model="form.couponTime"

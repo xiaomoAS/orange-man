@@ -1,5 +1,11 @@
 <template>
-  <el-dialog v-model="dialogVisible" title="新增活动场" :close-on-click-modal="false" :close-on-press-escape="false" @close="closeHandler">
+  <el-dialog
+    v-model="dialogVisible"
+    title="新增活动场"
+    :close-on-click-modal="false"
+    :close-on-press-escape="false"
+    @close="closeHandler"
+  >
     <el-form ref="formRef" :model="form" :rules="rules" label-width="120px">
       <el-form-item label="活动名称" prop="name">
         <el-input v-model="form.name" placeholder="请输入活动名称"></el-input>
@@ -22,7 +28,9 @@
       </el-form-item>
       <el-form-item label="活动优惠类型" prop="activityType">
         <el-radio-group v-model="form.activityType">
-          <el-radio v-for="item in ACTIVITY_TYPE_LIST" :value="item.value" :key="item.value">{{ item?.label }}</el-radio>
+          <el-radio v-for="item in ACTIVITY_TYPE_LIST" :value="item.value" :key="item.value">{{
+            item?.label
+          }}</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item v-if="form.activityType === ACTIVITY_TYPE.DISCOUNT" label="折扣" prop="discount">
@@ -85,6 +93,7 @@ const emit = defineEmits(['getTableData'])
 const dialogVisible = ref<boolean>(false)
 const formRef = ref()
 const form = reactive({
+  id: null,
   name: null,
   wayType: WAY_TYPE.ONLINE,
   activityTime: [],
@@ -109,6 +118,7 @@ const rules = {
 
 const closeHandler = () => {
   Object.assign(form, {
+    id: null,
     name: null,
     wayType: WAY_TYPE.ONLINE,
     activityTime: [],
@@ -119,8 +129,30 @@ const closeHandler = () => {
     skuId: null,
   })
 }
-const open = (row = null) => {
+
+/**
+ * @description: 获取详情信息
+ */
+const getDetailData = async () => {
+  try {
+    const data = await apis?.getActivityDetail({
+      id: Number(rowData.value?.id),
+    })
+    Object.assign(form, {
+      ...data,
+      activityTime: data?.startTime && data?.endTime ? [data?.startTime, data?.endTime] : [],
+      skuId: data?.skuIdList?.length ? data?.skuIdList?.join(',') : null,
+    })
+  } catch {
+    ElMessage.error('获取活动详情失败')
+  }
+}
+
+const open = async (row: Record<string, any>) => {
   rowData.value = row
+  if (row) {
+    getDetailData()
+  }
   dialogVisible.value = true
 }
 
