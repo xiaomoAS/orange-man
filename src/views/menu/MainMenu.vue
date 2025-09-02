@@ -3,7 +3,7 @@
  * @Description: 菜单
  * @Date: 2025-06-30 14:57:13
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-09-02 17:26:51
+ * @LastEditTime: 2025-09-02 18:23:06
  * @FilePath: /orange-man/src/views/menu/MainMenu.vue
 -->
 <template>
@@ -11,9 +11,7 @@
     <el-menu :default-active="currentRoute" router class="main-menu" :collapse="isCollapsed">
       <div class="menu-header">
         <span v-if="!isCollapsed" class="menu-header-title">功能导航</span>
-        <el-icon class="collapse-icon" @click="toggleCollapse">
-          <component :is="isCollapsed ? 'Expand' : 'Fold'" />
-        </el-icon>
+        <el-icon class="collapse-icon" @click="toggleCollapse"> <Expand v-if="isCollapsed" /><Fold v-else /> </el-icon>
       </div>
 
       <el-menu-item index="/ware">
@@ -57,7 +55,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { Goods, Picture, Calendar, List, Ticket } from '@element-plus/icons-vue'
+import { Goods, Picture, Calendar, List, Ticket, Expand, Fold } from '@element-plus/icons-vue'
 
 const route = useRoute()
 const isCollapsed = ref(false)
