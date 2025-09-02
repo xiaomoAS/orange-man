@@ -1,11 +1,11 @@
 @use '@/assets/style/mixin' as *;
 
-.menu-container {
+@include b(menu-container) {
   height: 100%;
   transition: all 0.3s ease;
 }
 
-.menu-header {
+@include b(menu-header) {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -19,7 +19,7 @@
     letter-spacing: 0.5px;
   }
 
-  .collapse-icon {
+  @include b(collapse-icon) {
     cursor: pointer;
     color: #909399;
 
@@ -87,7 +87,7 @@
 
 // 响应式适配
 @media (max-width: 768px) {
-  .menu-container {
+  @include b(menu-container) {
     .el-menu:not(.el-menu--collapse) {
       width: 200px;
     }
