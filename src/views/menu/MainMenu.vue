@@ -3,7 +3,7 @@
  * @Description: 菜单
  * @Date: 2025-06-30 14:57:13
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-09-02 17:23:37
+ * @LastEditTime: 2025-09-02 17:26:51
  * @FilePath: /orange-man/src/views/menu/MainMenu.vue
 -->
 <template>
@@ -57,7 +57,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { Goods, Picture, Calendar, List, Ticket, Expand, Fold } from '@element-plus/icons-vue'
+import { Goods, Picture, Calendar, List, Ticket } from '@element-plus/icons-vue'
 
 const route = useRoute()
 const isCollapsed = ref(false)
