@@ -89,7 +89,7 @@
 
 <script setup lang="ts">
 import { reactive, ref, computed } from 'vue'
-import { CommonUpload } from '@/components/advance'
+import { CommonUpload } from '@/components'
 import { BASE_API_URL } from '@/api/server'
 import * as apis from '@/api/services'
 import { ElMessage } from 'element-plus'

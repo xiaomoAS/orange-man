@@ -1,5 +1,11 @@
 <template>
-  <el-dialog v-model="dialogVisible" title="新增类目" :close-on-click-modal="false" :close-on-press-escape="false" @close="closeHandler">
+  <el-dialog
+    v-model="dialogVisible"
+    title="新增类目"
+    :close-on-click-modal="false"
+    :close-on-press-escape="false"
+    @close="closeHandler"
+  >
     <div>
       <el-form ref="formRef" :model="form" :rules="rules" label-width="120px">
         <el-form-item v-if="isEdit" label="类目ID" prop="id">
@@ -10,7 +16,8 @@
         </el-form-item>
         <el-form-item label="类目类型" prop="type">
           <el-select v-model="form.type" placeholder="请选择类目类型">
-            <el-option v-for="item in CATE_TYPE_LIST" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+            <el-option v-for="item in CATE_TYPE_LIST" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="父类目id" prop="parentId">
@@ -34,7 +41,7 @@
 import { ref, reactive, computed } from 'vue'
 import * as apis from '@/api/services'
 import { ElMessage } from 'element-plus'
-import { CommonUpload } from '@/components/advance'
+import { CommonUpload } from '@/components'
 import { CATE_TYPE_LIST } from '../../constants'
 
 const rules = {

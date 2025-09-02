@@ -157,7 +157,7 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { AdvCustomTooltip } from '@/components/advance'
+import { AdvCustomTooltip } from '@/components'
 import { TAB_ID, PRODUCT_STATUS_LIST, PRODUCT_STATUS } from './constants.ts'
 import * as apis from '@/api/services'
 import { ElMessage, ElMessageBox } from 'element-plus'

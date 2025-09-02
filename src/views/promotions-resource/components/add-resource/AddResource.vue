@@ -17,23 +17,13 @@
         </el-form-item>
         <el-form-item label="资源位类型" prop="type">
           <el-select v-model="form.type" placeholder="请选择资源位类型">
-            <el-option
-              v-for="item in RESOURCE_TYPE_LIST"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
+            <el-option v-for="item in RESOURCE_TYPE_LIST" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="资源位位置" prop="areaType">
           <el-select v-model="form.areaType" placeholder="请选择资源位位置">
-            <el-option
-              v-for="item in AREA_TYPE_LIST"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
+            <el-option v-for="item in AREA_TYPE_LIST" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
@@ -60,7 +50,7 @@ import { ref, reactive, computed } from 'vue'
 import * as apis from '@/api/services'
 import { ElMessage } from 'element-plus'
 import { RESOURCE_TYPE_LIST, AREA_TYPE_LIST, RESOURCE_TYPE } from '../../constants'
-import { CommonUpload } from '@/components/advance'
+import { CommonUpload } from '@/components'
 
 const rules = {
   name: [{ required: true, message: '请输入资源位名称', trigger: 'change' }],

@@ -1,7 +1,12 @@
 @use '@/assets/style/mixin' as *;
 
-@include b(main-menue) {
+@include b(main-menu) {
   width: 200px;
   border-radius: 0 8px 8px 0;
   border: none;
+
+  @include e(title) {
+    font-size: 16px;
+    font-weight: 600;
+  }
 }

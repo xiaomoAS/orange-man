@@ -3,7 +3,7 @@
  * @Description: 
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-09-02 14:09:36
+ * @LastEditTime: 2025-09-02 17:03:28
  * @FilePath: /orange-man/src/views/orders/OrderManage.vue
 -->
 <template>
@@ -138,9 +138,9 @@
 import { ref, onMounted, reactive } from 'vue'
 import { TAB_ID, ORDER_STATUS_LIST } from './constants.ts'
 import * as apis from '@/api/services'
-import { AdvCustomTooltip } from '@/components/advance/index.ts'
+import { AdvCustomTooltip } from '@/components'
 import { formatDate } from '@/utils/index.ts'
-import { UploadWaybill, PrintWaybill } from './components/index.ts'
+import { UploadWaybill, PrintWaybill } from './components'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 const defaultTime = [new Date(2000, 1, 1, 0, 0, 0), new Date(2000, 1, 1, 23, 59, 59)]
