@@ -20,10 +20,10 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item v-if="form?.type === COUPON_TYPE.NEW_DISCOUNT" label="新人专享券" prop="newCoupon">
+        <el-form-item v-if="form?.type === COUPON_TYPE.NEW_DISCOUNT" label="新人专享券" prop="newPersonPrice">
           <!-- TODO: 字段 -->
           <el-input-number
-            v-model="form.newCoupon"
+            v-model="form.newPersonPrice"
             placeholder="请输入"
             :min="0"
             :step="0.01"
@@ -88,7 +88,7 @@ const rules = {
   productId: [{ required: true, message: '请输入覆盖商品', trigger: 'change' }],
   converUserCount: [{ required: true, message: '请输入覆盖用户数', trigger: 'change' }],
   waybillPriceLimit: [{ required: true, message: '请输入价格', trigger: 'change' }],
-  newCoupon: [{ required: true, message: '请输入价格', trigger: 'change' }],
+  newPersonPrice: [{ required: true, message: '请输入价格', trigger: 'change' }],
   couponTime: [{ required: true, message: '请选择时间', trigger: 'change' }],
   publishType: [{ required: true, message: '请选择发放方式', trigger: 'change' }],
 }
@@ -104,7 +104,7 @@ const form = reactive<Record<string, any>>({
   productId: null,
   converUserCount: null,
   waybillPriceLimit: null,
-  newCoupon: null,
+  newPersonPrice: null,
   publishType: null,
   couponTime: [],
 })
@@ -126,7 +126,7 @@ const closeHandler = () => {
     productId: null,
     converUserCount: null,
     waybillPriceLimit: null,
-    newCoupon: null,
+    newPersonPrice: null,
     publishType: null,
     couponTime: [],
   })
