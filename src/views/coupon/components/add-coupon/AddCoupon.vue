@@ -21,7 +21,6 @@
           </el-select>
         </el-form-item>
         <el-form-item v-if="form?.type === COUPON_TYPE.NEW_DISCOUNT" label="新人专享券" prop="newPersonPrice">
-          <!-- TODO: 字段 -->
           <el-input-number
             v-model="form.newPersonPrice"
             placeholder="请输入"
@@ -108,7 +107,7 @@ const form = reactive<Record<string, any>>({
   publishType: null,
   couponTime: [],
 })
-const isEdit = computed(() => rowData.value)
+const isEdit = computed(() => !!rowData.value)
 
 const open = (data: Record<string, any>) => {
   rowData.value = data

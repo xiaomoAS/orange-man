@@ -82,6 +82,7 @@ import { ref, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import type { UploadFile, UploadFiles, UploadUserFile, UploadRequestOptions } from 'element-plus'
 import axios from 'axios'
+import * as apis from '@/api/services'
 import { BASE_API_URL } from '@/api/server'
 
 // 定义组件属性
@@ -284,6 +285,7 @@ const handleChange = (file: UploadFile, fileList: UploadFiles) => {
 // 自定义上传方法
 const customUpload = async (options: UploadRequestOptions) => {
   const { file, onSuccess, onError, onProgress } = options
+  console.log('file', Object.prototype.toString.call(file).split(' ')[1].split(']')[0], '===', file)
 
   // 创建一个FileReader来读取文件内容
   const reader = new FileReader()
@@ -298,6 +300,7 @@ const customUpload = async (options: UploadRequestOptions) => {
         props.action,
         {
           fileContent: fileContent,
+          fileName: file?.name,
         },
         {
           headers: {
@@ -313,11 +316,21 @@ const customUpload = async (options: UploadRequestOptions) => {
           },
         },
       )
-
-      // 从响应数据中获取 url
-      if (status === 200 && data.success && data?.data?.url) {
-        // 上传成功
-        onSuccess(data?.data?.url)
+      // 上传成功
+      if (status === 200 && data.success && data?.data) {
+        try {
+          // 从响应数据中获取 url
+          const url = await apis.getFileUrl(data?.data)
+          onSuccess(url)
+        } catch {
+          onError({
+            name: 'Error',
+            message: '上传失败',
+            status: 500,
+            method: 'POST',
+            url: props.action,
+          })
+        }
       } else {
         onError({
           name: 'Error',

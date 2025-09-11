@@ -70,7 +70,7 @@ const form = reactive<Record<string, any>>({
   areaType: null,
   fileUrls: [],
 })
-const isEdit = computed(() => rowData.value)
+const isEdit = computed(() => !!rowData.value)
 
 const open = (data: any = null) => {
   dialogVisible.value = true

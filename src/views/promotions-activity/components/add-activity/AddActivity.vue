@@ -104,7 +104,7 @@ const form = reactive({
   skuId: null,
 })
 const rowData = ref()
-const isEdit = computed(() => Boolean(rowData.value))
+const isEdit = computed(() => !!rowData.value)
 
 const rules = {
   name: [{ required: true, message: '请输入活动名称', trigger: 'blur' }],

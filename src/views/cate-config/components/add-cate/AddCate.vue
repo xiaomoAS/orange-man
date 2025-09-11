@@ -6,7 +6,7 @@
     :close-on-press-escape="false"
     @close="closeHandler"
   >
-    <div>
+    <div v-if="dialogVisible">
       <el-form ref="formRef" :model="form" :rules="rules" label-width="120px">
         <el-form-item v-if="isEdit" label="类目ID" prop="id">
           <el-input v-model="form.id" placeholder="请输入类目ID" disabled></el-input>
@@ -61,7 +61,7 @@ const form = reactive<Record<string, any>>({
   parentId: null,
   logoFiles: [],
 })
-const isEdit = computed(() => rowData.value)
+const isEdit = computed(() => !!rowData.value)
 
 const open = (data: Record<string, any>) => {
   rowData.value = data
@@ -99,7 +99,9 @@ const submitHandler = () => {
     try {
       const apiName = isEdit.value ? 'updateCate' : 'addCate'
       const res = await apis?.[apiName]({
-        ...form,
+        name: form?.name,
+        type: form?.type,
+        parentId: form?.parentId,
         logoUrl: form?.logoFiles?.[0]?.response,
       })
       if (res) {

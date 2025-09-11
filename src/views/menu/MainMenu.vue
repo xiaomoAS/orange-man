@@ -3,7 +3,7 @@
  * @Description: 菜单
  * @Date: 2025-06-30 14:57:13
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-09-02 18:23:06
+ * @LastEditTime: 2025-09-10 15:13:25
  * @FilePath: /orange-man/src/views/menu/MainMenu.vue
 -->
 <template>
@@ -48,6 +48,13 @@
           <span class="main-menu__title">优惠券</span>
         </template>
       </el-menu-item>
+
+      <el-menu-item index="/userList">
+        <el-icon><User /></el-icon>
+        <template #title>
+          <span class="main-menu__title">用户权限列表</span>
+        </template>
+      </el-menu-item>
     </el-menu>
   </div>
 </template>
@@ -55,7 +62,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { Goods, Picture, Calendar, List, Ticket, Expand, Fold } from '@element-plus/icons-vue'
+import { Goods, Picture, Calendar, List, Ticket, Expand, Fold, User } from '@element-plus/icons-vue'
 
 const route = useRoute()
 const isCollapsed = ref(false)

@@ -1,0 +1,45 @@
+@use '@/assets/style/mixin' as *;
+
+@include b(form-box) {
+  .el-input {
+    max-width: 300px;
+  }
+}
+
+@include b(batch-buttons) {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+
+  @include e(left) {
+    display: flex;
+  }
+
+  @include e(right) {
+    display: flex;
+  }
+}
+
+@include b(user-table) {
+  :deep(th) {
+    color: #262626;
+    .cell {
+      font-weight: 600;
+    }
+  }
+  :deep(.el-table__row) {
+    td {
+      vertical-align: top;
+      color: #262626;
+    }
+  }
+}
+
+@include b(page-box) {
+  margin-top: 24px;
+
+  .el-pagination {
+    width: fit-content;
+    margin-left: auto;
+  }
+}

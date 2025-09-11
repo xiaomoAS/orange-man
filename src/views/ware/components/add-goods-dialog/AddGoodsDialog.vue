@@ -57,7 +57,6 @@
             </template>
           </el-input>
         </el-form-item>
-        <!-- TODO -->
         <el-form-item label="检测报告类型" prop="reportType">
           <el-radio-group v-model="addCateForm.reportType">
             <el-radio v-for="item in REPORT_TYPE_LIST" :value="item.value" :key="item.value">{{
