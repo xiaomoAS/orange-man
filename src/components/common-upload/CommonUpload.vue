@@ -82,7 +82,6 @@ import { ref, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import type { UploadFile, UploadFiles, UploadUserFile, UploadRequestOptions } from 'element-plus'
 import axios from 'axios'
-import * as apis from '@/api/services'
 import { BASE_API_URL } from '@/api/server'
 
 // 定义组件属性
@@ -138,7 +137,7 @@ const props = withDefaults(defineProps<Props>(), {
   tipText: '',
   fileList: () => [],
   disabled: false,
-  maxSize: 100,
+  maxSize: 5,
   action: `${BASE_API_URL}/admin/file/upload`,
 })
 
@@ -317,11 +316,10 @@ const customUpload = async (options: UploadRequestOptions) => {
         },
       )
       // 上传成功
-      if (status === 200 && data.success && data?.data) {
+      if (status === 200 && data.success && data?.data?.url) {
         try {
           // 从响应数据中获取 url
-          const url = await apis.getFileUrl(data?.data)
-          onSuccess(url)
+          onSuccess(data?.data?.url)
         } catch {
           onError({
             name: 'Error',

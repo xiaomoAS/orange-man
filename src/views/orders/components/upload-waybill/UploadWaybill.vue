@@ -12,10 +12,7 @@
           <el-input v-model="waybillForm.waybillNumber" placeholder="请输入运单号"></el-input>
         </el-form-item>
         <el-form-item label="物流公司名称" prop="waybillCompanyName">
-          <el-input
-            v-model="waybillForm.waybillCompanyName"
-            placeholder="请输入物流公司名称"
-          ></el-input>
+          <el-input v-model="waybillForm.waybillCompanyName" placeholder="请输入物流公司名称"></el-input>
         </el-form-item>
       </el-form>
     </div>
@@ -60,6 +57,7 @@ const open = (data: Record<string, any>) => {
 }
 
 const closeHandler = () => {
+  waybillFormRef.value?.resetFields()
   Object.assign(waybillForm, {
     waybillNumber: null,
     waybillCompanyName: null,

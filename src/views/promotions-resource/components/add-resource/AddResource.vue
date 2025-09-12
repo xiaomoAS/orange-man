@@ -31,6 +31,7 @@
           <CommonUpload
             v-model:fileList="form.fileUrls"
             :type="form.type === RESOURCE_TYPE.IMG ? 'image' : 'video'"
+            :max-size="form.type === RESOURCE_TYPE.IMG ? 5 : 20"
             @change="validateField('fileUrls')"
           />
         </el-form-item>
@@ -93,6 +94,7 @@ const validateField = (field: string) => {
 }
 
 const closeHandler = () => {
+  formRef.value?.resetFields()
   Object.assign(form, {
     id: undefined,
     name: null,

@@ -45,7 +45,7 @@
           <el-input v-model="form.productId" placeholder="请输入商品id,英文逗号分隔"></el-input>
         </el-form-item>
         <el-form-item label="覆盖用户数" prop="converUserCount">
-          <el-input v-model.number="form.converUserCount" placeholder="请输入覆盖用户数"></el-input>
+          <el-input v-model.number="form.converUserCount" type="number" placeholder="请输入覆盖用户数"></el-input>
         </el-form-item>
 
         <el-form-item label="生效时间范围" prop="couponTime">
@@ -118,6 +118,7 @@ const open = (data: Record<string, any>) => {
 }
 
 const closeHandler = () => {
+  formRef.value?.resetFields()
   Object.assign(form, {
     id: undefined,
     name: null,

@@ -52,6 +52,7 @@ const open = (data: Record<string, any>) => {
 }
 
 const closeHandler = () => {
+  formRef.value?.resetFields()
   Object.assign(form, {
     userName: null,
     password: null,

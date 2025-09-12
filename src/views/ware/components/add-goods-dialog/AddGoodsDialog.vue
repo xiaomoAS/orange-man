@@ -15,8 +15,8 @@
         <el-form-item label="商品描述" prop="desc">
           <el-input v-model="addCateForm.desc" placeholder="请输入商品描述"></el-input>
         </el-form-item>
-        <el-form-item label="商品类目" prop="categoryId">
-          <el-input v-model.number="addCateForm.categoryId" placeholder="请输入商品类目"></el-input>
+        <el-form-item label="商品类目ID" prop="categoryId">
+          <el-input v-model.number="addCateForm.categoryId" type="number" placeholder="请输入商品类目"></el-input>
         </el-form-item>
         <el-form-item label="商品主图" prop="mainImgFiles">
           <CommonUpload
@@ -36,6 +36,7 @@
           <CommonUpload
             v-model:fileList="addCateForm.videoFiles"
             type="video"
+            :max-size="20"
             :action="`${BASE_API_URL}/admin/file/upload`"
           />
         </el-form-item>

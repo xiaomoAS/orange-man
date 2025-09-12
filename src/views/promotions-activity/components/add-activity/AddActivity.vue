@@ -117,6 +117,7 @@ const rules = {
 }
 
 const closeHandler = () => {
+  formRef.value?.resetFields()
   Object.assign(form, {
     id: null,
     name: null,

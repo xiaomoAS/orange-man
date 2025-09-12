@@ -21,7 +21,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="父类目id" prop="parentId">
-          <el-input v-model="form.parentId" placeholder="请输入父类目id"></el-input>
+          <el-input v-model.number="form.parentId" type="number" placeholder="请输入父类目id"></el-input>
         </el-form-item>
         <el-form-item label="logo图片" prop="logoFiles">
           <CommonUpload v-model:fileList="form.logoFiles" @change="validateField('logoFiles')" />
@@ -79,6 +79,7 @@ const open = (data: Record<string, any>) => {
 }
 
 const closeHandler = () => {
+  formRef.value?.resetFields()
   Object.assign(form, {
     id: undefined,
     name: null,

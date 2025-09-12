@@ -93,6 +93,7 @@ const submitHandler = () => {
 }
 
 const closeHandler = () => {
+  formRef.value?.resetFields()
   Object.assign(form, {
     orderId: null,
     shipAddressList: [],
