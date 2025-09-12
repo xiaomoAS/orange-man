@@ -71,7 +71,7 @@ const handleLogin = async () => {
       // 调用登录API并存储token
       try {
         const { authToken } = await apis.userLogin({
-          pin: loginForm.username,
+          userName: loginForm.username,
           password: loginForm.password,
         })
 

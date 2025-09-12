@@ -34,17 +34,33 @@
     </el-table-column>
   </el-table>
 
-  <AddUserDialog ref="addUserRef" />
+  <AddUserDialog ref="addUserRef" @getTableData="getTableData" />
+
+  <div class="page-box">
+    <el-pagination
+      v-model:current-page="currentPage"
+      v-model:page-size="pageSize"
+      :page-sizes="[10, 20, 50, 100]"
+      background
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="totalCount"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue'
 import * as apis from '@/api/services'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import { PageTitle } from '@/components'
 import { AddUserDialog } from './components'
 
 const tableData = ref([])
+const currentPage = ref(1)
+const pageSize = ref(10)
+const totalCount = ref(0)
 const searchFormRef = ref()
 const addUserRef = ref()
 const searchForm = reactive({
@@ -53,12 +69,25 @@ const searchForm = reactive({
 
 const getTableData = async () => {
   try {
-    tableData.value = await apis.getUserList({
+    const { rows, total } = await apis.getUserList({
       ...searchForm,
+      page: currentPage.value,
+      pageSize: pageSize.value,
     })
+    tableData.value = rows
+    totalCount.value = total
   } catch {
     tableData.value = []
   }
+}
+
+const handleSizeChange = (val: number) => {
+  pageSize.value = val
+  getTableData()
+}
+const handleCurrentChange = (val: number) => {
+  currentPage.value = val
+  getTableData()
 }
 
 /**
@@ -74,12 +103,19 @@ const modifyUserHandler = (row = null) => {
  */
 const deleteUser = async (row: Record<string, any>) => {
   try {
-    await apis.deleteUser({ id: row?.id })
-    ElMessage.success('删除成功')
-    getTableData()
-  } catch {
-    ElMessage.error('删除失败')
-  }
+    await ElMessageBox.confirm(`确认删除吗`, '提示', {
+      confirmButtonText: '确 定',
+      cancelButtonText: '取 消',
+      type: 'warning',
+    }).then(() => true)
+    const res = await apis.deleteUser({ id: row?.id })
+    if (res) {
+      ElMessage.success('删除成功')
+      getTableData()
+    } else {
+      ElMessage.error('删除失败')
+    }
+  } catch {}
 }
 
 const reset = () => {

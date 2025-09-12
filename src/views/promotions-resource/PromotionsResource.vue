@@ -3,7 +3,7 @@
  * @Description: 营销资源位
  * @Date: 2025-07-03 15:44:21
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-09-02 17:16:16
+ * @LastEditTime: 2025-09-12 10:42:40
  * @FilePath: /orange-man/src/views/promotions-resource/PromotionsResource.vue
 -->
 <template>
@@ -118,6 +118,7 @@ const deleteHandler = async (row: Record<string, any>) => {
     })
     if (res) {
       ElMessage.success('删除成功')
+      getTableData()
     } else {
       ElMessage.error('删除失败')
     }

@@ -66,7 +66,8 @@ const submitHandler = () => {
       const apiName = isEdit.value ? 'updateUser' : 'addUser'
       const res = await apis?.[apiName]({
         id: rowData.value?.id,
-        ...form,
+        userName: form?.userName,
+        password: form?.password,
       })
       if (res) {
         ElMessage.success(isEdit.value ? '修改成功' : '添加成功')
