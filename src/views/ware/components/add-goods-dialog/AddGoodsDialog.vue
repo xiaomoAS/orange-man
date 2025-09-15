@@ -15,6 +15,33 @@
         <el-form-item label="商品描述" prop="desc">
           <el-input v-model="addCateForm.desc" placeholder="请输入商品描述"></el-input>
         </el-form-item>
+        <el-form-item label="价格" prop="price">
+          <el-input-number
+            v-model="addCateForm.price"
+            placeholder="请输入商品价格"
+            :step="0.01"
+            :min="0"
+            step-strictly
+            controls-position="right"
+          ></el-input-number>
+          <span>元</span>
+        </el-form-item>
+        <el-form-item label="规格" prop="specType">
+          <el-radio-group v-model="addCateForm.specType">
+            <el-radio :label="SPEC_TYPE.WEIGHT">斤</el-radio>
+            <el-radio :label="SPEC_TYPE.AMOUNT">件</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="库存" prop="stock">
+          <el-input-number
+            v-model="addCateForm.stock"
+            placeholder="请输入商品库存"
+            :step="1"
+            :min="0"
+            step-strictly
+            controls-position="right"
+          ></el-input-number>
+        </el-form-item>
         <el-form-item label="商品类目ID" prop="categoryId">
           <el-input v-model.number="addCateForm.categoryId" type="number" placeholder="请输入商品类目"></el-input>
         </el-form-item>
@@ -93,7 +120,7 @@ import { CommonUpload } from '@/components'
 import { BASE_API_URL } from '@/api/server'
 import * as apis from '@/api/services'
 import { ElMessage } from 'element-plus'
-import { REPORT_TYPE_LIST, REPORT_TYPE } from '../../constants'
+import { REPORT_TYPE_LIST, REPORT_TYPE, SPEC_TYPE, SPEC_NAME } from '../../constants'
 
 const emit = defineEmits(['getTableData'])
 const dialogVisible = ref<boolean>(false)
@@ -105,6 +132,9 @@ const isEdit = computed(() => !!rowData.value)
 const addCateForm = reactive<Record<string, any>>({
   title: null,
   desc: null,
+  price: null,
+  specType: SPEC_TYPE.WEIGHT,
+  stock: null,
   categoryId: null,
   mainImgFiles: [],
   detailImgFiles: [],
@@ -119,6 +149,9 @@ const addCateForm = reactive<Record<string, any>>({
 const rules = {
   title: [{ required: true, message: '请输入商品标题', trigger: 'blur' }],
   desc: [{ required: true, message: '请输入商品描述', trigger: 'blur' }],
+  price: [{ required: true, message: '请输入商品价格', trigger: 'blur' }],
+  specType: [{ required: true, message: '请选择商品规格', trigger: 'change' }],
+  stock: [{ required: true, message: '请输入商品库存', trigger: 'blur' }],
   categoryId: [{ required: true, message: '请输入商品类目Id', trigger: 'blur' }],
   mainImgFiles: [{ required: true, message: '请上传商品主图', trigger: 'change' }],
   detailImgFiles: [{ required: true, message: '请上传商品详情图片', trigger: 'change' }],
@@ -130,6 +163,9 @@ const handleClose = () => {
   Object.assign(addCateForm, {
     title: null,
     desc: null,
+    price: null,
+    specType: SPEC_TYPE.WEIGHT,
+    stock: null,
     categoryId: null,
     mainImgFiles: [],
     detailImgFiles: [],
@@ -148,7 +184,7 @@ const handleClose = () => {
 const getDetailData = async () => {
   try {
     const data = await apis?.getProductDetail({
-      id: rowData.value?.id,
+      productId: rowData.value?.productId,
     })
     Object.assign(addCateForm, {
       ...data,
@@ -183,9 +219,13 @@ const submitHandler = () => {
     try {
       const apiName = isEdit.value ? 'updateProduct' : 'addProduct'
       const res = await apis?.[apiName]({
-        id: rowData.value?.id || null,
+        productId: rowData.value?.productId || null,
         title: addCateForm?.title,
         desc: addCateForm?.desc,
+        price: addCateForm?.price,
+        specType: addCateForm?.specType,
+        specName: SPEC_NAME?.[addCateForm?.specType],
+        stock: addCateForm?.stock,
         categoryId: addCateForm?.categoryId,
         mainImgUrl: addCateForm?.mainImgFiles?.[0]?.response,
         detailImgUrl: addCateForm?.detailImgFiles?.[0]?.response,

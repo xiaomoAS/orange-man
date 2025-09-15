@@ -1,8 +1,6 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
-import { useRouter } from 'vue-router'
-// 路由
-const router = useRouter()
+import router from '@/router'
 
 export const BASE_API_URL = '//101.201.111.162'
 
@@ -34,17 +32,22 @@ server.interceptors.response.use(
     if (status === 200) {
       //
       if (data?.code === 201) {
+        console.log('data', Object.prototype.toString.call(data).split(' ')[1].split(']')[0], '===', data, status)
+
         // 跳转到首页或其他页面
-        router.push('/login')
         ElMessage.warning('登录过期，请重新登录')
+        const timer = setTimeout(() => {
+          router.push('/login')
+          clearTimeout(timer)
+        }, 1000)
         return Promise.reject()
       }
       if (data.success) {
         return Promise.resolve(data.data)
       }
     }
-    ElMessage.error(data.message)
-    return Promise.reject(data.message)
+    ElMessage.error(data.msg)
+    return Promise.reject(data.msg)
   },
   (error) => {
     ElMessage.error(error)

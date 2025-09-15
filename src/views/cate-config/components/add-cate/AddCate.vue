@@ -20,9 +20,6 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="父类目id" prop="parentId">
-          <el-input v-model.number="form.parentId" type="number" placeholder="请输入父类目id"></el-input>
-        </el-form-item>
         <el-form-item label="logo图片" prop="logoFiles">
           <CommonUpload v-model:fileList="form.logoFiles" @change="validateField('logoFiles')" />
         </el-form-item>
@@ -58,7 +55,6 @@ const form = reactive<Record<string, any>>({
   id: undefined,
   name: null,
   type: null,
-  parentId: null,
   logoFiles: [],
 })
 const isEdit = computed(() => !!rowData.value)
@@ -84,7 +80,6 @@ const closeHandler = () => {
     id: undefined,
     name: null,
     type: null,
-    parentId: null,
     logoFiles: [],
   })
 }
@@ -100,9 +95,9 @@ const submitHandler = () => {
     try {
       const apiName = isEdit.value ? 'updateCate' : 'addCate'
       const res = await apis?.[apiName]({
+        id: rowData.value?.id,
         name: form?.name,
         type: form?.type,
-        parentId: form?.parentId,
         logoUrl: form?.logoFiles?.[0]?.response,
       })
       if (res) {

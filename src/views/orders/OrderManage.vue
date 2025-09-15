@@ -3,7 +3,7 @@
  * @Description: 订单列表
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-09-02 17:17:59
+ * @LastEditTime: 2025-09-15 11:20:59
  * @FilePath: /orange-man/src/views/orders/OrderManage.vue
 -->
 <template>
@@ -81,7 +81,7 @@
                 <AdvCustomTooltip :showLine="2" :content="item.name">
                   <span class="product-info__title">{{ item.name }}</span>
                 </AdvCustomTooltip>
-                <span>商品编码：{{ item.id }}</span>
+                <span>商品编码：{{ item.productId }}</span>
               </div>
               <div class="product-info__price-box">
                 <div>¥{{ item?.price }}</div>

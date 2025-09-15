@@ -3,7 +3,7 @@
  * @Description: 
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-09-02 17:19:38
+ * @LastEditTime: 2025-09-15 11:17:09
  * @FilePath: /orange-man/src/views/ware/WareList.vue
 -->
 <template>
@@ -96,15 +96,17 @@
               <AdvCustomTooltip :showLine="2" :content="row.name">
                 <span class="product-info__title">{{ row.name }}</span>
               </AdvCustomTooltip>
-              <span>商品编码：{{ row.id }}</span>
+              <span>商品编码：{{ row.productId }}</span>
             </div>
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="inventory" label="总库存"></el-table-column>
+      <el-table-column prop="stock" label="总库存"></el-table-column>
       <el-table-column label="价格">
         <template #default="{ row }">
-          <span>¥{{ row?.priceMin }} - ¥{{ row?.priceMax }}</span>
+          <span
+            >¥{{ row?.price }}<span v-if="row?.specType">/{{ SPEC_NAME?.[row?.specType] }}</span></span
+          >
         </template>
       </el-table-column>
       <el-table-column prop="modified" label="修改时间">
@@ -160,7 +162,7 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { AdvCustomTooltip, PageTitle } from '@/components'
-import { TAB_ID, PRODUCT_STATUS_LIST, PRODUCT_STATUS } from './constants.ts'
+import { TAB_ID, PRODUCT_STATUS_LIST, PRODUCT_STATUS, SPEC_NAME } from './constants.ts'
 import * as apis from '@/api/services'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { AddGoodsDialog } from './components'
@@ -238,7 +240,7 @@ const shelfHandler = async (row: Record<string, any>) => {
     ).then(() => true)
     res = await (apis as any)?.[apiName]({
       productStatus: row?.productStatus,
-      productid: Number(row?.id),
+      productId: Number(row?.productId),
     })
     if (res) {
       ElMessage.success('处理成功')
@@ -260,10 +262,11 @@ const deleteWare = async (row: Record<string, any>) => {
     }).then(() => true)
     const res = await apis.wareDelete({
       productStatus: row?.productStatus,
-      productid: Number(row?.id),
+      productId: Number(row?.productId),
     })
     if (res) {
       ElMessage.success('删除成功')
+      getTableData()
     } else {
       ElMessage.error('删除失败')
     }

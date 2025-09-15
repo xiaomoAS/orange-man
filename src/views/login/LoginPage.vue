@@ -85,8 +85,7 @@ const handleLogin = async () => {
 
         // 跳转到首页或其他页面
         router.push('/')
-      } catch (error) {
-        ElMessage.error(`登录失败: ${error}`)
+      } catch {
       } finally {
         loading.value = false
       }

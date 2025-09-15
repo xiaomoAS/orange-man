@@ -3,7 +3,7 @@
  * @Description:
  * @Date: 2025-06-30 17:24:04
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-08-27 20:12:25
+ * @LastEditTime: 2025-09-15 09:56:52
  * @FilePath: /orange-man/src/views/ware/constants.ts
  */
 export enum TAB_ID {
@@ -31,7 +31,7 @@ export const PRODUCT_STATUS_LIST = [
 ]
 
 // 检测报告类型
-export const enum REPORT_TYPE {
+export enum REPORT_TYPE {
   IMG = 1, // 图片
   FILE = 2, // pdf文件
 }
@@ -40,3 +40,14 @@ export const REPORT_TYPE_LIST = [
   { label: '图片', value: 1 },
   { label: 'pdf', value: 2 },
 ]
+
+// 规格
+export enum SPEC_TYPE {
+  WEIGHT = 1, // 斤
+  AMOUNT = 2, // 件
+}
+
+export const SPEC_NAME = {
+  [SPEC_TYPE.WEIGHT]: '斤',
+  [SPEC_TYPE.AMOUNT]: '件',
+}

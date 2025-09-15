@@ -293,6 +293,8 @@ const customUpload = async (options: UploadRequestOptions) => {
     try {
       // 获取文件内容（Base64格式）
       const fileContent = reader.result
+      // 从localStorage获取token
+      const authToken = localStorage.getItem('authToken')
 
       // 发送请求
       const { data, status } = await axios.post(
@@ -304,6 +306,7 @@ const customUpload = async (options: UploadRequestOptions) => {
         {
           headers: {
             'Content-Type': 'application/json',
+            auth_token: authToken,
           },
           onUploadProgress: (progressEvent) => {
             // 计算上传进度
