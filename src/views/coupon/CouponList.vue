@@ -3,7 +3,7 @@
  * @Description: 优惠券列表
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-09-12 16:35:15
+ * @LastEditTime: 2025-09-15 14:11:56
  * @FilePath: /orange-man/src/views/coupon/CouponList.vue
 -->
 <template>
@@ -32,7 +32,16 @@
           <div>{{ row?.productIdList?.join('、') }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="包邮运费上限" prop="waybillPriceLimit"></el-table-column>
+      <el-table-column label="包邮运费上限">
+        <template #default="{ row }">
+          <span>{{ row?.waybillPriceLimit || '-' }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="新人专享价">
+        <template #default="{ row }">
+          <span>{{ row?.newPersonPrice || '-' }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="领取用户数" prop="receiveUserCount"></el-table-column>
       <el-table-column label="覆盖用户数" prop="converUserCount"></el-table-column>
       <el-table-column label="生效时间段" width="200">
@@ -43,7 +52,7 @@
       <el-table-column label="状态">
         <template #default="{ row }">
           <div>
-            {{ STATUS_NAME_MAP[row?.status as keyof typeof STATUS_NAME_MAP] }}
+            {{ STATUS_NAME_MAP[row?.couponStatus as keyof typeof STATUS_NAME_MAP] }}
           </div>
         </template>
       </el-table-column>
@@ -51,7 +60,7 @@
         <template #default="{ row }">
           <div class="operation-box">
             <el-button
-              v-if="row?.status === COUPON_STATUS.ACTIVE && row?.endTime >= Date.now()"
+              v-if="row?.couponStatus === COUPON_STATUS.ACTIVE && row?.endTime >= Date.now()"
               link
               type="primary"
               @click="closeHandler(row)"

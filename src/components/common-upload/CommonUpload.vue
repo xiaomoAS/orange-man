@@ -89,7 +89,7 @@ interface Props {
   /**
    * 上传类型：image-图片，video-视频，file-文件
    */
-  type?: 'image' | 'video' | 'file'
+  type?: 'image' | 'video' | 'file' | 'pdf'
   /**
    * 上传地址
    */
@@ -158,6 +158,8 @@ const acceptType = computed(() => {
       return 'video/mp4,video/webm,video/ogg'
     case 'file':
       return '.doc,.docx,.pdf,.xls,.xlsx,.txt'
+    case 'pdf':
+      return '.pdf'
     default:
       return ''
   }
@@ -197,21 +199,23 @@ const beforeUpload = (file: File) => {
   let isValidType = false
 
   switch (props.type) {
-    case 'image':
+    case 'image': {
       isValidType = fileType.startsWith('image/')
       if (!isValidType) {
         ElMessage.error('只能上传图片文件!')
         return false
       }
       break
-    case 'video':
+    }
+    case 'video': {
       isValidType = fileType.startsWith('video/')
       if (!isValidType) {
         ElMessage.error('只能上传视频文件!')
         return false
       }
       break
-    case 'file':
+    }
+    case 'file': {
       // 对于文件类型，我们通过扩展名判断
       const extension = file.name.split('.').pop()?.toLowerCase()
       const allowedExtensions = ['doc', 'docx', 'pdf', 'xls', 'xlsx', 'txt']
@@ -221,6 +225,18 @@ const beforeUpload = (file: File) => {
         return false
       }
       break
+    }
+    case 'pdf': {
+      // 对于文件类型，我们通过扩展名判断
+      const extension = file.name.split('.').pop()?.toLowerCase()
+      const allowedExtensions = ['pdf']
+      isValidType = allowedExtensions.includes(extension || '')
+      if (!isValidType) {
+        ElMessage.error('只支持pdf文件!')
+        return false
+      }
+      break
+    }
   }
 
   // 检查文件大小

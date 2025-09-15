@@ -3,7 +3,7 @@
  * @Description: 营销活动场
  * @Date: 2025-07-03 15:44:21
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-09-02 17:16:58
+ * @LastEditTime: 2025-09-15 14:16:09
  * @FilePath: /orange-man/src/views/promotions-activity/PromotionsActivity.vue
 -->
 <template>
@@ -38,9 +38,9 @@
           <div>{{ formatDate(row?.endTime) }}</div>
         </template>
       </el-table-column>
-      <el-table-column prop="status" label="活动状态">
+      <el-table-column prop="activityStatus" label="活动状态">
         <template #default="{ row }">
-          <div>{{ ACTIVITY_STATUS_MAP?.[row?.status as keyof typeof ACTIVITY_STATUS_MAP] }}</div>
+          <div>{{ ACTIVITY_STATUS_MAP?.[row?.activityStatus as keyof typeof ACTIVITY_STATUS_MAP] }}</div>
         </template>
       </el-table-column>
       <el-table-column label="操作">
@@ -118,12 +118,16 @@ const handleCurrentChange = (val: number) => {
  */
 const statusChange = async (row: Record<string, any>) => {
   try {
-    await ElMessageBox.confirm(`确认${row?.status === ACTIVITY_STATUS.CLOSED ? '开启' : '关闭'}活动吗`, '提示', {
-      confirmButtonText: '确 定',
-      cancelButtonText: '取 消',
-      type: 'warning',
-    }).then(() => true)
-    const apiName = row?.status === ACTIVITY_STATUS.CLOSED ? 'openActivity' : 'closeActivity'
+    await ElMessageBox.confirm(
+      `确认${row?.activityStatus === ACTIVITY_STATUS.CLOSED ? '开启' : '关闭'}活动吗`,
+      '提示',
+      {
+        confirmButtonText: '确 定',
+        cancelButtonText: '取 消',
+        type: 'warning',
+      },
+    ).then(() => true)
+    const apiName = row?.activityStatus === ACTIVITY_STATUS.CLOSED ? 'openActivity' : 'closeActivity'
     const res = await apis?.[apiName]({ id: Number(row?.id) })
     if (res) {
       ElMessage.success('取消成功')

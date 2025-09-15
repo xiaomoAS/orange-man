@@ -41,3 +41,10 @@ export const cateOffline: any = (params = {}) => {
 export const cateOnline: any = (params = {}) => {
   return request.post(`${BASE_API_URL}/admin/category/online`, params)
 }
+
+/**
+ * @description: 类目可选列表
+ */
+export const getAllCates: any = (params = {}) => {
+  return request.post(`${BASE_API_URL}/admin/category/listAll`, params)
+}

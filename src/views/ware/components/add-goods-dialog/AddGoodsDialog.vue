@@ -18,7 +18,7 @@
         <el-form-item label="价格" prop="price">
           <el-input-number
             v-model="addCateForm.price"
-            placeholder="请输入商品价格"
+            placeholder="输入商品价格"
             :step="0.01"
             :min="0"
             step-strictly
@@ -35,7 +35,7 @@
         <el-form-item label="库存" prop="stock">
           <el-input-number
             v-model="addCateForm.stock"
-            placeholder="请输入商品库存"
+            placeholder="输入商品库存"
             :step="1"
             :min="0"
             step-strictly
@@ -43,7 +43,7 @@
           ></el-input-number>
         </el-form-item>
         <el-form-item label="商品类目ID" prop="categoryId">
-          <el-input v-model.number="addCateForm.categoryId" type="number" placeholder="请输入商品类目"></el-input>
+          <CommonCate v-model="addCateForm.categoryId" />
         </el-form-item>
         <el-form-item label="商品主图" prop="mainImgFiles">
           <CommonUpload
@@ -95,7 +95,7 @@
         <el-form-item label="检测报告" prop="reportFiles">
           <CommonUpload
             v-model:fileList="addCateForm.reportFiles"
-            :type="addCateForm.reportType === REPORT_TYPE.IMG ? 'image' : 'file'"
+            :type="addCateForm.reportType === REPORT_TYPE.IMG ? 'image' : 'pdf'"
             :action="`${BASE_API_URL}/admin/file/upload`"
             @change="validateField('reportFiles')"
           />
@@ -116,7 +116,7 @@
 
 <script setup lang="ts">
 import { reactive, ref, computed } from 'vue'
-import { CommonUpload } from '@/components'
+import { CommonUpload, CommonCate } from '@/components'
 import { BASE_API_URL } from '@/api/server'
 import * as apis from '@/api/services'
 import { ElMessage } from 'element-plus'
@@ -152,7 +152,7 @@ const rules = {
   price: [{ required: true, message: '请输入商品价格', trigger: 'blur' }],
   specType: [{ required: true, message: '请选择商品规格', trigger: 'change' }],
   stock: [{ required: true, message: '请输入商品库存', trigger: 'blur' }],
-  categoryId: [{ required: true, message: '请输入商品类目Id', trigger: 'blur' }],
+  categoryId: [{ required: true, message: '请输入商品类目Id', trigger: 'change' }],
   mainImgFiles: [{ required: true, message: '请上传商品主图', trigger: 'change' }],
   detailImgFiles: [{ required: true, message: '请上传商品详情图片', trigger: 'change' }],
   reportType: [{ required: true, message: '请上传商品详情图片', trigger: 'change' }],

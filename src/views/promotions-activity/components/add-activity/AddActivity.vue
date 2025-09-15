@@ -53,7 +53,7 @@
             step-strictly
             :min="0"
             :step="0.01"
-            placeholder="请输入满减价格"
+            placeholder="请输入满减价"
           ></el-input-number>
         </el-form-item>
         <el-form-item label="元，减" prop="reducePrice" label-width="auto" class="hide-required-icon">
@@ -63,7 +63,7 @@
             step-strictly
             :min="0"
             :step="0.01"
-            placeholder="请输入满减价格"
+            placeholder="请输入满减价"
           ></el-input-number>
         </el-form-item>
         <span class="discount-unit">元</span>

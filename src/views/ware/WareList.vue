@@ -3,7 +3,7 @@
  * @Description: 
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-09-15 11:17:09
+ * @LastEditTime: 2025-09-15 17:06:19
  * @FilePath: /orange-man/src/views/ware/WareList.vue
 -->
 <template>
@@ -29,14 +29,14 @@
         </el-select>
       </el-form-item>
       <el-form-item label="类目" prop="categoryId">
-        <el-input v-model="searchForm.categoryId" placeholder="请输入类目" />
+        <CommonCate v-model="searchForm.categoryId" />
       </el-form-item>
       <el-form-item label="价格" prop="priceMin">
         <el-input-number
           v-model="searchForm.priceMin"
           step-strictly
           controls-position="right"
-          placeholder="请输入最小价格"
+          placeholder="输入最小价格"
           :step="0.01"
         />
         <span>-</span>
@@ -44,7 +44,7 @@
           v-model="searchForm.priceMax"
           step-strictly
           controls-position="right"
-          placeholder="请输入最大价格"
+          placeholder="输入最大价格"
           :step="0.01"
         />
       </el-form-item>
@@ -53,7 +53,7 @@
           v-model="searchForm.inventoryMin"
           step-strictly
           controls-position="right"
-          placeholder="请输入最小库存"
+          placeholder="输入最小库存"
           :step="1"
         />
         <span>-</span>
@@ -61,7 +61,7 @@
           v-model="searchForm.inventoryMax"
           step-strictly
           controls-position="right"
-          placeholder="请输入最大库存"
+          placeholder="输入最大库存"
           :step="1"
         />
       </el-form-item>
@@ -87,7 +87,7 @@
 
     <!-- 表格 -->
     <el-table :data="tableData" current-row-key="id" class="ware-table">
-      <el-table-column type="selection" width="55" />
+      <!-- <el-table-column type="selection" width="55" /> -->
       <el-table-column label="商品信息" width="400">
         <template #default="{ row }">
           <div class="product-info">
@@ -109,9 +109,9 @@
           >
         </template>
       </el-table-column>
-      <el-table-column prop="modified" label="修改时间">
+      <el-table-column label="修改时间">
         <template #default="{ row }">
-          <span>{{ formatDate(row?.modified) }}</span>
+          <span>{{ formatDate(row?.modifiedTime) }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="productStatus" label="商品状态">
@@ -161,7 +161,7 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { AdvCustomTooltip, PageTitle } from '@/components'
+import { AdvCustomTooltip, PageTitle, CommonCate } from '@/components'
 import { TAB_ID, PRODUCT_STATUS_LIST, PRODUCT_STATUS, SPEC_NAME } from './constants.ts'
 import * as apis from '@/api/services'
 import { ElMessage, ElMessageBox } from 'element-plus'
@@ -172,13 +172,13 @@ const router = useRouter()
 const activeTab = ref(TAB_ID.ALL)
 const wareFormRef = ref()
 const searchForm = ref({
-  productId: undefined,
-  productStatus: undefined,
-  categoryId: undefined,
-  priceMin: undefined,
-  priceMax: undefined,
-  inventoryMin: undefined,
-  inventoryMax: undefined,
+  productId: null,
+  productStatus: null,
+  categoryId: null,
+  priceMin: null,
+  priceMax: null,
+  inventoryMin: null,
+  inventoryMax: null,
 })
 const tableData = ref()
 const currentPage = ref(1)

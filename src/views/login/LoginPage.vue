@@ -6,7 +6,7 @@
         <p class="login__subtitle">欢迎使用管理系统</p>
       </div>
 
-      <el-form ref="loginFormRef" :model="loginForm" :rules="loginRules" class="login__form">
+      <el-form ref="loginFormRef" :model="loginForm" :rules="loginRules" class="login__form" @keyup.enter="handleLogin">
         <el-form-item prop="username">
           <el-input v-model="loginForm.username" placeholder="请输入用户名">
             <template #prefix>

@@ -3,7 +3,7 @@
  * @Description: 订单列表
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-09-15 11:20:59
+ * @LastEditTime: 2025-09-15 14:20:04
  * @FilePath: /orange-man/src/views/orders/OrderManage.vue
 -->
 <template>
@@ -63,7 +63,7 @@
 
     <!-- 表格 -->
     <el-table class="order-table" :data="tableData" current-row-key="orderId">
-      <el-table-column type="selection" width="55" />
+      <!-- <el-table-column type="selection" width="55" /> -->
       <el-table-column label="订单信息" width="260">
         <template #default="{ row }">
           <div>订单编号：{{ row?.orderId }}</div>
