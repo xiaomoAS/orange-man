@@ -55,3 +55,10 @@ export const updateProduct: any = (params = {}) => {
 export const getProductDetail: any = (params = {}) => {
   return request.post(`${BASE_API_URL}/admin/product/get`, params)
 }
+
+/**
+ * @description: 获取商品筛选项
+ */
+export const getAllProducts: any = (params = {}) => {
+  return request.post(`${BASE_API_URL}/admin/product/listAll`, params)
+}

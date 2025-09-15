@@ -41,8 +41,8 @@
           <span class="unit">元</span>
         </el-form-item>
 
-        <el-form-item label="覆盖商品" prop="productId">
-          <el-input v-model="form.productId" placeholder="请输入商品id,英文逗号分隔"></el-input>
+        <el-form-item label="覆盖商品" prop="productIdList">
+          <CommonProduct v-model="form.productIdList" />
         </el-form-item>
         <el-form-item label="覆盖用户数" prop="converUserCount">
           <el-input v-model.number="form.converUserCount" type="number" placeholder="请输入覆盖用户数"></el-input>
@@ -80,11 +80,12 @@ import { ref, reactive, computed } from 'vue'
 import * as apis from '@/api/services'
 import { ElMessage } from 'element-plus'
 import { COUPON_LIST, PUBLISH_LIST, COUPON_TYPE } from '../../constants'
+import { CommonProduct } from '@/components'
 
 const rules = {
   name: [{ required: true, message: '请输入名称', trigger: 'change' }],
   type: [{ required: true, message: '请选择类型', trigger: 'change' }],
-  productId: [{ required: true, message: '请输入覆盖商品', trigger: 'change' }],
+  productIdList: [{ required: true, message: '请选择商品', trigger: 'change' }],
   converUserCount: [{ required: true, message: '请输入覆盖用户数', trigger: 'change' }],
   waybillPriceLimit: [{ required: true, message: '请输入价格', trigger: 'change' }],
   newPersonPrice: [{ required: true, message: '请输入价格', trigger: 'change' }],
@@ -100,7 +101,7 @@ const form = reactive<Record<string, any>>({
   id: undefined,
   name: null,
   type: null,
-  productId: null,
+  productIdList: [],
   converUserCount: null,
   waybillPriceLimit: null,
   newPersonPrice: null,
@@ -111,9 +112,10 @@ const isEdit = computed(() => !!rowData.value)
 
 const open = (data: Record<string, any>) => {
   rowData.value = data
-  Object.assign(form, data)
-  form.couponTime = data?.startTime ? [data?.startTime, data?.endTime] : []
-  form.productId = data?.productIdList ? data?.productIdList?.join(',') : null
+  Object.assign(form, {
+    ...data,
+    couponTime: data?.startTime ? [data?.startTime, data?.endTime] : [],
+  })
   dialogVisible.value = true
 }
 
@@ -123,7 +125,7 @@ const closeHandler = () => {
     id: undefined,
     name: null,
     type: null,
-    productId: null,
+    productIdList: [],
     converUserCount: null,
     waybillPriceLimit: null,
     newPersonPrice: null,
@@ -139,7 +141,7 @@ const submitHandler = () => {
       const apiName = isEdit.value ? 'updateCoupon' : 'addCoupon'
       const res = await apis?.[apiName]({
         ...form,
-        productIdList: form?.productId ? (form.productId as any).split(',') : [],
+        couponTime: undefined,
         startTime: form?.couponTime?.[0],
         endTime: form?.couponTime?.[1],
       })

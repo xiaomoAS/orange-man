@@ -69,8 +69,8 @@
         <span class="discount-unit">元</span>
       </div>
 
-      <el-form-item label="商品列表" prop="skuId">
-        <el-input v-model="form.skuId" placeholder="请输入skuId，多个用英文,分隔"></el-input>
+      <el-form-item label="覆盖商品" prop="productIdList">
+        <CommonProduct v-model="form.productIdList" />
       </el-form-item>
     </el-form>
 
@@ -88,6 +88,7 @@ import { computed, reactive, ref } from 'vue'
 import { WAY_TYPE, WAY_TYPE_LIST, ACTIVITY_TYPE_LIST, ACTIVITY_TYPE } from '../../constants'
 import * as apis from '@/api/services'
 import { ElMessage } from 'element-plus'
+import { CommonProduct } from '@/components'
 
 const emit = defineEmits(['getTableData'])
 const dialogVisible = ref<boolean>(false)
@@ -101,7 +102,7 @@ const form = reactive({
   discount: null,
   reachPrice: null,
   reducePrice: null,
-  skuId: null,
+  productIdList: [],
 })
 const rowData = ref()
 const isEdit = computed(() => !!rowData.value)
@@ -114,6 +115,7 @@ const rules = {
   discount: [{ required: true, message: '请输入折扣', trigger: 'blur' }],
   reachPrice: [{ required: true, message: '请输入满减价格', trigger: 'blur' }],
   reducePrice: [{ required: true, message: '请输入满减价格', trigger: 'blur' }],
+  productIdList: [{ required: true, message: '请选择商品', trigger: 'change' }],
 }
 
 const closeHandler = () => {
@@ -127,7 +129,7 @@ const closeHandler = () => {
     discount: null,
     reachPrice: null,
     reducePrice: null,
-    skuId: null,
+    productIdList: [],
   })
 }
 
@@ -142,7 +144,6 @@ const getDetailData = async () => {
     Object.assign(form, {
       ...data,
       activityTime: data?.startTime && data?.endTime ? [data?.startTime, data?.endTime] : [],
-      skuId: data?.skuIdList?.length ? data?.skuIdList?.join(',') : null,
     })
   } catch {
     ElMessage.error('获取活动详情失败')
@@ -173,7 +174,7 @@ const submitHandler = () => {
         discount: form?.discount,
         reachPrice: form?.reachPrice,
         reducePrice: form?.reducePrice,
-        skuIdList: form?.skuId ? (form?.skuId as string)?.split(',') : null,
+        productIdList: form?.productIdList,
       })
       if (res) {
         ElMessage.success('保存成功')

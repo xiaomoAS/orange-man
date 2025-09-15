@@ -3,7 +3,7 @@
  * @Description: 营销活动场
  * @Date: 2025-07-03 15:44:21
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-09-15 14:16:09
+ * @LastEditTime: 2025-09-15 18:25:09
  * @FilePath: /orange-man/src/views/promotions-activity/PromotionsActivity.vue
 -->
 <template>
@@ -43,7 +43,7 @@
           <div>{{ ACTIVITY_STATUS_MAP?.[row?.activityStatus as keyof typeof ACTIVITY_STATUS_MAP] }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="100">
         <template #default="{ row }">
           <div class="operation-box">
             <el-button type="primary" link @click="editActivity(row)">编辑</el-button>
