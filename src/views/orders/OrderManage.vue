@@ -3,7 +3,7 @@
  * @Description: 订单列表
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-09-15 14:20:04
+ * @LastEditTime: 2025-09-16 14:23:12
  * @FilePath: /orange-man/src/views/orders/OrderManage.vue
 -->
 <template>
@@ -110,9 +110,19 @@
       <el-table-column label="操作">
         <template #default="{ row }">
           <div class="operation-box">
-            <el-button link type="primary" @click="printExpress(row)">打印面单</el-button>
-            <el-button link type="primary" @click="uploadWaybillNum(row)">上传运单号</el-button>
-            <el-button link type="primary" @click="cancelOrder(row)">取消订单</el-button>
+            <el-button v-if="row?.orderStatus === ORDER_STATUS.WAIT_OUT" link type="primary" @click="printExpress(row)"
+              >打印面单</el-button
+            >
+            <el-button
+              v-if="row?.orderStatus === ORDER_STATUS.WAIT_OUT"
+              link
+              type="primary"
+              @click="uploadWaybillNum(row)"
+              >上传运单号</el-button
+            >
+            <el-button v-if="row?.orderStatus === ORDER_STATUS.WAIT_PAY" link type="primary" @click="cancelOrder(row)"
+              >取消订单</el-button
+            >
           </div>
         </template>
       </el-table-column>
@@ -138,7 +148,7 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, reactive } from 'vue'
-import { TAB_ID, ORDER_STATUS_LIST } from './constants.ts'
+import { TAB_ID, ORDER_STATUS_LIST, ORDER_STATUS } from './constants.ts'
 import * as apis from '@/api/services'
 import { AdvCustomTooltip, PageTitle } from '@/components'
 import { formatDate } from '@/utils/index.ts'
