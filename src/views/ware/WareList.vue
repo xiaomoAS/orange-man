@@ -3,7 +3,7 @@
  * @Description: 
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-09-15 17:06:19
+ * @LastEditTime: 2025-09-18 09:52:09
  * @FilePath: /orange-man/src/views/ware/WareList.vue
 -->
 <template>
@@ -31,7 +31,7 @@
       <el-form-item label="类目" prop="categoryId">
         <CommonCate v-model="searchForm.categoryId" />
       </el-form-item>
-      <el-form-item label="价格" prop="priceMin">
+      <el-form-item label="最小价格" prop="priceMin">
         <el-input-number
           v-model="searchForm.priceMin"
           step-strictly
@@ -39,7 +39,8 @@
           placeholder="输入最小价格"
           :step="0.01"
         />
-        <span>-</span>
+      </el-form-item>
+      <el-form-item label="最大价格" prop="priceMax">
         <el-input-number
           v-model="searchForm.priceMax"
           step-strictly
@@ -48,7 +49,7 @@
           :step="0.01"
         />
       </el-form-item>
-      <el-form-item label="库存" prop="inventoryMin">
+      <el-form-item label="最小库存" prop="inventoryMin">
         <el-input-number
           v-model="searchForm.inventoryMin"
           step-strictly
@@ -56,7 +57,8 @@
           placeholder="输入最小库存"
           :step="1"
         />
-        <span>-</span>
+      </el-form-item>
+      <el-form-item label="最大库存" prop="inventoryMax">
         <el-input-number
           v-model="searchForm.inventoryMax"
           step-strictly
@@ -93,10 +95,11 @@
           <div class="product-info">
             <img class="product-info__img" :src="row?.imgUrl" alt="商品图" />
             <div>
-              <AdvCustomTooltip :showLine="2" :content="row.name">
-                <span class="product-info__title">{{ row.name }}</span>
+              <AdvCustomTooltip :showLine="2" :content="row.title">
+                <span class="product-info__title">{{ row.title }}</span>
               </AdvCustomTooltip>
-              <span>商品编码：{{ row.productId }}</span>
+              <div>商品编码：{{ row.productId }}</div>
+              <div>类目：{{ row?.categoryName }}（ID：{{ row?.categoryId }}）</div>
             </div>
           </div>
         </template>

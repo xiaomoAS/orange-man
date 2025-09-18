@@ -251,14 +251,14 @@ const beforeUpload = (file: File) => {
 
 // 处理预览
 const handlePreview = (file: UploadFile) => {
-  console.log('file1', Object.prototype.toString.call(file).split(' ')[1].split(']')[0], '===', file)
+  console.log('file1', Object.prototype.toString.call(file).split(' ')[1].split(']')[0], '===', file, props?.type)
   previewFile.value = file
   previewTitle.value = file.name
 
   if (props.type === 'image' || props.type === 'video') {
     previewUrl.value = file.url || URL.createObjectURL(file.raw!)
     previewVisible.value = true
-  } else if (props.type === 'file') {
+  } else if (props.type === 'file' || 'pdf') {
     // 对于文件类型，可以直接打开或下载
     if (file.response) {
       window.open(file.response as string)

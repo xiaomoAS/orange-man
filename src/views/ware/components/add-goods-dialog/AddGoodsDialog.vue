@@ -85,7 +85,7 @@
             </template>
           </el-input>
         </el-form-item>
-        <el-form-item label="检测报告类型" prop="reportType">
+        <el-form-item label="检测报告类型" prop="reportType" @change="reportTypeChangeHandler">
           <el-radio-group v-model="addCateForm.reportType">
             <el-radio v-for="item in REPORT_TYPE_LIST" :value="item.value" :key="item.value">{{
               item?.label
@@ -198,6 +198,10 @@ const getDetailData = async () => {
   } catch {
     ElMessage.error('获取商品详情失败')
   }
+}
+
+const reportTypeChangeHandler = () => {
+  addCateForm.reportFiles = []
 }
 
 const open = (row = null) => {

@@ -3,7 +3,7 @@
  * @Description: 优惠券列表
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-09-15 14:11:56
+ * @LastEditTime: 2025-09-17 09:08:09
  * @FilePath: /orange-man/src/views/coupon/CouponList.vue
 -->
 <template>
@@ -42,7 +42,11 @@
           <span>{{ row?.newPersonPrice || '-' }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="领取用户数" prop="receiveUserCount"></el-table-column>
+      <el-table-column label="领取用户数">
+        <template #default="{ row }">
+          {{ row?.receiveUserCount || 0 }}
+        </template>
+      </el-table-column>
       <el-table-column label="覆盖用户数" prop="converUserCount"></el-table-column>
       <el-table-column label="生效时间段" width="200">
         <template #default="{ row }">
