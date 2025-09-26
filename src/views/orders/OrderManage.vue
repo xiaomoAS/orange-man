@@ -3,7 +3,7 @@
  * @Description: 订单列表
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-09-16 14:23:12
+ * @LastEditTime: 2025-09-19 17:51:09
  * @FilePath: /orange-man/src/views/orders/OrderManage.vue
 -->
 <template>
@@ -176,6 +176,7 @@ const getTableData = async () => {
   try {
     const { rows, total } = await apis.getOrderList({
       ...searchForm,
+      createTime: undefined,
       startCreateTime: searchForm?.createTime?.length > 0 ? searchForm?.createTime[0] : undefined,
       endCreateTime: searchForm?.createTime?.length > 1 ? searchForm?.createTime[1] : undefined,
       page: currentPage.value,

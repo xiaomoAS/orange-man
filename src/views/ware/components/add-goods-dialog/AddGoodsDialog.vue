@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     v-model="dialogVisible"
-    title="添加商品"
+    :title="isEdit ? '修改商品' : '添加商品'"
     width="800px"
     :close-on-click-modal="false"
     :close-on-press-escape="false"
@@ -108,7 +108,7 @@
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submitHandler">添加商品</el-button>
+        <el-button type="primary" @click="submitHandler">{{ isEdit ? '修改商品' : '添加商品' }}</el-button>
       </span>
     </template>
   </el-dialog>
@@ -242,11 +242,11 @@ const submitHandler = () => {
         tagList: addCateForm?.tags ? (addCateForm.tags as string).split(',') : null,
       })
       if (res) {
-        ElMessage.success('添加成功')
+        ElMessage.success(isEdit.value ? '修改成功' : '添加成功')
         emit('getTableData')
         dialogVisible.value = false
       } else {
-        ElMessage.error('添加失败')
+        ElMessage.error(isEdit.value ? '修改失败' : '添加失败')
       }
     } catch (error) {
       console.log(error)

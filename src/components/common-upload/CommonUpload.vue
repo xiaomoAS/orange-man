@@ -16,7 +16,7 @@
       :before-upload="beforeUpload"
       :on-change="handleChange"
       :http-request="customUpload"
-      :class="{ 'upload-disabled': disabled }"
+      :class="{ 'upload-disabled': disabled, 'video-upload': props?.type === 'video' }"
     >
       <template #trigger>
         <slot name="trigger">
