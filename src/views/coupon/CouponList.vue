@@ -3,7 +3,7 @@
  * @Description: 优惠券列表
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-09-17 09:08:09
+ * @LastEditTime: 2025-09-27 14:50:31
  * @FilePath: /orange-man/src/views/coupon/CouponList.vue
 -->
 <template>
@@ -63,11 +63,8 @@
       <el-table-column label="操作">
         <template #default="{ row }">
           <div class="operation-box">
-            <el-button
-              v-if="row?.couponStatus === COUPON_STATUS.ACTIVE && row?.endTime >= Date.now()"
-              link
-              type="primary"
-              @click="closeHandler(row)"
+            <el-button v-if="row?.couponStatus === COUPON_STATUS.WAIT_PUB" link type="primary">启用</el-button>
+            <el-button v-if="row?.couponStatus === COUPON_STATUS.ACTIVE" link type="primary" @click="closeHandler(row)"
               >停用</el-button
             >
             <el-button link type="primary" @click="editCateHandler(row)">修改</el-button>

@@ -191,7 +191,10 @@ const getDetailData = async () => {
       mainImgFiles: data?.mainImgUrl ? [{ url: data?.mainImgUrl, response: data?.mainImgUrl }] : [],
       detailImgFiles: data?.detailImgUrl ? [{ url: data?.detailImgUrl, response: data?.detailImgUrl }] : [],
       videoFiles: data?.videoUrl ? [{ url: data?.videoUrl, response: data?.videoUrl, name: '商品详情视频' }] : [],
-      presaleTime: data?.presaleStartTime && data?.presaleEndTime ? [data?.presaleStartTime, data?.presaleEndTime] : [],
+      presaleTime:
+        data?.presaleStartTime && data?.presaleEndTime
+          ? [Number(data?.presaleStartTime), Number(data?.presaleEndTime)]
+          : [],
       reportFiles: data?.reportUrl ? [{ url: data?.reportUrl, response: data?.reportUrl, name: '检测报告' }] : [],
       tags: data?.tagList?.length ? data?.tagList.join(',') : null,
     })
