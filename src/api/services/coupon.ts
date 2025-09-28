@@ -15,6 +15,13 @@ export const closeCoupon: any = (params = {}) => {
 }
 
 /**
+ * @description: 启用优惠券
+ */
+export const openCoupon: any = (params = {}) => {
+  return request.post(`${BASE_API_URL}/admin/coupon/open`, params)
+}
+
+/**
  * @description: 更新优惠券
  */
 export const updateCoupon: any = (params = {}) => {

@@ -63,7 +63,9 @@
       <el-table-column label="操作">
         <template #default="{ row }">
           <div class="operation-box">
-            <el-button v-if="row?.couponStatus === COUPON_STATUS.WAIT_PUB" link type="primary">启用</el-button>
+            <el-button v-if="row?.couponStatus === COUPON_STATUS.WAIT_PUB" link type="primary" @click="openHandler(row)"
+              >启用</el-button
+            >
             <el-button v-if="row?.couponStatus === COUPON_STATUS.ACTIVE" link type="primary" @click="closeHandler(row)"
               >停用</el-button
             >
@@ -146,8 +148,31 @@ const closeHandler = async (row: Record<string, any>) => {
     })
     if (res) {
       ElMessage.success('停用成功')
+      getTableData()
     } else {
       ElMessage.error('停用失败')
+    }
+  } catch {}
+}
+
+/**
+ * @description: 启用
+ */
+const openHandler = async (row: Record<string, any>) => {
+  try {
+    await ElMessageBox.confirm(`确认启用吗`, '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }).then(() => true)
+    const res = await apis.openCoupon({
+      id: Number(row?.id),
+    })
+    if (res) {
+      ElMessage.success('启用成功')
+      getTableData()
+    } else {
+      ElMessage.error('启用失败')
     }
   } catch {}
 }
