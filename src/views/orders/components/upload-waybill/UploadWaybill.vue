@@ -39,7 +39,8 @@ import { ElMessage } from 'element-plus'
 // })
 
 const rules = {
-  waybillNumber: [{ required: true, message: '请输入运单号', trigger: 'change' }],
+  waybillNumber: [{ required: true, message: '请输入运单号', trigger: 'blur' }],
+  waybillCompanyName: [{ required: true, message: '请输入物流公司名称', trigger: 'blur' }],
 }
 
 const emits = defineEmits(['getTableData'])

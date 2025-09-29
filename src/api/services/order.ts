@@ -22,6 +22,13 @@ export const cancelOrder: any = (params = {}) => {
 }
 
 /**
+ * @description: 取消运单
+ */
+export const receiveOrder: any = (params = {}) => {
+  return request.post(`${BASE_API_URL}/admin/order/receive`, params)
+}
+
+/**
  * @description: 打印面单
  */
 export const printWaybill: any = (params = {}) => {

@@ -2,8 +2,8 @@
  * @Autor: jiangzupei
  * @Description: 订单列表
  * @Date: 2025-06-30 17:04:54
- * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-09-19 17:51:09
+ * @LastEditors: xiaomoAS jiangzupei@gmail.com
+ * @LastEditTime: 2025-09-29 14:08:31
  * @FilePath: /orange-man/src/views/orders/OrderManage.vue
 -->
 <template>
@@ -23,16 +23,33 @@
         <el-input v-model="searchForm.orderId" placeholder="请输入订单号" />
       </el-form-item>
       <el-form-item label="订单状态" prop="orderStatus">
-        <el-select v-model="searchForm.orderStatus" placeholder="请选择状态">
+        <el-select v-model="searchForm.orderStatus" placeholder="请选择状态" clearable>
           <el-option v-for="item in ORDER_STATUS_LIST" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="用户名" prop="username">
-        <el-input v-model="searchForm.username" placeholder="请输入用户名" />
+      <el-form-item label="收货人姓名" prop="receiveName">
+        <el-input v-model="searchForm.receiveName" placeholder="请输入收货人姓名" />
       </el-form-item>
-      <el-form-item label="手机号" prop="telephone">
-        <el-input v-model="searchForm.telephone" placeholder="请输入手机号" />
+      <el-form-item label="收货人手机号" prop="receiveMobile">
+        <el-input v-model="searchForm.receiveMobile" placeholder="请输入收货人手机号" />
+      </el-form-item>
+      <el-form-item label="商品id" prop="productId">
+        <el-input v-model="searchForm.productId" placeholder="请输入商品id" />
+      </el-form-item>
+      <el-form-item label="运单号" prop="waybillCode">
+        <el-input v-model="searchForm.waybillCode" placeholder="请输入运单号" />
+      </el-form-item>
+      <el-form-item label="支付时间" prop="payTime" class="double-span-item">
+        <el-date-picker
+          v-model="searchForm.payTime"
+          placeholder="请选择时间"
+          type="datetimerange"
+          start-placeholder="支付开始时间"
+          end-placeholder="支付结束时间"
+          value-format="x"
+          :default-time="defaultTime"
+        />
       </el-form-item>
       <el-form-item label="下单时间" prop="createTime" class="double-span-item">
         <el-date-picker
@@ -62,30 +79,32 @@
     </div>
 
     <!-- 表格 -->
-    <el-table class="order-table" :data="tableData" current-row-key="orderId">
+    <el-table class="order-table" :data="tableData" current-row-key="orderId" border>
       <!-- <el-table-column type="selection" width="55" /> -->
       <el-table-column label="订单信息" width="260">
         <template #default="{ row }">
-          <div>订单编号：{{ row?.orderId }}</div>
-          <div v-if="row?.waybillNumber">运单号：{{ row?.waybillNumber }}</div>
-          <div>下单时间：{{ formatDate(row?.orderCreateTime) }}</div>
+          <div>订单编号：{{ row?.id }}</div>
+          <div v-if="row?.waybillCode">运单号：{{ row?.waybillCode }}</div>
+          <div>下单时间：{{ formatDate(row?.createdTime) }}</div>
+          <div v-if="row?.payTime">支付时间：{{ formatDate(row?.payTime) }}</div>
+          <!-- TODO: -->
           <div>预计送达时间：{{ formatDate(row?.deliverTime) }}</div>
         </template>
       </el-table-column>
       <el-table-column label="商品信息" width="400">
         <template #default="{ row }">
-          <div v-for="item in row?.itemInfoList" class="product-info" :key="item?.id">
+          <div v-for="item in row?.productList" class="product-info" :key="item?.productId">
             <img class="product-info__img" :src="item?.imgUrl" alt="商品图" />
             <div class="product-info__content-box">
               <div>
-                <AdvCustomTooltip :showLine="2" :content="item.name">
-                  <span class="product-info__title">{{ item.name }}</span>
+                <AdvCustomTooltip :showLine="2" :content="item.productName">
+                  <span class="product-info__title">{{ item.productName }}</span>
                 </AdvCustomTooltip>
                 <span>商品编码：{{ item.productId }}</span>
               </div>
               <div class="product-info__price-box">
                 <div>¥{{ item?.price }}</div>
-                <div>x{{ item?.count }}</div>
+                <div>x{{ item?.buyCounts }}</div>
               </div>
             </div>
           </div>
@@ -93,25 +112,32 @@
       </el-table-column>
       <el-table-column label="应收" width="150">
         <template #default="{ row }">
-          <div>实付金额：¥{{ row?.realPayPrice || 0 }}</div>
-          <div>优惠金额：¥{{ row?.couponPrice || 0 }}</div>
-          <div>运费：¥{{ row?.carryPrice || 0 }}</div>
+          <div>原价：¥{{ row?.totalAmount || 0 }}</div>
+          <div v-if="row?.postAmount">运费：¥{{ row?.postAmount || 0 }}</div>
+          <div v-if="row?.realPayAmount">
+            {{ row?.orderStatus === ORDER_STATUS.WAIT_PAY ? '应付' : '实付' }}金额：¥{{ row?.realPayAmount || 0 }}
+          </div>
+          <div v-if="row?.couponIds">覆盖优惠券Id：{{ row?.couponIds }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="收货信息" width="150">
+      <el-table-column label="收货信息" width="180">
         <template #default="{ row }">
-          <div>{{ row?.addressInfo?.name }}</div>
-          <div>{{ row?.addressInfo?.telephone }}</div>
-          <div>{{ row?.addressInfo?.detail }}</div>
+          <div>姓名：{{ row?.receiverName }}</div>
+          <div>手机号：{{ row?.receiverMobile }}</div>
+          <div>详细地址：{{ row?.receiverAddress }}</div>
         </template>
       </el-table-column>
-      <el-table-column prop="buyerRemark" label="买家留言"></el-table-column>
-      <el-table-column prop="orderStatusDesc" label="订单状态"></el-table-column>
+      <!-- <el-table-column prop="buyerRemark" label="买家留言"></el-table-column> -->
+      <el-table-column prop="orderStatus" label="订单状态">
+        <template #default="{ row }">
+          <span>{{ ORDER_STATUS_LIST?.find((item) => item.value === row?.orderStatus)?.label || '-' }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作">
         <template #default="{ row }">
           <div class="operation-box">
-            <el-button v-if="row?.orderStatus === ORDER_STATUS.WAIT_OUT" link type="primary" @click="printExpress(row)"
-              >打印面单</el-button
+            <el-button v-if="row?.orderStatus === ORDER_STATUS.WAIT_PAY" link type="primary" @click="cancelOrder(row)"
+              >取消订单</el-button
             >
             <el-button
               v-if="row?.orderStatus === ORDER_STATUS.WAIT_OUT"
@@ -120,8 +146,11 @@
               @click="uploadWaybillNum(row)"
               >上传运单号</el-button
             >
-            <el-button v-if="row?.orderStatus === ORDER_STATUS.WAIT_PAY" link type="primary" @click="cancelOrder(row)"
-              >取消订单</el-button
+            <el-button v-if="row?.orderStatus === ORDER_STATUS.HAS_OUT" link type="primary" @click="printExpress(row)"
+              >重新打印面单</el-button
+            >
+            <el-button v-if="row?.orderStatus === ORDER_STATUS.HAS_OUT" link type="primary" @click="confirmReceive(row)"
+              >确认收货</el-button
             >
           </div>
         </template>
@@ -158,10 +187,13 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 const defaultTime = [new Date(2000, 1, 1, 0, 0, 0), new Date(2000, 1, 1, 23, 59, 59)]
 const activeTab = ref(TAB_ID.ALL)
 const searchForm = reactive({
-  orderId: undefined,
-  orderStatus: undefined,
-  username: undefined,
-  telephone: undefined,
+  orderId: null,
+  orderStatus: null,
+  receiveName: null,
+  receiveMobile: null,
+  productId: null,
+  waybillCode: null,
+  payTime: [],
   createTime: [],
 })
 const tableData = ref([])
@@ -177,8 +209,10 @@ const getTableData = async () => {
     const { rows, total } = await apis.getOrderList({
       ...searchForm,
       createTime: undefined,
-      startCreateTime: searchForm?.createTime?.length > 0 ? searchForm?.createTime[0] : undefined,
-      endCreateTime: searchForm?.createTime?.length > 1 ? searchForm?.createTime[1] : undefined,
+      payStartTime: searchForm?.payTime?.length > 0 ? searchForm?.payTime[0] : null,
+      payEndTime: searchForm?.payTime?.length > 1 ? searchForm?.payTime[1] : null,
+      createStartTime: searchForm?.createTime?.length > 0 ? searchForm?.createTime[0] : null,
+      createEndTime: searchForm?.createTime?.length > 1 ? searchForm?.createTime[1] : null,
       page: currentPage.value,
       pageSize: pageSize.value,
     })
@@ -204,6 +238,28 @@ const handleCurrentChange = (val: number) => {
  */
 const printExpress = (row: Record<string, any>) => {
   printWaybillRef.value?.open(row)
+}
+
+/**
+ * @description: 确认收货
+ */
+const confirmReceive = async (row: Record<string, any>) => {
+  try {
+    await ElMessageBox.confirm(`确认收货吗`, '提示', {
+      confirmButtonText: '确 定',
+      cancelButtonText: '取 消',
+      type: 'warning',
+    }).then(() => true)
+    const res = await apis.receiveOrder({ orderId: Number(row?.orderId) })
+    if (res) {
+      ElMessage.success('确认收货成功')
+      getTableData()
+    } else {
+      ElMessage.error('确认收货失败')
+    }
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 /**
