@@ -51,5 +51,5 @@ export const PUBLISH_LIST = [
   { label: '新用户进入小程序领取', value: PUBLISH_TYPE.NEW },
   // { label: '前n天，每天领取', value: PUBLISH_TYPE.BEFORE_N },
   // { label: '定向用户id', value: PUBLISH_TYPE.USER_ID },
-  { label: '分享链接领取', value: PUBLISH_TYPE.LINK },
+  // { label: '分享链接领取', value: PUBLISH_TYPE.LINK },
 ]
