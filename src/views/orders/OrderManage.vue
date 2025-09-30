@@ -3,7 +3,7 @@
  * @Description: 订单列表
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: xiaomoAS jiangzupei@gmail.com
- * @LastEditTime: 2025-09-29 14:08:31
+ * @LastEditTime: 2025-09-30 11:14:13
  * @FilePath: /orange-man/src/views/orders/OrderManage.vue
 -->
 <template>
@@ -87,8 +87,7 @@
           <div v-if="row?.waybillCode">运单号：{{ row?.waybillCode }}</div>
           <div>下单时间：{{ formatDate(row?.createdTime) }}</div>
           <div v-if="row?.payTime">支付时间：{{ formatDate(row?.payTime) }}</div>
-          <!-- TODO: -->
-          <div>预计送达时间：{{ formatDate(row?.deliverTime) }}</div>
+          <div v-if="row?.estimatedDeliveryTime">预计送达时间：{{ formatDate(row?.estimatedDeliveryTime) }}</div>
         </template>
       </el-table-column>
       <el-table-column label="商品信息" width="400">
@@ -131,6 +130,8 @@
       <el-table-column prop="orderStatus" label="订单状态">
         <template #default="{ row }">
           <span>{{ ORDER_STATUS_LIST?.find((item) => item.value === row?.orderStatus)?.label || '-' }}</span>
+          <div v-if="row?.waybillCompanyName" class="waybill-company">{{ row?.waybillCompanyName }}</div>
+          <div v-if="row?.waybillCode">运单号：{{ row?.waybillCode }}</div>
         </template>
       </el-table-column>
       <el-table-column label="操作">
@@ -146,7 +147,11 @@
               @click="uploadWaybillNum(row)"
               >上传运单号</el-button
             >
-            <el-button v-if="row?.orderStatus === ORDER_STATUS.HAS_OUT" link type="primary" @click="printExpress(row)"
+            <el-button
+              v-if="row?.orderStatus === ORDER_STATUS.HAS_OUT && row?.waybillUrl"
+              link
+              type="primary"
+              @click="printExpress(row)"
               >重新打印面单</el-button
             >
             <el-button v-if="row?.orderStatus === ORDER_STATUS.HAS_OUT" link type="primary" @click="confirmReceive(row)"
@@ -237,7 +242,7 @@ const handleCurrentChange = (val: number) => {
  * @description: 打印面单
  */
 const printExpress = (row: Record<string, any>) => {
-  printWaybillRef.value?.open(row)
+  window?.open(row?.waybillUrl)
 }
 
 /**
