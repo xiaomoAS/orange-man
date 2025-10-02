@@ -42,6 +42,16 @@
             controls-position="right"
           ></el-input-number>
         </el-form-item>
+        <el-form-item label="已售数量" prop="saleCount">
+          <el-input-number
+            v-model="addCateForm.saleCount"
+            placeholder="输入商品已售数量"
+            :step="1"
+            :min="0"
+            step-strictly
+            controls-position="right"
+          ></el-input-number>
+        </el-form-item>
         <el-form-item label="商品类目ID" prop="categoryId">
           <CommonCate v-model="addCateForm.categoryId" />
         </el-form-item>
@@ -135,6 +145,7 @@ const addCateForm = reactive<Record<string, any>>({
   price: null,
   specType: SPEC_TYPE.WEIGHT,
   stock: null,
+  saleCount: 0,
   categoryId: null,
   mainImgFiles: [],
   detailImgFiles: [],
@@ -166,6 +177,7 @@ const handleClose = () => {
     price: null,
     specType: SPEC_TYPE.WEIGHT,
     stock: null,
+    saleCount: 0,
     categoryId: null,
     mainImgFiles: [],
     detailImgFiles: [],
@@ -233,6 +245,7 @@ const submitHandler = () => {
         specType: addCateForm?.specType,
         specName: SPEC_NAME?.[addCateForm?.specType],
         stock: addCateForm?.stock,
+        saleCount: addCateForm?.saleCount,
         categoryId: addCateForm?.categoryId,
         mainImgUrl: addCateForm?.mainImgFiles?.[0]?.response,
         detailImgUrl: addCateForm?.detailImgFiles?.[0]?.response,

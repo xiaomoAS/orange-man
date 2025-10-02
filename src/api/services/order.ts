@@ -10,8 +10,8 @@ export const getOrderList: any = (params = {}) => {
 /**
  * @description: 上传运单
  */
-export const uploadWaybill: any = (params = {}) => {
-  return request.post(`${BASE_API_URL}/admin/order/uploadWaybill`, params)
+export const orderShipment: any = (params = {}) => {
+  return request.post(`${BASE_API_URL}/admin/waybill/shipment`, params)
 }
 
 /**
@@ -40,4 +40,11 @@ export const printWaybill: any = (params = {}) => {
  */
 export const getAddress: any = (params = {}) => {
   return request.post(`${BASE_API_URL}/admin/address/list`, params)
+}
+
+/**
+ * @description: 获取地址
+ */
+export const getWaybillList: any = (params = {}) => {
+  return request.post(`${BASE_API_URL}/admin/waybill/company/list`, params)
 }

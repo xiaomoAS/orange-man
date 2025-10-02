@@ -1,18 +1,25 @@
 <template>
   <el-dialog
     v-model="dialogVisible"
-    title="上传运单号"
+    title="出库"
     :close-on-click-modal="false"
     :close-on-press-escape="false"
     @close="closeHandler"
   >
     <div>
       <el-form ref="waybillFormRef" :model="waybillForm" :rules="rules" label-width="120px">
-        <el-form-item label="运单号" prop="waybillNumber">
-          <el-input v-model="waybillForm.waybillNumber" placeholder="请输入运单号"></el-input>
+        <el-form-item label="运单号" prop="waybillCode">
+          <el-input v-model="waybillForm.waybillCode" placeholder="请输入运单号"></el-input>
         </el-form-item>
-        <el-form-item label="物流公司名称" prop="waybillCompanyName">
-          <el-input v-model="waybillForm.waybillCompanyName" placeholder="请输入物流公司名称"></el-input>
+        <el-form-item label="物流公司" prop="companyCode">
+          <el-select v-model="waybillForm.companyCode" placeholder="请选择物流公司" clearable>
+            <el-option
+              v-for="item in companyList"
+              :key="item?.companyCode"
+              :label="item?.companyName"
+              :value="item?.companyCode"
+            />
+          </el-select>
         </el-form-item>
       </el-form>
     </div>
@@ -26,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import * as apis from '@/api/services'
 import { ElMessage } from 'element-plus'
 
@@ -39,17 +46,18 @@ import { ElMessage } from 'element-plus'
 // })
 
 const rules = {
-  waybillNumber: [{ required: true, message: '请输入运单号', trigger: 'blur' }],
-  waybillCompanyName: [{ required: true, message: '请输入物流公司名称', trigger: 'blur' }],
+  waybillCode: [{ required: true, message: '请输入运单号', trigger: 'blur' }],
+  companyCode: [{ required: true, message: '请选择物流公司', trigger: 'change' }],
 }
 
 const emits = defineEmits(['getTableData'])
 const dialogVisible = ref<boolean>(false)
 const rowData = ref()
+const companyList = ref<Array<any>>([])
 const waybillFormRef = ref()
 const waybillForm = reactive({
-  waybillNumber: null,
-  waybillCompanyName: null,
+  waybillCode: null,
+  companyCode: null,
 })
 
 const open = (data: Record<string, any>) => {
@@ -60,8 +68,8 @@ const open = (data: Record<string, any>) => {
 const closeHandler = () => {
   waybillFormRef.value?.resetFields()
   Object.assign(waybillForm, {
-    waybillNumber: null,
-    waybillCompanyName: null,
+    waybillCode: null,
+    companyCode: null
   })
 }
 
@@ -69,9 +77,10 @@ const submitHandler = () => {
   waybillFormRef.value?.validate(async (valid: boolean) => {
     if (!valid) return
     try {
-      const res = await apis.uploadWaybill({
-        orderId: Number(rowData.value?.orderId),
+      const res = await apis.orderShipment({
+        orderId: Number(rowData.value?.id),
         ...waybillForm,
+        companyName: companyList.value?.find((item) => item.companyCode === waybillForm.companyCode)?.companyName
       })
       if (res) {
         ElMessage.success('上传成功')
@@ -85,6 +94,18 @@ const submitHandler = () => {
     }
   })
 }
+
+const getWaybillList = async () => {
+  try {
+    companyList.value = await apis.getWaybillList({})
+  } catch (error) {
+    companyList.value = []
+  }
+}
+
+onMounted(() => {
+  getWaybillList()
+})
 
 defineExpose({ open })
 </script>

@@ -104,7 +104,14 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="stock" label="总库存"></el-table-column>
+      <el-table-column prop="stock" label="总库存">
+        <template #default="{ row }">
+          <div>
+            <span>{{ row?.stock}}</span>
+            <span>（已售{{ row?.saleCount }}）</span>
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column label="价格">
         <template #default="{ row }">
           <span

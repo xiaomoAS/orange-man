@@ -72,7 +72,7 @@
     <div class="batch-buttons">
       <div class="batch-buttons__left">
         <!-- <el-button>批量打印</el-button>
-        <el-button>批量上传运单号</el-button> -->
+        <el-button>批量出库</el-button> -->
       </div>
 
       <div class="batch-buttons__right"></div>
@@ -145,7 +145,7 @@
               link
               type="primary"
               @click="uploadWaybillNum(row)"
-              >上传运单号</el-button
+              >出库</el-button
             >
             <el-button
               v-if="row?.orderStatus === ORDER_STATUS.HAS_OUT && row?.waybillUrl"
@@ -255,7 +255,7 @@ const confirmReceive = async (row: Record<string, any>) => {
       cancelButtonText: '取 消',
       type: 'warning',
     }).then(() => true)
-    const res = await apis.receiveOrder({ orderId: Number(row?.orderId) })
+    const res = await apis.receiveOrder({ orderId: Number(row?.id) })
     if (res) {
       ElMessage.success('确认收货成功')
       getTableData()
@@ -268,7 +268,7 @@ const confirmReceive = async (row: Record<string, any>) => {
 }
 
 /**
- * @description: 上传运单号
+ * @description: 出库
  * @param {Object} row 行信息
  */
 const uploadWaybillNum = (row: Record<string, any>) => {
@@ -282,7 +282,7 @@ const cancelOrder = async (row: Record<string, any>) => {
       cancelButtonText: '取 消',
       type: 'warning',
     }).then(() => true)
-    const res = await apis.cancelOrder({ orderId: Number(row?.orderId) })
+    const res = await apis.cancelOrder({ orderId: Number(row?.id) })
     if (res) {
       ElMessage.success('取消成功')
       getTableData()
