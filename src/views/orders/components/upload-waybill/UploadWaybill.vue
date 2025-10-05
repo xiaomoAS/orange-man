@@ -83,11 +83,12 @@ const submitHandler = () => {
         companyName: companyList.value?.find((item) => item.companyCode === waybillForm.companyCode)?.companyName
       })
       if (res) {
-        ElMessage.success('上传成功')
+        ElMessage.success('出库成功')
+        res?.waybillUrl && window.open(res?.waybillUrl)
         emits('getTableData')
         dialogVisible.value = false
       } else {
-        ElMessage.error('上传失败')
+        ElMessage.error('出库失败')
       }
     } catch (error) {
       console.log(error)
