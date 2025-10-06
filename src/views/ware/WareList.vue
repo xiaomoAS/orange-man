@@ -260,6 +260,7 @@ const shelfHandler = async (row: Record<string, any>) => {
     })
     if (res) {
       ElMessage.success('处理成功')
+      getTableData()
     } else {
       ElMessage.error('处理失败')
     }
