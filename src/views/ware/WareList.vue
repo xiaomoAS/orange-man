@@ -135,16 +135,22 @@
             <el-button link type="primary" @click="editGoodsHandler(row)">修改商品</el-button>
             <el-button
               v-if="
-                [PRODUCT_STATUS.IS_OFF_SHELF, PRODUCT_STATUS.WAIT_ON_SHELF, PRODUCT_STATUS.IS_ON_SHELF].includes(
+                [PRODUCT_STATUS.WAIT_PUB, PRODUCT_STATUS.IS_OFF_SHELF, PRODUCT_STATUS.WAIT_ON_SHELF].includes(
                   row.productStatus,
                 )
               "
               link
               type="primary"
               @click="shelfHandler(row)"
-              >上架/下架商品</el-button
+              >上架商品</el-button
             >
-            <!-- <el-button link type="primary">修改检测报告</el-button> -->
+            <el-button
+              v-if="[PRODUCT_STATUS.IS_ON_SHELF].includes(row.productStatus)"
+              link
+              type="primary"
+              @click="shelfHandler(row)"
+              >下架商品</el-button
+            >
             <el-button link type="primary" @click="deleteWare(row)">删除商品</el-button>
           </div>
         </template>
@@ -227,8 +233,8 @@ const shelfHandler = async (row: Record<string, any>) => {
   try {
     let res = true
     let apiName = ''
-    // 待上架&已下架
-    if ([PRODUCT_STATUS.IS_OFF_SHELF, PRODUCT_STATUS.WAIT_ON_SHELF].includes(row.productStatus)) {
+    // 待发布/待上架/已下架
+    if ([PRODUCT_STATUS.WAIT_PUB, PRODUCT_STATUS.IS_OFF_SHELF, PRODUCT_STATUS.WAIT_ON_SHELF].includes(row.productStatus)) {
       apiName = 'wareOnline'
     }
     // 已上架

@@ -15,7 +15,7 @@ export enum TAB_ID {
 export const enum PRODUCT_STATUS {
   WAIT_PUB = 1, // 待发布
   WAIT_AUDIT = 2, // 待审核
-  WAIT_ON_SHELF = 3, // 待审核
+  WAIT_ON_SHELF = 3, // 待上架
   AUDIT_REJECT = 4, // 审核驳回
   IS_ON_SHELF = 5, // 已上架
   IS_OFF_SHELF = 6, // 已下架
