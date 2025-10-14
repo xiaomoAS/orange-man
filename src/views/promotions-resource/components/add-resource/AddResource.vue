@@ -27,7 +27,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item v-show="form.type" label="资源位链接" prop="fileUrls">
+        <el-form-item v-show="form.type" label="资源位素材" prop="fileUrls">
           <CommonUpload
             v-model:fileList="form.fileUrls"
             :type="form.type === RESOURCE_TYPE.IMG ? 'image' : 'video'"

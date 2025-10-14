@@ -6,7 +6,7 @@ export enum RESOURCE_TYPE {
 
 export const RESOURCE_NAME_MAP = {
   [RESOURCE_TYPE.IMG]: '图片',
-  [RESOURCE_TYPE.VIDEO]: '视频',
+  // [RESOURCE_TYPE.VIDEO]: '视频',
 }
 
 export const RESOURCE_TYPE_LIST = [
@@ -14,30 +14,30 @@ export const RESOURCE_TYPE_LIST = [
     label: '图片',
     value: RESOURCE_TYPE.IMG,
   },
-  {
-    label: '视频',
-    value: RESOURCE_TYPE.VIDEO,
-  },
+  // {
+  //   label: '视频',
+  //   value: RESOURCE_TYPE.VIDEO,
+  // },
 ]
 
 // 资源位位置类型
 export enum AREA_TYPE {
-  CAROUSEL = 1, // 轮播
-  FLOOR = 2, // 楼层
+  CAROUSEL = 1, // 首页轮播
+  FLOOR = 2, // 普通资源位
 }
 
 export const AREA_NAME_MAP = {
-  [AREA_TYPE.CAROUSEL]: '轮播',
-  [AREA_TYPE.FLOOR]: '楼层',
+  [AREA_TYPE.CAROUSEL]: '首页轮播',
+  [AREA_TYPE.FLOOR]: '普通资源位',
 }
 
 export const AREA_TYPE_LIST = [
   {
     value: AREA_TYPE.CAROUSEL,
-    label: '轮播',
+    label: '首页轮播',
   },
   {
     value: AREA_TYPE.FLOOR,
-    label: '楼层',
+    label: '普通资源位',
   },
 ]

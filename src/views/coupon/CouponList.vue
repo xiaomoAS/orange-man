@@ -3,7 +3,7 @@
  * @Description: 优惠券列表
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: xiaomoAS jiangzupei@gmail.com
- * @LastEditTime: 2025-09-29 18:32:51
+ * @LastEditTime: 2025-10-14 15:24:41
  * @FilePath: /orange-man/src/views/coupon/CouponList.vue
 -->
 <template>
@@ -21,33 +21,34 @@
 
     <!-- 表格 -->
     <el-table :data="tableData" current-row-key="id" class="coupon-table">
-      <el-table-column label="优惠券名称" prop="name"></el-table-column>
-      <el-table-column label="优惠券类型" prop="type">
+      <el-table-column label="券id" prop="id" width="60"></el-table-column>
+      <el-table-column label="优惠券名称" prop="name" min-width="100"></el-table-column>
+      <el-table-column label="优惠券类型" prop="type" min-width="100">
         <template #default="{ row }">
           <div>{{ COUPON_NAME_MAP?.[row?.type as keyof typeof COUPON_NAME_MAP] }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="覆盖商品">
+      <el-table-column label="覆盖商品" min-width="200">
         <template #default="{ row }">
           <div>{{ row?.productIdList?.join('、') }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="包邮运费上限">
+      <el-table-column label="包邮运费上限" min-width="120">
         <template #default="{ row }">
           <span>{{ row?.waybillPriceLimit || '-' }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="新人专享价">
+      <el-table-column label="普通优惠券" min-width="100">
         <template #default="{ row }">
           <span>{{ row?.newPersonPrice || '-' }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="领取用户数">
+      <el-table-column label="领取用户数" min-width="100">
         <template #default="{ row }">
           {{ row?.receiveUserCount || 0 }}
         </template>
       </el-table-column>
-      <el-table-column label="覆盖用户数" prop="converUserCount"></el-table-column>
+      <el-table-column label="覆盖用户数" prop="converUserCount" min-width="100"></el-table-column>
       <el-table-column label="生效时间段" width="200">
         <template #default="{ row }">
           <div>{{ formatDate(row?.startTime) }} 至 {{ formatDate(row?.endTime) }}</div>
@@ -60,7 +61,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" fixed="right">
         <template #default="{ row }">
           <div class="operation-box">
             <el-button

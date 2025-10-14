@@ -2,8 +2,8 @@
  * @Autor: jiangzupei
  * @Description: 菜单
  * @Date: 2025-06-30 14:57:13
- * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-09-10 15:13:25
+ * @LastEditors: xiaomoAS jiangzupei@gmail.com
+ * @LastEditTime: 2025-10-14 15:31:49
  * @FilePath: /orange-man/src/views/menu/MainMenu.vue
 -->
 <template>
@@ -28,12 +28,12 @@
         </template>
       </el-menu-item>
 
-      <el-menu-item index="/promotionsActivity">
+      <!-- <el-menu-item index="/promotionsActivity">
         <el-icon><Calendar /></el-icon>
         <template #title>
           <span class="main-menu__title">营销活动场</span>
         </template>
-      </el-menu-item>
+      </el-menu-item> -->
 
       <el-menu-item index="/orders">
         <el-icon><List /></el-icon>

@@ -1,21 +1,21 @@
 // 券类型
 export enum COUPON_TYPE {
-  NEW_DISCOUNT = 1, // 新人专享券
-  FREIGHT = 2, // 运费券
+  NEW_DISCOUNT = 1, // 普通优惠券
+  FREIGHT = 2, // 包邮券
 }
 
 export const COUPON_NAME_MAP = {
-  [COUPON_TYPE.NEW_DISCOUNT]: '新人专享券',
-  [COUPON_TYPE.FREIGHT]: '运费券',
+  [COUPON_TYPE.NEW_DISCOUNT]: '普通优惠券',
+  [COUPON_TYPE.FREIGHT]: '包邮券',
 }
 
 export const COUPON_LIST = [
   {
-    label: '新人专享券',
+    label: '普通优惠券',
     value: COUPON_TYPE.NEW_DISCOUNT,
   },
   {
-    label: '运费券',
+    label: '包邮券',
     value: COUPON_TYPE.FREIGHT,
   },
 ]
@@ -44,12 +44,12 @@ export enum PUBLISH_TYPE {
   NEW = 1, // 新用户进入小程序领取
   BEFORE_N = 2, // 前n天，每天领取
   USER_ID = 3, // 定向用户id
-  LINK = 4, // 分享链接领取
+  LINK = 4, // 分享二维码领取
 }
 
 export const PUBLISH_LIST = [
   { label: '新用户进入小程序领取', value: PUBLISH_TYPE.NEW },
   // { label: '前n天，每天领取', value: PUBLISH_TYPE.BEFORE_N },
   // { label: '定向用户id', value: PUBLISH_TYPE.USER_ID },
-  // { label: '分享链接领取', value: PUBLISH_TYPE.LINK },
+  { label: '分享二维码领取', value: PUBLISH_TYPE.LINK },
 ]
