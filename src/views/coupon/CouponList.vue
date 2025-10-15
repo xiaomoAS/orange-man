@@ -3,7 +3,7 @@
  * @Description: 优惠券列表
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: xiaomoAS jiangzupei@gmail.com
- * @LastEditTime: 2025-10-14 15:24:41
+ * @LastEditTime: 2025-10-15 14:45:22
  * @FilePath: /orange-man/src/views/coupon/CouponList.vue
 -->
 <template>
@@ -35,12 +35,12 @@
       </el-table-column>
       <el-table-column label="包邮运费上限" min-width="120">
         <template #default="{ row }">
-          <span>{{ row?.waybillPriceLimit || '-' }}</span>
+          <span>{{ row?.waybillPriceLimit ? `${row?.waybillPriceLimit}元` : '-' }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="普通优惠券" min-width="100">
+      <el-table-column label="普通优惠券金额" min-width="125">
         <template #default="{ row }">
-          <span>{{ row?.newPersonPrice || '-' }}</span>
+          <span>{{ row?.newPersonPrice ? `${row?.newPersonPrice}元` : '-' }}</span>
         </template>
       </el-table-column>
       <el-table-column label="领取用户数" min-width="100">
@@ -61,7 +61,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="操作" fixed="right">
+      <el-table-column label="操作" fixed="right" width="100">
         <template #default="{ row }">
           <div class="operation-box">
             <el-button
@@ -80,6 +80,13 @@
               type="primary"
               @click="editCateHandler(row)"
               >修改</el-button
+            >
+            <el-button
+              v-if="row?.publishType === PUBLISH_TYPE.LINK && row?.qrCode"
+              link
+              type="primary"
+              @click="viewCode(row)"
+              >查看二维码</el-button
             >
           </div>
         </template>
@@ -100,6 +107,7 @@
     </div>
   </div>
   <AddCoupon ref="addCouponRef" @getTableData="getTableData" />
+  <QrCode ref="qrCodeRef" />
 </template>
 
 <script lang="ts" setup>
@@ -107,15 +115,16 @@ import { ref, onMounted } from 'vue'
 import * as apis from '@/api/services'
 import { AddCoupon } from './components'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { COUPON_NAME_MAP, STATUS_NAME_MAP, COUPON_STATUS } from './constants'
+import { COUPON_NAME_MAP, STATUS_NAME_MAP, COUPON_STATUS, PUBLISH_TYPE } from './constants'
 import { formatDate } from '@/utils'
-import { PageTitle } from '@/components'
+import { PageTitle, QrCode } from '@/components'
 
 const tableData = ref()
 const currentPage = ref(1)
 const pageSize = ref(10)
 const totalCount = ref(0)
 const addCouponRef = ref()
+const qrCodeRef = ref()
 
 const getTableData = async () => {
   try {
@@ -164,6 +173,10 @@ const closeHandler = async (row: Record<string, any>) => {
       ElMessage.error('停用失败')
     }
   } catch {}
+}
+
+const viewCode = (row) => {
+  qrCodeRef.value?.open(row?.qrCode)
 }
 
 /**

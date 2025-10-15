@@ -7,7 +7,7 @@
     @close="closeHandler"
   >
     <div>
-      <el-form ref="formRef" :model="form" :rules="rules" label-width="120px">
+      <el-form ref="formRef" :model="form" :rules="rules" label-width="130px">
         <el-form-item v-if="isEdit" label="券ID" prop="id">
           <el-input v-model="form.id" disabled></el-input>
         </el-form-item>
@@ -20,7 +20,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item v-if="form?.type === COUPON_TYPE.NEW_DISCOUNT" label="普通优惠券" prop="newPersonPrice">
+        <el-form-item v-if="form?.type === COUPON_TYPE.NEW_DISCOUNT" label="普通优惠券金额" prop="newPersonPrice">
           <el-input-number
             v-model="form.newPersonPrice"
             placeholder="请输入"
