@@ -141,6 +141,8 @@ const submitHandler = () => {
       const apiName = isEdit.value ? 'updateCoupon' : 'addCoupon'
       const res = await apis?.[apiName]({
         ...form,
+        newPersonPrice: form.type === COUPON_TYPE.NEW_DISCOUNT ? form?.newPersonPrice : null,
+        waybillPriceLimit: form.type === COUPON_TYPE.FREIGHT ? form?.waybillPriceLimit : null,
         couponTime: undefined,
         startTime: form?.couponTime?.[0],
         endTime: form?.couponTime?.[1],
