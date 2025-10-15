@@ -3,7 +3,7 @@
  * @Description: 优惠券列表
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: xiaomoAS jiangzupei@gmail.com
- * @LastEditTime: 2025-10-15 14:45:22
+ * @LastEditTime: 2025-10-15 15:15:15
  * @FilePath: /orange-man/src/views/coupon/CouponList.vue
 -->
 <template>
@@ -23,9 +23,12 @@
     <el-table :data="tableData" current-row-key="id" class="coupon-table">
       <el-table-column label="券id" prop="id" width="60"></el-table-column>
       <el-table-column label="优惠券名称" prop="name" min-width="100"></el-table-column>
-      <el-table-column label="优惠券类型" prop="type" min-width="100">
+      <el-table-column label="优惠券类型" prop="type" min-width="160">
         <template #default="{ row }">
           <div>{{ COUPON_NAME_MAP?.[row?.type as keyof typeof COUPON_NAME_MAP] }}</div>
+          <div class="publish-type">
+            发放方式：{{ PUBLISH_LIST.find((item) => item?.value === row?.publishType)?.label }}
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="覆盖商品" min-width="200">
@@ -38,7 +41,7 @@
           <span>{{ row?.waybillPriceLimit ? `${row?.waybillPriceLimit}元` : '-' }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="普通优惠券金额" min-width="125">
+      <el-table-column label="专享券金额" min-width="125">
         <template #default="{ row }">
           <span>{{ row?.newPersonPrice ? `${row?.newPersonPrice}元` : '-' }}</span>
         </template>
@@ -115,7 +118,7 @@ import { ref, onMounted } from 'vue'
 import * as apis from '@/api/services'
 import { AddCoupon } from './components'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { COUPON_NAME_MAP, STATUS_NAME_MAP, COUPON_STATUS, PUBLISH_TYPE } from './constants'
+import { COUPON_NAME_MAP, STATUS_NAME_MAP, COUPON_STATUS, PUBLISH_TYPE, PUBLISH_LIST } from './constants'
 import { formatDate } from '@/utils'
 import { PageTitle, QrCode } from '@/components'
 

@@ -67,6 +67,9 @@
   }
 
   @include e(price-box) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
     margin-left: 24px;
     color: #262626;
     * {

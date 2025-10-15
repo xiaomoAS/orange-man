@@ -1,17 +1,17 @@
 // 券类型
 export enum COUPON_TYPE {
-  NEW_DISCOUNT = 1, // 普通优惠券
+  NEW_DISCOUNT = 1, // 专享券
   FREIGHT = 2, // 包邮券
 }
 
 export const COUPON_NAME_MAP = {
-  [COUPON_TYPE.NEW_DISCOUNT]: '普通优惠券',
+  [COUPON_TYPE.NEW_DISCOUNT]: '专享券',
   [COUPON_TYPE.FREIGHT]: '包邮券',
 }
 
 export const COUPON_LIST = [
   {
-    label: '普通优惠券',
+    label: '专享券',
     value: COUPON_TYPE.NEW_DISCOUNT,
   },
   {

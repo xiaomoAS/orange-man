@@ -20,7 +20,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item v-if="form?.type === COUPON_TYPE.NEW_DISCOUNT" label="普通优惠券金额" prop="newPersonPrice">
+        <el-form-item v-if="form?.type === COUPON_TYPE.NEW_DISCOUNT" label="专享券金额" prop="newPersonPrice">
           <el-input-number
             v-model="form.newPersonPrice"
             placeholder="请输入"

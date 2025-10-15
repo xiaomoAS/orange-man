@@ -14,6 +14,12 @@
   }
 }
 
+@include b(publish-type) {
+  font-size: 12px;
+  line-height: 18px;
+  color: #8f8f8f;
+}
+
 @include b(coupon-table) {
   :deep(th) {
     color: #262626;
