@@ -1,5 +1,17 @@
 @use '@/assets/style/mixin' as *;
 
+@include b(form-box) {
+  display: flex;
+  flex-wrap: wrap;
+  .el-form-item {
+    min-width: 33%;
+
+    &.double-span-item {
+      min-width: 66%;
+    }
+  }
+}
+
 @include b(batch-buttons) {
   display: flex;
   justify-content: space-between;

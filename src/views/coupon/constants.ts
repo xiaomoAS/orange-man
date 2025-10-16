@@ -39,6 +39,12 @@ export const STATUS_NAME_MAP = {
   [COUPON_STATUS.CLOSED]: '已关闭',
 }
 
+export const COUPON_STATUS_LIST = [
+  { label: '待发放', value: COUPON_STATUS.WAIT_PUB },
+  { label: '已生效', value: COUPON_STATUS.ACTIVE },
+  { label: '已关闭', value: COUPON_STATUS.CLOSED },
+]
+
 // 发放方式
 export enum PUBLISH_TYPE {
   NEW = 1, // 新用户进入小程序领取

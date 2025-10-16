@@ -8,9 +8,6 @@
   >
     <div>
       <el-form ref="waybillFormRef" :model="waybillForm" :rules="rules" label-width="120px">
-        <el-form-item label="运单号" prop="waybillCode">
-          <el-input v-model="waybillForm.waybillCode" placeholder="请输入运单号"></el-input>
-        </el-form-item>
         <el-form-item label="物流公司" prop="companyCode">
           <el-select v-model="waybillForm.companyCode" placeholder="请选择物流公司" clearable>
             <el-option
@@ -20,6 +17,9 @@
               :value="item?.companyCode"
             />
           </el-select>
+        </el-form-item>
+        <el-form-item label="运单号" prop="waybillCode">
+          <el-input v-model="waybillForm.waybillCode" placeholder="请输入运单号"></el-input>
         </el-form-item>
       </el-form>
     </div>
@@ -69,7 +69,7 @@ const closeHandler = () => {
   waybillFormRef.value?.resetFields()
   Object.assign(waybillForm, {
     waybillCode: null,
-    companyCode: null
+    companyCode: null,
   })
 }
 
@@ -80,7 +80,7 @@ const submitHandler = () => {
       const res = await apis.orderShipment({
         orderId: Number(rowData.value?.id),
         ...waybillForm,
-        companyName: companyList.value?.find((item) => item.companyCode === waybillForm.companyCode)?.companyName
+        companyName: companyList.value?.find((item) => item.companyCode === waybillForm.companyCode)?.companyName,
       })
       if (res) {
         ElMessage.success('出库成功')

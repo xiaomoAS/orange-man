@@ -3,12 +3,42 @@
  * @Description: 优惠券列表
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: xiaomoAS jiangzupei@gmail.com
- * @LastEditTime: 2025-10-15 15:15:15
+ * @LastEditTime: 2025-10-16 10:16:30
  * @FilePath: /orange-man/src/views/coupon/CouponList.vue
 -->
 <template>
   <div>
     <PageTitle title="优惠券列表" />
+
+    <el-form ref="couponFormRef" class="form-box" :model="searchForm" label-width="120px">
+      <el-form-item label="优惠券ID" prop="couponIdList">
+        <el-input v-model="searchForm.couponIdList" placeholder="请输入优惠券id，英文逗号分隔" />
+      </el-form-item>
+      <el-form-item label="优惠券名称" prop="couponName">
+        <el-input v-model="searchForm.couponName" placeholder="请输入优惠券名称" />
+      </el-form-item>
+      <el-form-item label="优惠券类型" prop="couponType">
+        <el-select v-model="searchForm.couponType" placeholder="请选择优惠券类型" clearable>
+          <el-option v-for="item in COUPON_LIST" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="优惠券状态" prop="couponStatus">
+        <el-select v-model="searchForm.couponStatus" placeholder="请选择优惠券状态" clearable>
+          <el-option v-for="item in COUPON_STATUS_LIST" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="发放类型" prop="publishType">
+        <el-select v-model="searchForm.publishType" placeholder="请选择发放类型" clearable>
+          <el-option v-for="item in PUBLISH_LIST" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="getTableData">查 询</el-button>
+        <el-button plain @click="reset">重 置</el-button>
+      </el-form-item>
+    </el-form>
 
     <!-- 批量操作 -->
     <div class="batch-buttons">
@@ -114,24 +144,42 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, reactive } from 'vue'
 import * as apis from '@/api/services'
 import { AddCoupon } from './components'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { COUPON_NAME_MAP, STATUS_NAME_MAP, COUPON_STATUS, PUBLISH_TYPE, PUBLISH_LIST } from './constants'
+import {
+  COUPON_NAME_MAP,
+  STATUS_NAME_MAP,
+  COUPON_STATUS,
+  PUBLISH_TYPE,
+  PUBLISH_LIST,
+  COUPON_LIST,
+  COUPON_STATUS_LIST,
+} from './constants'
 import { formatDate } from '@/utils'
 import { PageTitle, QrCode } from '@/components'
 
+const searchForm = reactive<Record<string, any>>({
+  couponIdList: null,
+  couponName: null,
+  couponType: null,
+  couponStatus: null,
+  publishType: null,
+})
 const tableData = ref()
 const currentPage = ref(1)
 const pageSize = ref(10)
 const totalCount = ref(0)
 const addCouponRef = ref()
 const qrCodeRef = ref()
+const couponFormRef = ref()
 
 const getTableData = async () => {
   try {
     const { rows, total } = await apis.getCouponList({
+      ...searchForm,
+      couponIdList: searchForm?.couponIdList ? searchForm?.couponIdList?.split(',')?.map((item) => Number(item)) : null,
       page: currentPage.value,
       pageSize: pageSize.value,
     })
@@ -141,6 +189,11 @@ const getTableData = async () => {
     tableData.value = []
     totalCount.value = 0
   }
+}
+
+const reset = () => {
+  couponFormRef.value?.resetFields()
+  getTableData()
 }
 
 const handleSizeChange = (val: number) => {

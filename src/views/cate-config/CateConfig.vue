@@ -2,8 +2,8 @@
  * @Autor: jiangzupei
  * @Description: 类目设置
  * @Date: 2025-06-30 17:04:54
- * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-09-11 09:35:02
+ * @LastEditors: xiaomoAS jiangzupei@gmail.com
+ * @LastEditTime: 2025-10-16 10:47:06
  * @FilePath: /orange-man/src/views/cate-config/CateConfig.vue
 -->
 <template>
@@ -20,6 +20,7 @@
 
     <!-- 表格 -->
     <el-table :data="tableData" current-row-key="id" class="cate-table">
+      <el-table-column label="类目ID" prop="id" width="100"></el-table-column>
       <el-table-column label="类目名称" prop="name"></el-table-column>
       <el-table-column label="类目类型" prop="typeDesc"></el-table-column>
       <el-table-column label="类目状态" prop="cateStatus">

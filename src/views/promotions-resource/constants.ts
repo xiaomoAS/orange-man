@@ -41,3 +41,15 @@ export const AREA_TYPE_LIST = [
     label: '普通资源位',
   },
 ]
+
+// 资源位链接类型
+export enum RESOURCE_LINK_TYPE {
+  MINI = 1, // 小程序
+  OFFICIAL = 2, // 公众号
+}
+
+// 资源位链接
+export const RESOURCE_LINK_LIST = [
+  { label: '小程序', value: RESOURCE_LINK_TYPE.MINI },
+  { label: '公众号', value: RESOURCE_LINK_TYPE.OFFICIAL },
+]
