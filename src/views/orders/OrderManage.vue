@@ -3,7 +3,7 @@
  * @Description: 订单列表
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: xiaomoAS jiangzupei@gmail.com
- * @LastEditTime: 2025-09-30 11:14:13
+ * @LastEditTime: 2025-10-17 10:22:13
  * @FilePath: /orange-man/src/views/orders/OrderManage.vue
 -->
 <template>
@@ -157,6 +157,13 @@
             <el-button v-if="row?.orderStatus === ORDER_STATUS.HAS_OUT" link type="primary" @click="confirmReceive(row)"
               >确认收货</el-button
             >
+            <el-button
+              v-if="[ORDER_STATUS.WAIT_OUT, ORDER_STATUS.HAS_OUT, ORDER_STATUS.COMPLETED].includes(row?.orderStatus)"
+              link
+              type="primary"
+              @click="printOutOrder(row)"
+              >打印出库单</el-button
+            >
           </div>
         </template>
       </el-table-column>
@@ -243,6 +250,18 @@ const handleCurrentChange = (val: number) => {
  */
 const printExpress = (row: Record<string, any>) => {
   window?.open(row?.waybillUrl)
+}
+
+/**
+ * @description: 打印出库单
+ */
+const printOutOrder = async (row: Record<string, any>) => {
+  try {
+    const { waybillUrl } = await apis.printOutOrder({ orderId: row?.id })
+    if (waybillUrl) {
+      window.open(waybillUrl)
+    }
+  } catch {}
 }
 
 /**

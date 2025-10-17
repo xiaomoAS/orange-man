@@ -18,7 +18,11 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="运单号" prop="waybillCode">
+        <el-form-item
+          v-if="waybillForm.companyCode && waybillForm.companyCode !== COMPANY_CODE.CJZS"
+          label="运单号"
+          prop="waybillCode"
+        >
           <el-input v-model="waybillForm.waybillCode" placeholder="请输入运单号"></el-input>
         </el-form-item>
       </el-form>
@@ -36,14 +40,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import * as apis from '@/api/services'
 import { ElMessage } from 'element-plus'
-
-// interface Props {
-//   orderId: number | null
-// }
-
-// withDefaults(defineProps<Props>(), {
-//   orderId: null,
-// })
+import { COMPANY_CODE } from './constants'
 
 const rules = {
   waybillCode: [{ required: true, message: '请输入运单号', trigger: 'blur' }],

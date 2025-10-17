@@ -36,6 +36,13 @@ export const printWaybill: any = (params = {}) => {
 }
 
 /**
+ * @description: 打印出库单
+ */
+export const printOutOrder: any = (params = {}) => {
+  return request.post(`${BASE_API_URL}/admin/waybill/getPickInfo`, params)
+}
+
+/**
  * @description: 获取地址
  */
 export const getAddress: any = (params = {}) => {
