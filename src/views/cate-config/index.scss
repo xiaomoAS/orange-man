@@ -50,3 +50,21 @@
     margin-left: auto;
   }
 }
+
+@include b(cate-info) {
+  display: flex;
+
+  @include e(img) {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+
+  @include e(right-box) {
+    margin-left: 8px;
+  }
+
+  @include e(name) {
+    font-weight: 600;
+  }
+}

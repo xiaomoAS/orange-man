@@ -3,7 +3,7 @@
  * @Description: 类目设置
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: xiaomoAS jiangzupei@gmail.com
- * @LastEditTime: 2025-10-16 10:47:06
+ * @LastEditTime: 2025-10-17 17:13:50
  * @FilePath: /orange-man/src/views/cate-config/CateConfig.vue
 -->
 <template>
@@ -20,15 +20,24 @@
 
     <!-- 表格 -->
     <el-table :data="tableData" current-row-key="id" class="cate-table">
-      <el-table-column label="类目ID" prop="id" width="100"></el-table-column>
-      <el-table-column label="类目名称" prop="name"></el-table-column>
-      <el-table-column label="类目类型" prop="typeDesc"></el-table-column>
-      <el-table-column label="类目状态" prop="cateStatus">
+      <el-table-column label="类目ID" prop="id" width="120"></el-table-column>
+      <el-table-column label="类目信息" prop="name">
+        <template #default="{ row }">
+          <div class="cate-info">
+            <img class="cate-info__img" :src="row?.logoUrl" alt="" />
+            <div class="cate-info__right-box">
+              <span class="cate-info__name">{{ row?.name }}</span>
+            </div>
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column label="类目类型" prop="typeDesc" width="180"></el-table-column>
+      <el-table-column label="类目状态" prop="cateStatus" width="120">
         <template #default="{ row }">
           {{ CATE_STATUS_NAME?.[row?.cateStatus as keyof typeof CATE_STATUS_NAME] || '-' }}
         </template>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="120">
         <template #default="{ row }">
           <div class="operation-box">
             <el-button link type="primary" @click="cateStatusHandler(row)">{{

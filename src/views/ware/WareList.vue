@@ -2,8 +2,8 @@
  * @Autor: jiangzupei
  * @Description: 
  * @Date: 2025-06-30 17:04:54
- * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-09-18 09:52:09
+ * @LastEditors: xiaomoAS jiangzupei@gmail.com
+ * @LastEditTime: 2025-10-17 17:05:44
  * @FilePath: /orange-man/src/views/ware/WareList.vue
 -->
 <template>
@@ -23,7 +23,7 @@
         <el-input v-model="searchForm.productId" placeholder="请输入商品Id" />
       </el-form-item>
       <el-form-item label="商品状态" prop="productStatus">
-        <el-select v-model="searchForm.productStatus" placeholder="请选择状态">
+        <el-select v-model="searchForm.productStatus" placeholder="请选择状态" clearable>
           <el-option v-for="item in PRODUCT_STATUS_LIST" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
@@ -107,7 +107,7 @@
       <el-table-column prop="stock" label="总库存">
         <template #default="{ row }">
           <div>
-            <span>{{ row?.stock}}</span>
+            <span>{{ row?.stock }}</span>
             <span>（已售{{ row?.saleCount }}）</span>
           </div>
         </template>
@@ -234,7 +234,9 @@ const shelfHandler = async (row: Record<string, any>) => {
     let res = true
     let apiName = ''
     // 待发布/待上架/已下架
-    if ([PRODUCT_STATUS.WAIT_PUB, PRODUCT_STATUS.IS_OFF_SHELF, PRODUCT_STATUS.WAIT_ON_SHELF].includes(row.productStatus)) {
+    if (
+      [PRODUCT_STATUS.WAIT_PUB, PRODUCT_STATUS.IS_OFF_SHELF, PRODUCT_STATUS.WAIT_ON_SHELF].includes(row.productStatus)
+    ) {
       apiName = 'wareOnline'
     }
     // 已上架
