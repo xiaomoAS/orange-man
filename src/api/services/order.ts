@@ -15,10 +15,17 @@ export const orderShipment: any = (params = {}) => {
 }
 
 /**
- * @description: 取消运单
+ * @description: 取消订单
  */
 export const cancelOrder: any = (params = {}) => {
   return request.post(`${BASE_API_URL}/admin/order/cancel`, params)
+}
+
+/**
+ * @description: 退款订单
+ */
+export const refundOrder: any = (params = {}) => {
+  return request.post(`${BASE_API_URL}/admin/order/refund`, params)
 }
 
 /**

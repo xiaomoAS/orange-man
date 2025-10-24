@@ -3,7 +3,7 @@
  * @Description: 订单列表
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: xiaomoAS jiangzupei@gmail.com
- * @LastEditTime: 2025-10-17 10:22:13
+ * @LastEditTime: 2025-10-24 10:07:48
  * @FilePath: /orange-man/src/views/orders/OrderManage.vue
 -->
 <template>
@@ -28,11 +28,11 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="收货人姓名" prop="receiveName">
-        <el-input v-model="searchForm.receiveName" placeholder="请输入收货人姓名" />
+      <el-form-item label="收货人姓名" prop="receiverName">
+        <el-input v-model="searchForm.receiverName" placeholder="请输入收货人姓名" />
       </el-form-item>
-      <el-form-item label="收货人手机号" prop="receiveMobile">
-        <el-input v-model="searchForm.receiveMobile" placeholder="请输入收货人手机号" />
+      <el-form-item label="收货人手机号" prop="receiverMobile">
+        <el-input v-model="searchForm.receiverMobile" placeholder="请输入收货人手机号" />
       </el-form-item>
       <el-form-item label="商品id" prop="productId">
         <el-input v-model="searchForm.productId" placeholder="请输入商品id" />
@@ -137,9 +137,6 @@
       <el-table-column label="操作">
         <template #default="{ row }">
           <div class="operation-box">
-            <el-button v-if="row?.orderStatus === ORDER_STATUS.WAIT_PAY" link type="primary" @click="cancelOrder(row)"
-              >取消订单</el-button
-            >
             <el-button
               v-if="row?.orderStatus === ORDER_STATUS.WAIT_OUT"
               link
@@ -163,6 +160,16 @@
               type="primary"
               @click="printOutOrder(row)"
               >打印出库单</el-button
+            >
+            <el-button v-if="row?.orderStatus === ORDER_STATUS.WAIT_PAY" link type="primary" @click="cancelOrder(row)"
+              >取消订单</el-button
+            >
+            <el-button
+              v-if="[ORDER_STATUS.WAIT_OUT, ORDER_STATUS.HAS_OUT].includes(row?.orderStatus)"
+              link
+              type="primary"
+              @click="refundOrder(row)"
+              >取消并退款</el-button
             >
           </div>
         </template>
@@ -201,8 +208,8 @@ const activeTab = ref(TAB_ID.ALL)
 const searchForm = reactive({
   orderId: null,
   orderStatus: null,
-  receiveName: null,
-  receiveMobile: null,
+  receiverName: null,
+  receiverMobile: null,
   productId: null,
   waybillCode: null,
   payTime: [],
@@ -294,6 +301,9 @@ const uploadWaybillNum = (row: Record<string, any>) => {
   uploadWayBillRef.value?.open(row)
 }
 
+/**
+ * @description: 取消订单
+ */
 const cancelOrder = async (row: Record<string, any>) => {
   try {
     await ElMessageBox.confirm(`确认取消订单吗`, '提示', {
@@ -307,6 +317,32 @@ const cancelOrder = async (row: Record<string, any>) => {
       getTableData()
     } else {
       ElMessage.error('取消失败')
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+/**
+ * @description: 退款订单
+ */
+const refundOrder = async (row: Record<string, any>) => {
+  try {
+    await ElMessageBox.confirm(
+      `注意：此操作仅是退款给消费者，货物履约等问题需要运营人员自己后续处理！`,
+      '确认退款订单吗',
+      {
+        confirmButtonText: '确 定',
+        cancelButtonText: '取 消',
+        type: 'warning',
+      },
+    ).then(() => true)
+    const res = await apis.cancelOrder({ orderId: Number(row?.id) })
+    if (res) {
+      ElMessage.success('退款成功')
+      getTableData()
+    } else {
+      ElMessage.error('退款失败')
     }
   } catch (error) {
     console.log(error)
