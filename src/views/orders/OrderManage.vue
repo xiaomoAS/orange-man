@@ -3,7 +3,7 @@
  * @Description: 订单列表
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: xiaomoAS jiangzupei@gmail.com
- * @LastEditTime: 2025-10-24 10:07:48
+ * @LastEditTime: 2025-10-24 10:28:34
  * @FilePath: /orange-man/src/views/orders/OrderManage.vue
 -->
 <template>
@@ -165,7 +165,7 @@
               >取消订单</el-button
             >
             <el-button
-              v-if="[ORDER_STATUS.WAIT_OUT, ORDER_STATUS.HAS_OUT].includes(row?.orderStatus)"
+              v-if="[ORDER_STATUS.WAIT_OUT, ORDER_STATUS.HAS_OUT, ORDER_STATUS.COMPLETED].includes(row?.orderStatus)"
               link
               type="primary"
               @click="refundOrder(row)"
@@ -329,7 +329,7 @@ const cancelOrder = async (row: Record<string, any>) => {
 const refundOrder = async (row: Record<string, any>) => {
   try {
     await ElMessageBox.confirm(
-      `注意：此操作仅是退款给消费者，货物履约等问题需要运营人员自己后续处理！`,
+      `注意：此操作仅是退款给消费者，货物履约等问题需要运营人员自己后续处理！（微信退款有延迟，请等待一段时间查询状态）`,
       '确认退款订单吗',
       {
         confirmButtonText: '确 定',
@@ -337,7 +337,7 @@ const refundOrder = async (row: Record<string, any>) => {
         type: 'warning',
       },
     ).then(() => true)
-    const res = await apis.cancelOrder({ orderId: Number(row?.id) })
+    const res = await apis.refundOrder({ orderId: Number(row?.id) })
     if (res) {
       ElMessage.success('退款成功')
       getTableData()
