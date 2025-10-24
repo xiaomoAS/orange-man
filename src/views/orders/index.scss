@@ -26,6 +26,17 @@
   }
 }
 
+@include b(table-item) {
+  @include e(label) {
+    font-weight: 600;
+    color: #262626;
+  }
+}
+
+@include b(price-text) {
+  color: #f33b50;
+}
+
 @include b(operation-box) {
   display: flex;
   flex-direction: column;
@@ -52,6 +63,8 @@
     min-width: 60px;
     height: 60px;
     margin-right: 4px;
+    border: 1px solid #ebebeb;
+    box-sizing: border-box;
   }
 
   @include e(title) {
@@ -64,6 +77,11 @@
     display: flex;
     flex: 1;
     justify-content: space-between;
+    color: #8f8f8f;
+  }
+
+  @include e(text) {
+    font-size: 12px;
   }
 
   @include e(price-box) {
@@ -110,4 +128,36 @@
   color: #535353;
   border-radius: 4px;
   background-color: #d9d9d9;
+}
+
+@include b(status-box) {
+  display: flex;
+  align-items: center;
+
+  @include e(icon) {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #8f8f8f;
+    margin-right: 4px;
+
+    &.warning {
+      background-color: #f08433;
+    }
+
+    &.process {
+      background-color: #3768fa;
+    }
+
+    &.success {
+      background-color: #00b26f;
+    }
+
+    &.error {
+      background-color: #f33b50;
+    }
+  }
+
+  @include e(text) {
+  }
 }

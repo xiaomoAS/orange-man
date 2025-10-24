@@ -3,7 +3,7 @@
  * @Description: 订单列表
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: xiaomoAS jiangzupei@gmail.com
- * @LastEditTime: 2025-10-24 10:28:34
+ * @LastEditTime: 2025-10-24 14:02:28
  * @FilePath: /orange-man/src/views/orders/OrderManage.vue
 -->
 <template>
@@ -83,11 +83,19 @@
       <!-- <el-table-column type="selection" width="55" /> -->
       <el-table-column label="订单信息" width="260">
         <template #default="{ row }">
-          <div>订单编号：{{ row?.id }}</div>
-          <div v-if="row?.waybillCode">运单号：{{ row?.waybillCode }}</div>
-          <div>下单时间：{{ formatDate(row?.createdTime) }}</div>
-          <div v-if="row?.payTime">支付时间：{{ formatDate(row?.payTime) }}</div>
-          <div v-if="row?.estimatedDeliveryTime">预计送达时间：{{ formatDate(row?.estimatedDeliveryTime) }}</div>
+          <div class="table-item"><span class="table-item__label">订单编号：</span>{{ row?.id }}</div>
+          <div v-if="row?.waybillCode" class="table-item">
+            <span class="table-item__label">运单号：</span>{{ row?.waybillCode }}
+          </div>
+          <div class="table-item">
+            <span class="table-item__label">下单时间：</span>{{ formatDate(row?.createdTime) }}
+          </div>
+          <div v-if="row?.payTime" class="table-item">
+            <span class="table-item__label">支付时间：</span>{{ formatDate(row?.payTime) }}
+          </div>
+          <div v-if="row?.estimatedDeliveryTime" class="table-item">
+            <span class="table-item__label">预计送达时间：</span>{{ formatDate(row?.estimatedDeliveryTime) }}
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="商品信息" width="400">
@@ -99,7 +107,7 @@
                 <AdvCustomTooltip :showLine="2" :content="item.productName">
                   <span class="product-info__title">{{ item.productName }}</span>
                 </AdvCustomTooltip>
-                <span>商品编码：{{ item.productId }}</span>
+                <span class="product-info__text">商品编码：{{ item.productId }}</span>
               </div>
               <div class="product-info__price-box">
                 <div>¥{{ item?.price }}</div>
@@ -111,27 +119,50 @@
       </el-table-column>
       <el-table-column label="应收" width="150">
         <template #default="{ row }">
-          <div>原价：¥{{ row?.totalAmount || 0 }}</div>
-          <div v-if="row?.postAmount">运费：¥{{ row?.postAmount || 0 }}</div>
-          <div v-if="row?.realPayAmount">
-            {{ row?.orderStatus === ORDER_STATUS.WAIT_PAY ? '应付' : '实付' }}金额：¥{{ row?.realPayAmount || 0 }}
+          <div class="table-item">
+            <span class="table-item__label">原价：</span><span class="price-text">¥{{ row?.totalAmount || 0 }}</span>
           </div>
-          <div v-if="row?.couponIds">覆盖优惠券Id：{{ row?.couponIds }}</div>
+          <div v-if="row?.postAmount" class="table-item">
+            <span class="table-item__label">运费：</span><span class="price-text">¥{{ row?.postAmount || 0 }}</span>
+          </div>
+          <div v-if="row?.realPayAmount" class="table-item">
+            <span class="table-item__label"
+              >{{ row?.orderStatus === ORDER_STATUS.WAIT_PAY ? '应付' : '实付' }}金额：</span
+            >
+            <span class="price-text">¥{{ row?.realPayAmount || 0 }}</span>
+          </div>
+          <div v-if="row?.payMethod" class="table-item">
+            <span class="table-item__label">支付方式：</span
+            >{{ PAY_METHOD_LIST.find((item) => item.value === row?.payMethod)?.label }}
+          </div>
+          <div v-if="row?.couponIds" class="table-item">
+            <span class="table-item__label">覆盖优惠券Id：</span>{{ row?.couponIds }}
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="收货信息" width="180">
         <template #default="{ row }">
-          <div>姓名：{{ row?.receiverName }}</div>
-          <div>手机号：{{ row?.receiverMobile }}</div>
-          <div>详细地址：{{ row?.receiverAddress }}</div>
+          <div class="table-item"><span class="table-item__label">姓名：</span>{{ row?.receiverName }}</div>
+          <div class="table-item"><span class="table-item__label">手机号：</span>{{ row?.receiverMobile }}</div>
+          <div class="table-item"><span class="table-item__label">详细地址：</span>{{ row?.receiverAddress }}</div>
         </template>
       </el-table-column>
       <!-- <el-table-column prop="buyerRemark" label="买家留言"></el-table-column> -->
       <el-table-column prop="orderStatus" label="订单状态">
         <template #default="{ row }">
-          <span>{{ ORDER_STATUS_LIST?.find((item) => item.value === row?.orderStatus)?.label || '-' }}</span>
+          <div class="status-box">
+            <!-- <div
+              class="status-box__icon"
+              :class="ORDER_STATUS_LIST?.find((item) => item.value === row?.orderStatus)?.iconClass"
+            ></div> -->
+            <span class="status-box__text">{{
+              ORDER_STATUS_LIST?.find((item) => item.value === row?.orderStatus)?.label || '-'
+            }}</span>
+          </div>
           <div v-if="row?.waybillCompanyName" class="waybill-company">{{ row?.waybillCompanyName }}</div>
-          <div v-if="row?.waybillCode">运单号：{{ row?.waybillCode }}</div>
+          <div v-if="row?.waybillCode" class="table-item">
+            <span class="table-item__label">运单号：</span>{{ row?.waybillCode }}
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="操作">
@@ -196,7 +227,7 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, reactive } from 'vue'
-import { TAB_ID, ORDER_STATUS_LIST, ORDER_STATUS } from './constants.ts'
+import { TAB_ID, ORDER_STATUS_LIST, ORDER_STATUS, PAY_METHOD_LIST } from './constants.ts'
 import * as apis from '@/api/services'
 import { AdvCustomTooltip, PageTitle } from '@/components'
 import { formatDate } from '@/utils/index.ts'
@@ -339,7 +370,7 @@ const refundOrder = async (row: Record<string, any>) => {
     ).then(() => true)
     const res = await apis.refundOrder({ orderId: Number(row?.id) })
     if (res) {
-      ElMessage.success('退款成功')
+      ElMessage.success('退款发起成功，请刷新查看状态')
       getTableData()
     } else {
       ElMessage.error('退款失败')

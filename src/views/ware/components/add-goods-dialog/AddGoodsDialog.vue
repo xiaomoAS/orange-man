@@ -159,7 +159,7 @@ const addCateForm = reactive<Record<string, any>>({
 
 const rules = {
   title: [{ required: true, message: '请输入商品标题', trigger: 'blur' }],
-  desc: [{ required: true, message: '请输入商品描述', trigger: 'blur' }],
+  // desc: [{ required: true, message: '请输入商品描述', trigger: 'blur' }],
   price: [{ required: true, message: '请输入商品价格', trigger: 'blur' }],
   specType: [{ required: true, message: '请选择商品规格', trigger: 'change' }],
   stock: [{ required: true, message: '请输入商品库存', trigger: 'blur' }],
