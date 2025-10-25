@@ -150,15 +150,42 @@
       <!-- <el-table-column prop="buyerRemark" label="买家留言"></el-table-column> -->
       <el-table-column prop="orderStatus" label="订单状态">
         <template #default="{ row }">
-          <div class="status-box">
-            <!-- <div
-              class="status-box__icon"
-              :class="ORDER_STATUS_LIST?.find((item) => item.value === row?.orderStatus)?.iconClass"
-            ></div> -->
-            <span class="status-box__text">{{
-              ORDER_STATUS_LIST?.find((item) => item.value === row?.orderStatus)?.label || '-'
-            }}</span>
+          <div>
+            <div class="status-box">
+              <span class="status-box__text">{{
+                ORDER_STATUS_LIST?.find((item) => item.value === row?.orderStatus)?.label || '-'
+              }}</span>
+            </div>
+            <el-popover
+              v-if="row?.refundStatus"
+              placement="top"
+              title="退款记录"
+              width="500"
+            >
+              <template #reference>
+                <el-button class="refund-record" link type="primary">退款记录</el-button>
+              </template>
+              <el-table :data="[{ ...row }]">
+                <el-table-column prop="refundId" label="退款单id"  />
+                <el-table-column prop="refundPrice" label="退款金额">
+                  <template #default="{ row }">
+                    <span>￥{{ row?.refundPrice }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="refundFinishTime" label="退款完成时间">
+                  <template #default="{ row }">
+                    <span>{{ formatDate(row?.refundFinishTime) }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="refundStatus" label="退款状态">
+                  <template #default="{ row }">
+                    <span>{{ REFUND_STATUS_LIST?.find((item) => item.value === row?.refundStatus)?.label }}</span>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-popover>
           </div>
+          
           <div v-if="row?.waybillCompanyName" class="waybill-company">{{ row?.waybillCompanyName }}</div>
           <div v-if="row?.waybillCode" class="table-item">
             <span class="table-item__label">运单号：</span>{{ row?.waybillCode }}
@@ -168,40 +195,43 @@
       <el-table-column label="操作">
         <template #default="{ row }">
           <div class="operation-box">
-            <el-button
-              v-if="row?.orderStatus === ORDER_STATUS.WAIT_OUT"
-              link
-              type="primary"
-              @click="uploadWaybillNum(row)"
-              >出库</el-button
-            >
-            <el-button
-              v-if="row?.orderStatus === ORDER_STATUS.HAS_OUT && row?.waybillUrl"
-              link
-              type="primary"
-              @click="printExpress(row)"
-              >重新打印面单</el-button
-            >
-            <el-button v-if="row?.orderStatus === ORDER_STATUS.HAS_OUT" link type="primary" @click="confirmReceive(row)"
-              >确认收货</el-button
-            >
-            <el-button
-              v-if="[ORDER_STATUS.WAIT_OUT, ORDER_STATUS.HAS_OUT, ORDER_STATUS.COMPLETED].includes(row?.orderStatus)"
-              link
-              type="primary"
-              @click="printOutOrder(row)"
-              >打印出库单</el-button
-            >
-            <el-button v-if="row?.orderStatus === ORDER_STATUS.WAIT_PAY" link type="primary" @click="cancelOrder(row)"
-              >取消订单</el-button
-            >
-            <el-button
-              v-if="[ORDER_STATUS.WAIT_OUT, ORDER_STATUS.HAS_OUT, ORDER_STATUS.COMPLETED].includes(row?.orderStatus)"
-              link
-              type="primary"
-              @click="refundOrder(row)"
-              >取消并退款</el-button
-            >
+            <!-- 退款中和退款成功 不允许操作 -->
+            <template v-if="![REFUND_STATUS.PROCESS, REFUND_STATUS.SUCCESS ].includes(row?.refundStatus)">
+              <el-button
+                v-if="row?.orderStatus === ORDER_STATUS.WAIT_OUT"
+                link
+                type="primary"
+                @click="uploadWaybillNum(row)"
+                >出库</el-button
+              >
+              <el-button
+                v-if="row?.orderStatus === ORDER_STATUS.HAS_OUT && row?.waybillUrl"
+                link
+                type="primary"
+                @click="printExpress(row)"
+                >重新打印面单</el-button
+              >
+              <el-button v-if="row?.orderStatus === ORDER_STATUS.HAS_OUT" link type="primary" @click="confirmReceive(row)"
+                >确认收货</el-button
+              >
+              <el-button
+                v-if="[ORDER_STATUS.WAIT_OUT, ORDER_STATUS.HAS_OUT, ORDER_STATUS.COMPLETED].includes(row?.orderStatus)"
+                link
+                type="primary"
+                @click="printOutOrder(row)"
+                >打印出库单</el-button
+              >
+              <el-button v-if="row?.orderStatus === ORDER_STATUS.WAIT_PAY" link type="primary" @click="cancelOrder(row)"
+                >取消订单</el-button
+              >
+              <el-button
+                v-if="[ORDER_STATUS.WAIT_OUT, ORDER_STATUS.HAS_OUT, ORDER_STATUS.COMPLETED].includes(row?.orderStatus)"
+                link
+                type="primary"
+                @click="refundOrder(row)"
+                >取消并退款</el-button
+              >
+            </template>
           </div>
         </template>
       </el-table-column>
@@ -227,7 +257,7 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, reactive } from 'vue'
-import { TAB_ID, ORDER_STATUS_LIST, ORDER_STATUS, PAY_METHOD_LIST } from './constants.ts'
+import { TAB_ID, ORDER_STATUS_LIST, ORDER_STATUS, PAY_METHOD_LIST, REFUND_STATUS, REFUND_STATUS_LIST } from './constants.ts'
 import * as apis from '@/api/services'
 import { AdvCustomTooltip, PageTitle } from '@/components'
 import { formatDate } from '@/utils/index.ts'

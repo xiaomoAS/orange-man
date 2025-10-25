@@ -161,3 +161,7 @@
   @include e(text) {
   }
 }
+
+@include b(refund-record) {
+  padding: 0!important;
+}

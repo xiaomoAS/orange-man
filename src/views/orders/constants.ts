@@ -64,3 +64,25 @@ export const PAY_METHOD_LIST = [
     value: PAY_METHOD.MEMBER_CARD,
   },
 ]
+
+// 退款状态
+export enum REFUND_STATUS {
+  PROCESS = 1, // 退款中
+  SUCCESS = 2, // 退款完成
+  FAIL = 3, // 退款失败
+}
+
+export const REFUND_STATUS_LIST = [
+  {
+    label: '退款中',
+    value: REFUND_STATUS.PROCESS
+  },
+  {
+    label: '退款完成',
+    value: REFUND_STATUS.SUCCESS
+  },
+  {
+    label: '退款失败',
+    value: REFUND_STATUS.FAIL
+  },
+]
