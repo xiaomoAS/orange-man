@@ -81,7 +81,9 @@ const submitHandler = () => {
       })
       if (res) {
         ElMessage.success('出库成功')
-        res?.waybillUrl && window.open(res?.waybillUrl)
+        if (res?.waybillUrl) {
+          window.open(res?.waybillUrl)
+        }
         emits('getTableData')
         dialogVisible.value = false
       } else {
@@ -96,7 +98,7 @@ const submitHandler = () => {
 const getWaybillList = async () => {
   try {
     companyList.value = await apis.getWaybillList({})
-  } catch (error) {
+  } catch {
     companyList.value = []
   }
 }
