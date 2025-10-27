@@ -3,7 +3,7 @@
  * @Description: 订单列表
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: xiaomoAS jiangzupei@gmail.com
- * @LastEditTime: 2025-10-27 15:52:47
+ * @LastEditTime: 2025-10-27 17:17:58
  * @FilePath: /orange-man/src/views/orders/OrderManage.vue
 -->
 <template>
@@ -364,8 +364,8 @@ const handleSelectionChange = (list: Array<any>) => {
 const printOutOrder = async (row: Record<string, any>) => {
   try {
     const { waybillInfoList = [] } = await apis.printOutOrder({ orderId: row?.id })
-    ElMessage.success('生成出库单成功')
     if (waybillInfoList?.[0]?.waybillUrl) {
+      ElMessage.success('生成出库单成功')
       window.open(waybillInfoList?.[0]?.waybillUrl)
     }
   } catch {}
