@@ -3,7 +3,7 @@
  * @Description: 订单列表
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: xiaomoAS jiangzupei@gmail.com
- * @LastEditTime: 2025-10-24 14:02:28
+ * @LastEditTime: 2025-10-27 15:23:13
  * @FilePath: /orange-man/src/views/orders/OrderManage.vue
 -->
 <template>
@@ -71,16 +71,26 @@
     <!-- 批量操作 -->
     <div class="batch-buttons">
       <div class="batch-buttons__left">
-        <!-- <el-button>批量打印</el-button>
-        <el-button>批量出库</el-button> -->
+        <span class="select-text"
+          >已选 <span class="select-text__num">{{ selectList?.length }}</span> 条</span
+        >
+        <el-button @click="batchPrintOut">批量打印出库单</el-button>
+        <el-button @click="batchOut">批量出库</el-button>
       </div>
 
       <div class="batch-buttons__right"></div>
     </div>
 
     <!-- 表格 -->
-    <el-table class="order-table" :data="tableData" current-row-key="orderId" border>
-      <!-- <el-table-column type="selection" width="55" /> -->
+    <el-table
+      v-loading="tableLoading"
+      class="order-table"
+      :data="tableData"
+      row-key="id"
+      border
+      @selection-change="handleSelectionChange"
+    >
+      <el-table-column type="selection" width="55" />
       <el-table-column label="订单信息" width="260">
         <template #default="{ row }">
           <div class="table-item"><span class="table-item__label">订单编号：</span>{{ row?.id }}</div>
@@ -147,8 +157,13 @@
           <div class="table-item"><span class="table-item__label">详细地址：</span>{{ row?.receiverAddress }}</div>
         </template>
       </el-table-column>
+      <el-table-column label="卖家备注" width="180">
+        <template #default="{ row }">
+          <SellerRemark :rowData="row" @getTableData="getTableData" />
+        </template>
+      </el-table-column>
       <!-- <el-table-column prop="buyerRemark" label="买家留言"></el-table-column> -->
-      <el-table-column prop="orderStatus" label="订单状态">
+      <el-table-column prop="orderStatus" label="订单状态" width="100">
         <template #default="{ row }">
           <div>
             <div class="status-box">
@@ -156,17 +171,12 @@
                 ORDER_STATUS_LIST?.find((item) => item.value === row?.orderStatus)?.label || '-'
               }}</span>
             </div>
-            <el-popover
-              v-if="row?.refundStatus"
-              placement="top"
-              title="退款记录"
-              width="500"
-            >
+            <el-popover v-if="row?.refundStatus" placement="top" title="退款记录" width="500">
               <template #reference>
                 <el-button class="refund-record" link type="primary">退款记录</el-button>
               </template>
               <el-table :data="[{ ...row }]">
-                <el-table-column prop="refundId" label="退款单id"  />
+                <el-table-column prop="refundId" label="退款单id" />
                 <el-table-column prop="refundPrice" label="退款金额">
                   <template #default="{ row }">
                     <span>￥{{ row?.refundPrice }}</span>
@@ -185,20 +195,20 @@
               </el-table>
             </el-popover>
           </div>
-          
+
           <div v-if="row?.waybillCompanyName" class="waybill-company">{{ row?.waybillCompanyName }}</div>
           <div v-if="row?.waybillCode" class="table-item">
             <span class="table-item__label">运单号：</span>{{ row?.waybillCode }}
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" fixed="right" width="120">
         <template #default="{ row }">
           <div class="operation-box">
             <!-- 退款中和退款成功 不允许操作 -->
-            <template v-if="![REFUND_STATUS.PROCESS, REFUND_STATUS.SUCCESS ].includes(row?.refundStatus)">
+            <template v-if="![REFUND_STATUS.PROCESS, REFUND_STATUS.SUCCESS].includes(row?.refundStatus)">
               <el-button
-                v-if="row?.orderStatus === ORDER_STATUS.WAIT_OUT"
+                v-if="[ORDER_STATUS.OUT_PROCESS].includes(row?.orderStatus)"
                 link
                 type="primary"
                 @click="uploadWaybillNum(row)"
@@ -211,21 +221,32 @@
                 @click="printExpress(row)"
                 >重新打印面单</el-button
               >
-              <el-button v-if="row?.orderStatus === ORDER_STATUS.HAS_OUT" link type="primary" @click="confirmReceive(row)"
+              <el-button
+                v-if="row?.orderStatus === ORDER_STATUS.HAS_OUT"
+                link
+                type="primary"
+                @click="confirmReceive(row)"
                 >确认收货</el-button
               >
               <el-button
-                v-if="[ORDER_STATUS.WAIT_OUT, ORDER_STATUS.HAS_OUT, ORDER_STATUS.COMPLETED].includes(row?.orderStatus)"
+                v-if="[ORDER_STATUS.WAIT_OUT, ORDER_STATUS.OUT_PROCESS].includes(row?.orderStatus)"
                 link
                 type="primary"
                 @click="printOutOrder(row)"
-                >打印出库单</el-button
+                >{{ row?.orderStatus === ORDER_STATUS.WAIT_OUT ? '打印出库单' : '重新打印出库单' }}</el-button
               >
               <el-button v-if="row?.orderStatus === ORDER_STATUS.WAIT_PAY" link type="primary" @click="cancelOrder(row)"
                 >取消订单</el-button
               >
               <el-button
-                v-if="[ORDER_STATUS.WAIT_OUT, ORDER_STATUS.HAS_OUT, ORDER_STATUS.COMPLETED].includes(row?.orderStatus)"
+                v-if="
+                  [
+                    ORDER_STATUS.WAIT_OUT,
+                    ORDER_STATUS.OUT_PROCESS,
+                    ORDER_STATUS.HAS_OUT,
+                    ORDER_STATUS.COMPLETED,
+                  ].includes(row?.orderStatus)
+                "
                 link
                 type="primary"
                 @click="refundOrder(row)"
@@ -253,16 +274,24 @@
 
   <UploadWaybill ref="uploadWayBillRef" @getTableData="getTableData" />
   <PrintWaybill ref="printWaybillRef" @getTableData="getTableData" />
+  <BatchOut ref="batchOutRef" @getTableData="getTableData" />
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted, reactive } from 'vue'
-import { TAB_ID, ORDER_STATUS_LIST, ORDER_STATUS, PAY_METHOD_LIST, REFUND_STATUS, REFUND_STATUS_LIST } from './constants.ts'
+import {
+  TAB_ID,
+  ORDER_STATUS_LIST,
+  ORDER_STATUS,
+  PAY_METHOD_LIST,
+  REFUND_STATUS,
+  REFUND_STATUS_LIST,
+} from './constants.ts'
 import * as apis from '@/api/services'
 import { AdvCustomTooltip, PageTitle } from '@/components'
 import { formatDate } from '@/utils/index.ts'
-import { UploadWaybill, PrintWaybill } from './components'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { UploadWaybill, PrintWaybill, BatchOut, SellerRemark } from './components'
+import { ElMessage, ElMessageBox, ElLoading } from 'element-plus'
 
 const defaultTime = [new Date(2000, 1, 1, 0, 0, 0), new Date(2000, 1, 1, 23, 59, 59)]
 const activeTab = ref(TAB_ID.ALL)
@@ -276,16 +305,20 @@ const searchForm = reactive({
   payTime: [],
   createTime: [],
 })
-const tableData = ref([])
+const tableData = ref<Array<any>>([])
+const selectList = ref<Array<any>>([])
 const orderFormRef = ref()
 const currentPage = ref(1)
 const pageSize = ref(10)
 const totalCount = ref(0)
 const uploadWayBillRef = ref()
 const printWaybillRef = ref()
+const batchOutRef = ref()
+const tableLoading = ref<boolean>(false)
 
 const getTableData = async () => {
   try {
+    tableLoading.value = true
     const { rows, total } = await apis.getOrderList({
       ...searchForm,
       createTime: undefined,
@@ -302,6 +335,7 @@ const getTableData = async () => {
     tableData.value = []
     totalCount.value = 0
   }
+  tableLoading.value = false
 }
 
 const handleSizeChange = (val: number) => {
@@ -318,6 +352,10 @@ const handleCurrentChange = (val: number) => {
  */
 const printExpress = (row: Record<string, any>) => {
   window?.open(row?.waybillUrl)
+}
+
+const handleSelectionChange = (list: Array<any>) => {
+  selectList.value = list
 }
 
 /**
@@ -355,11 +393,85 @@ const confirmReceive = async (row: Record<string, any>) => {
 }
 
 /**
+ * @description: 批量前置校验
+ */
+const batchPreCheck = () => {
+  if (!selectList.value?.length) {
+    ElMessage.warning('请先选择订单')
+    return false
+  }
+  return true
+}
+
+/**
  * @description: 出库
  * @param {Object} row 行信息
  */
 const uploadWaybillNum = (row: Record<string, any>) => {
   uploadWayBillRef.value?.open(row)
+}
+
+/**
+ * @description: 批量出库
+ */
+const batchOut = async () => {
+  batchOutRef.value?.open(selectList.value)
+}
+
+/**
+ * @description: 批量打印出库单
+ */
+const batchPrintOut = async () => {
+  let loading: any = null
+  try {
+    const valid = batchPreCheck()
+    if (!valid) return
+    const allOrderIds = selectList.value?.map((item) => item?.id)
+    const validIds = selectList.value
+      ?.filter((item) => [ORDER_STATUS.WAIT_OUT, ORDER_STATUS.OUT_PROCESS].includes(item?.orderStatus))
+      ?.map((item) => item?.id)
+    if (!validIds?.length) {
+      ElMessage.warning('所选订单均不可打印出库单')
+      return
+    }
+    await ElMessageBox.confirm(
+      `您选中的${allOrderIds?.length}单订单中，有${validIds?.length}单可打印出库单，确定打印吗？`,
+      '提示',
+      {
+        confirmButtonText: '确 定',
+        cancelButtonText: '取 消',
+        type: 'warning',
+      },
+    ).then(() => true)
+    loading = ElLoading.service({
+      lock: true,
+      text: '生成打印单中...',
+    })
+    const { waybillInfoList = [], mergeWaybillUrl } = await apis.printOutOrder({ orderIdList: validIds })
+    loading?.close()
+    getTableData()
+    const errorList = waybillInfoList?.filter((item) => !item?.success)
+    if (errorList?.length) {
+      ElMessageBox.confirm(
+        `${errorList?.map((item) => `<div>${item?.id}：${item?.errorMsg}</div>`)?.join('')}`,
+        `${errorList.length}单打印失败，原因如下`,
+        {
+          confirmButtonText: '确 定',
+          cancelButtonText: '取 消',
+          type: 'warning',
+          dangerouslyUseHTMLString: true,
+        },
+      )
+        .then(() => true)
+        .catch(() => false)
+    } else {
+      ElMessage.success('打印成功')
+    }
+    if (mergeWaybillUrl) window.open(mergeWaybillUrl)
+  } catch (error) {
+    if (loading) loading?.close()
+    console.log(error)
+  }
 }
 
 /**

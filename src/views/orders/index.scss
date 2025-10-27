@@ -7,10 +7,19 @@
 
   @include e(left) {
     display: flex;
+    align-items: center;
   }
 
   @include e(right) {
     display: flex;
+  }
+}
+
+@include b(select-text) {
+  margin-right: 8px;
+
+  @include e(num) {
+    color: #409eff;
   }
 }
 
@@ -163,5 +172,5 @@
 }
 
 @include b(refund-record) {
-  padding: 0!important;
+  padding: 0 !important;
 }

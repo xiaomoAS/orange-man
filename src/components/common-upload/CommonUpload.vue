@@ -89,7 +89,7 @@ interface Props {
   /**
    * 上传类型：image-图片，video-视频，file-文件
    */
-  type?: 'image' | 'video' | 'file' | 'pdf'
+  type?: 'image' | 'video' | 'file'
   /**
    * 上传地址
    */
@@ -126,6 +126,10 @@ interface Props {
    * 最大文件大小（MB）
    */
   maxSize?: number
+  // 默认上传到oss
+  defaultUpload?: boolean
+  // 上传文件限制类型
+  acceptFileType?: Array<string> | null
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -139,6 +143,8 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   maxSize: 5,
   action: `${BASE_API_URL}/admin/file/upload`,
+  defaultUpload: true,
+  acceptFileType: null,
 })
 
 // 定义事件
@@ -151,6 +157,7 @@ const previewFile = ref<UploadFile | null>(null)
 
 // 根据上传类型计算接受的文件类型
 const acceptType = computed(() => {
+  if (props?.acceptFileType?.length) return props?.acceptFileType.join(',')
   switch (props.type) {
     case 'image':
       return 'image/jpeg,image/png,image/gif,image/webp'
@@ -158,8 +165,6 @@ const acceptType = computed(() => {
       return 'video/mp4,video/webm,video/ogg'
     case 'file':
       return '.doc,.docx,.pdf,.xls,.xlsx,.txt'
-    case 'pdf':
-      return '.pdf'
     default:
       return ''
   }
@@ -218,21 +223,12 @@ const beforeUpload = (file: File) => {
     case 'file': {
       // 对于文件类型，我们通过扩展名判断
       const extension = file.name.split('.').pop()?.toLowerCase()
-      const allowedExtensions = ['doc', 'docx', 'pdf', 'xls', 'xlsx', 'txt']
-      isValidType = allowedExtensions.includes(extension || '')
+      const allowedExtensions = props?.acceptFileType?.length
+        ? props?.acceptFileType
+        : ['.doc', '.docx', '.pdf', '.xls', '.xlsx', '.txt']
+      isValidType = allowedExtensions.includes(`.${extension}` || '')
       if (!isValidType) {
         ElMessage.error('文件类型不支持!')
-        return false
-      }
-      break
-    }
-    case 'pdf': {
-      // 对于文件类型，我们通过扩展名判断
-      const extension = file.name.split('.').pop()?.toLowerCase()
-      const allowedExtensions = ['pdf']
-      isValidType = allowedExtensions.includes(extension || '')
-      if (!isValidType) {
-        ElMessage.error('只支持pdf文件!')
         return false
       }
       break
@@ -258,7 +254,7 @@ const handlePreview = (file: UploadFile) => {
   if (props.type === 'image' || props.type === 'video') {
     previewUrl.value = file.url || URL.createObjectURL(file.raw!)
     previewVisible.value = true
-  } else if (props.type === 'file' || 'pdf') {
+  } else if (props.type === 'file') {
     // 对于文件类型，可以直接打开或下载
     if (file.response) {
       window.open(file.response as string)
@@ -299,6 +295,7 @@ const handleChange = (file: UploadFile, fileList: UploadFiles) => {
 
 // 自定义上传方法
 const customUpload = async (options: UploadRequestOptions) => {
+  if (!props?.defaultUpload) return
   const { file, onSuccess, onError, onProgress } = options
   console.log('file', Object.prototype.toString.call(file).split(' ')[1].split(']')[0], '===', file)
 

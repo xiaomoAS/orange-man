@@ -1,0 +1,6 @@
+@use '@/assets/style/mixin' as *;
+
+@include b(title-text) {
+  font-weight: 600;
+  margin-top: 8px;
+}

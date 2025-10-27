@@ -8,10 +8,17 @@ export const getOrderList: any = (params = {}) => {
 }
 
 /**
- * @description: 上传运单
+ * @description: 单个出库
  */
 export const orderShipment: any = (params = {}) => {
   return request.post(`${BASE_API_URL}/admin/waybill/shipment`, params)
+}
+
+/**
+ * @description: 批量出库
+ */
+export const batchShipment: any = (params = {}) => {
+  return request.post(`${BASE_API_URL}/admin/waybill/batchShipment`, params)
 }
 
 /**
@@ -61,4 +68,11 @@ export const getAddress: any = (params = {}) => {
  */
 export const getWaybillList: any = (params = {}) => {
   return request.post(`${BASE_API_URL}/admin/waybill/company/list`, params)
+}
+
+/**
+ * @description: 保存备注
+ */
+export const saveRemark: any = (params = {}) => {
+  return request.post(`${BASE_API_URL}/admin/order/saveRemark`, params)
 }

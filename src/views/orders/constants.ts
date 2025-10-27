@@ -3,7 +3,7 @@
  * @Description:
  * @Date: 2025-06-30 17:24:04
  * @LastEditors: xiaomoAS jiangzupei@gmail.com
- * @LastEditTime: 2025-10-24 11:36:00
+ * @LastEditTime: 2025-10-27 09:28:54
  * @FilePath: /orange-man/src/views/orders/constants.ts
  */
 export enum TAB_ID {
@@ -18,6 +18,7 @@ export enum ORDER_STATUS {
   WAIT_OUT = 2, // 待出库
   HAS_OUT = 3, // 待收货
   COMPLETED = 4, // 已完成
+  OUT_PROCESS = 6, // 拣货中
   CANCELED = 9, // 已取消
 }
 
@@ -30,6 +31,11 @@ export const ORDER_STATUS_LIST = [
   {
     label: '待出库',
     value: ORDER_STATUS.WAIT_OUT,
+    iconClass: 'warning',
+  },
+  {
+    label: '拣货中',
+    value: ORDER_STATUS.OUT_PROCESS,
     iconClass: 'warning',
   },
   {
@@ -75,14 +81,14 @@ export enum REFUND_STATUS {
 export const REFUND_STATUS_LIST = [
   {
     label: '退款中',
-    value: REFUND_STATUS.PROCESS
+    value: REFUND_STATUS.PROCESS,
   },
   {
     label: '退款完成',
-    value: REFUND_STATUS.SUCCESS
+    value: REFUND_STATUS.SUCCESS,
   },
   {
     label: '退款失败',
-    value: REFUND_STATUS.FAIL
+    value: REFUND_STATUS.FAIL,
   },
 ]

@@ -105,7 +105,8 @@
         <el-form-item label="检测报告" prop="reportFiles">
           <CommonUpload
             v-model:fileList="addCateForm.reportFiles"
-            :type="addCateForm.reportType === REPORT_TYPE.IMG ? 'image' : 'pdf'"
+            :type="addCateForm.reportType === REPORT_TYPE.IMG ? 'image' : 'file'"
+            :acceptFileType="addCateForm.reportType === REPORT_TYPE.FILE ? ['.pdf'] : null"
             :action="`${BASE_API_URL}/admin/file/upload`"
             @change="validateField('reportFiles')"
           />

@@ -1,0 +1,13 @@
+@use '@/assets/style/mixin' as *;
+
+@include b(edit-icon) {
+  display: inline-block;
+  margin-right: 4px;
+  cursor: pointer;
+}
+
+@include b(remark-buttons) {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
