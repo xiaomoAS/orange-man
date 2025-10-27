@@ -74,7 +74,7 @@ const submitHandler = () => {
           .then(() => true)
           .catch(() => false)
       } else {
-        ElMessage.success('打印成功')
+        ElMessage.success('批量出库成功')
       }
       if (mergeWaybillUrl) window.open(mergeWaybillUrl)
       dialogVisible.value = false
