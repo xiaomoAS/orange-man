@@ -3,7 +3,7 @@
  * @Description: 订单列表
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: xiaomoAS jiangzupei@gmail.com
- * @LastEditTime: 2025-10-27 17:17:58
+ * @LastEditTime: 2025-10-28 09:57:06
  * @FilePath: /orange-man/src/views/orders/OrderManage.vue
 -->
 <template>
@@ -367,6 +367,7 @@ const printOutOrder = async (row: Record<string, any>) => {
     if (waybillInfoList?.[0]?.waybillUrl) {
       ElMessage.success('生成出库单成功')
       window.open(waybillInfoList?.[0]?.waybillUrl)
+      getTableData()
     }
   } catch {}
 }
