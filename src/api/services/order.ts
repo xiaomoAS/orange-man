@@ -76,3 +76,10 @@ export const getWaybillList: any = (params = {}) => {
 export const saveRemark: any = (params = {}) => {
   return request.post(`${BASE_API_URL}/admin/order/saveRemark`, params)
 }
+
+/**
+ * @description: 订单导出
+ */
+export const exportOrder: any = (params = {}) => {
+  return request.post(`${BASE_API_URL}/admin/order/exportOrder`, params)
+}

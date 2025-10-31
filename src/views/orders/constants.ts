@@ -3,7 +3,7 @@
  * @Description:
  * @Date: 2025-06-30 17:24:04
  * @LastEditors: xiaomoAS jiangzupei@gmail.com
- * @LastEditTime: 2025-10-27 09:28:54
+ * @LastEditTime: 2025-10-31 15:11:21
  * @FilePath: /orange-man/src/views/orders/constants.ts
  */
 export enum TAB_ID {
@@ -90,5 +90,51 @@ export const REFUND_STATUS_LIST = [
   {
     label: '退款失败',
     value: REFUND_STATUS.FAIL,
+  },
+]
+
+export const orderSchema = [
+  {
+    field: 'orderId',
+    label: '订单号',
+    type: 'input',
+  },
+  {
+    field: 'orderStatus',
+    label: '订单状态',
+    type: 'select',
+    options: ORDER_STATUS_LIST,
+  },
+  {
+    field: 'receiverName',
+    label: '收货人姓名',
+    type: 'input',
+  },
+  {
+    field: 'receiverMobile',
+    label: '收货人手机号',
+    type: 'input',
+  },
+  {
+    field: 'productId',
+    label: '商品id',
+    type: 'input',
+  },
+  {
+    field: 'waybillCode',
+    label: '运单号',
+    type: 'input',
+  },
+  {
+    field: 'payTime',
+    label: '支付时间',
+    type: 'dateRange',
+    span: 2,
+  },
+  {
+    field: 'createTime',
+    label: '下单时间',
+    type: 'dateRange',
+    span: 2,
   },
 ]

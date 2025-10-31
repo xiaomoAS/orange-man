@@ -3,7 +3,7 @@
  * @Description: 订单列表
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: xiaomoAS jiangzupei@gmail.com
- * @LastEditTime: 2025-10-28 09:57:06
+ * @LastEditTime: 2025-10-31 15:15:02
  * @FilePath: /orange-man/src/views/orders/OrderManage.vue
 -->
 <template>
@@ -76,6 +76,7 @@
         >
         <el-button @click="batchPrintOut">批量打印出库单</el-button>
         <el-button @click="batchOut">批量出库</el-button>
+        <el-button @click="batchExport">订单导出</el-button>
       </div>
 
       <div class="batch-buttons__right"></div>
@@ -275,10 +276,11 @@
   <UploadWaybill ref="uploadWayBillRef" @getTableData="getTableData" />
   <PrintWaybill ref="printWaybillRef" @getTableData="getTableData" />
   <BatchOut ref="batchOutRef" @getTableData="getTableData" />
+  <BatchExport ref="batchExportRef" :export-configs="exportConfigs" />
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, reactive } from 'vue'
+import { ref, onMounted, reactive, computed } from 'vue'
 import {
   TAB_ID,
   ORDER_STATUS_LIST,
@@ -286,9 +288,10 @@ import {
   PAY_METHOD_LIST,
   REFUND_STATUS,
   REFUND_STATUS_LIST,
+  orderSchema,
 } from './constants.ts'
 import * as apis from '@/api/services'
-import { AdvCustomTooltip, PageTitle } from '@/components'
+import { AdvCustomTooltip, PageTitle, BatchExport } from '@/components'
 import { formatDate } from '@/utils/index.ts'
 import { UploadWaybill, PrintWaybill, BatchOut, SellerRemark } from './components'
 import { ElMessage, ElMessageBox, ElLoading } from 'element-plus'
@@ -314,7 +317,15 @@ const totalCount = ref(0)
 const uploadWayBillRef = ref()
 const printWaybillRef = ref()
 const batchOutRef = ref()
+const batchExportRef = ref()
 const tableLoading = ref<boolean>(false)
+
+const exportConfigs = computed(() =>
+  orderSchema.map((item) => ({
+    ...item,
+    value: searchForm[item.field] || null,
+  })),
+)
 
 const getTableData = async () => {
   try {
@@ -474,6 +485,13 @@ const batchPrintOut = async () => {
     if (loading) loading?.close()
     console.log(error)
   }
+}
+
+/**
+ * @description: 订单导出
+ */
+const batchExport = () => {
+  batchExportRef.value?.open()
 }
 
 /**
