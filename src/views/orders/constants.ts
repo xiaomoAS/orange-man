@@ -3,7 +3,7 @@
  * @Description:
  * @Date: 2025-06-30 17:24:04
  * @LastEditors: xiaomoAS jiangzupei@gmail.com
- * @LastEditTime: 2025-10-31 15:11:21
+ * @LastEditTime: 2025-10-31 16:04:26
  * @FilePath: /orange-man/src/views/orders/constants.ts
  */
 export enum TAB_ID {
@@ -66,7 +66,7 @@ export const PAY_METHOD_LIST = [
     value: PAY_METHOD.WE_CHAT,
   },
   {
-    label: '充值卡',
+    label: '会员账户',
     value: PAY_METHOD.MEMBER_CARD,
   },
 ]

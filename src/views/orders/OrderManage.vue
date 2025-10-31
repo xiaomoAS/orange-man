@@ -3,7 +3,7 @@
  * @Description: 订单列表
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: xiaomoAS jiangzupei@gmail.com
- * @LastEditTime: 2025-10-31 15:15:02
+ * @LastEditTime: 2025-10-31 16:05:03
  * @FilePath: /orange-man/src/views/orders/OrderManage.vue
 -->
 <template>
@@ -128,7 +128,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="应收" width="150">
+      <el-table-column label="应收" width="160">
         <template #default="{ row }">
           <div class="table-item">
             <span class="table-item__label">原价：</span><span class="price-text">¥{{ row?.totalAmount || 0 }}</span>
