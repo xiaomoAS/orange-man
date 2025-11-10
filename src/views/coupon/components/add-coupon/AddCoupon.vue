@@ -7,7 +7,7 @@
     @close="closeHandler"
   >
     <div>
-      <el-form ref="formRef" :model="form" :rules="rules" label-width="130px">
+      <el-form ref="formRef" :model="form" :rules="rules" label-width="145px">
         <el-form-item v-if="isEdit" label="券ID" prop="id">
           <el-input v-model="form.id" disabled></el-input>
         </el-form-item>
@@ -15,7 +15,7 @@
           <el-input v-model="form.name" placeholder="请输入券名称"></el-input>
         </el-form-item>
         <el-form-item label="券类型" prop="type">
-          <el-select v-model="form.type" placeholder="请选择券类型">
+          <el-select v-model="form.type" placeholder="请选择券类型" @change="couponTypeChange">
             <el-option v-for="item in COUPON_LIST" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
@@ -44,7 +44,7 @@
         <el-form-item label="覆盖商品" prop="productIdList">
           <CommonProduct v-model="form.productIdList" />
         </el-form-item>
-        <el-form-item label="覆盖用户数" prop="converUserCount">
+        <el-form-item label="覆盖用户数(总库存)" prop="converUserCount">
           <el-input v-model.number="form.converUserCount" type="number" placeholder="请输入覆盖用户数"></el-input>
         </el-form-item>
 
@@ -59,10 +59,13 @@
             :default-time="[new Date(2000, 1, 1, 0, 0, 0), new Date(2000, 1, 1, 23, 59, 59)]"
           />
         </el-form-item>
-        <el-form-item label="发放方式" prop="publishType">
+        <el-form-item v-if="form.type" label="发放方式" prop="publishType">
           <el-radio-group v-model="form.publishType">
-            <el-radio v-for="item in PUBLISH_LIST" :value="item.value" :key="item.value">{{ item?.label }}</el-radio>
+            <el-radio v-for="item in realPublishList" :value="item.value" :key="item.value">{{ item?.label }}</el-radio>
           </el-radio-group>
+        </el-form-item>
+        <el-form-item v-if="form.publishType === PUBLISH_TYPE.DISCOUNT_DAILY" label="优惠券每日库存" prop="dailyStock">
+          <el-input v-model.number="form.dailyStock" type="number" placeholder="请输入券日库存"></el-input>
         </el-form-item>
       </el-form>
     </div>
@@ -79,7 +82,7 @@
 import { ref, reactive, computed } from 'vue'
 import * as apis from '@/api/services'
 import { ElMessage } from 'element-plus'
-import { COUPON_LIST, PUBLISH_LIST, COUPON_TYPE } from '../../constants'
+import { COUPON_LIST, NEW_PUBLISH_LIST, FREIGHT_PUBLISH_LIST, COUPON_TYPE, PUBLISH_TYPE } from '../../constants'
 import { CommonProduct } from '@/components'
 
 const rules = {
@@ -87,6 +90,7 @@ const rules = {
   type: [{ required: true, message: '请选择类型', trigger: 'change' }],
   productIdList: [{ required: true, message: '请选择商品', trigger: 'change' }],
   converUserCount: [{ required: true, message: '请输入覆盖用户数', trigger: 'change' }],
+  dailyStock: [{ required: true, message: '请输入券日库存', trigger: 'change' }],
   waybillPriceLimit: [{ required: true, message: '请输入价格', trigger: 'change' }],
   newPersonPrice: [{ required: true, message: '请输入价格', trigger: 'change' }],
   couponTime: [{ required: true, message: '请选择时间', trigger: 'change' }],
@@ -103,12 +107,17 @@ const form = reactive<Record<string, any>>({
   type: null,
   productIdList: [],
   converUserCount: null,
+  dailyStock: null,
   waybillPriceLimit: null,
   newPersonPrice: null,
   publishType: null,
   couponTime: [],
 })
 const isEdit = computed(() => !!rowData.value)
+const realPublishList = computed(() => {
+  if (!form.type) return []
+  return form.type === COUPON_TYPE.NEW_DISCOUNT ? NEW_PUBLISH_LIST : FREIGHT_PUBLISH_LIST
+})
 
 const open = (data: Record<string, any>) => {
   rowData.value = data
@@ -127,6 +136,7 @@ const closeHandler = () => {
     type: null,
     productIdList: [],
     converUserCount: null,
+    dailyStock: null,
     waybillPriceLimit: null,
     newPersonPrice: null,
     publishType: null,
@@ -134,9 +144,39 @@ const closeHandler = () => {
   })
 }
 
+/**
+ * @description: 券类型改变
+ */
+const couponTypeChange = () => {
+  // 清空某些数据
+  form.publishType = null
+  form.dailyStock = null
+}
+
+const precheck = () => {
+  if (form?.publishType === PUBLISH_TYPE.DISCOUNT_DAILY) {
+    if (form?.productIdList?.length > 1) {
+      ElMessage.warning('每张每日折扣券只允许绑定一个商品')
+      return false
+    }
+    // 天数
+    const daysBetween = Math.ceil((form?.couponTime?.[1] - form?.couponTime?.[0]) / (1000 * 60 * 60 * 24))
+    if (Number(daysBetween * form.dailyStock) > Number(form.converUserCount)) {
+      ElMessage.warning(
+        `生效天数(${daysBetween}天) x 每日库存(${form.dailyStock}) = ${Number(daysBetween * form.dailyStock)} 应< 覆盖用户数（总库存）:${form.converUserCount}`,
+      )
+      return false
+    }
+  }
+  return true
+}
+
 const submitHandler = () => {
   formRef.value?.validate(async (valid: boolean) => {
     if (!valid) return
+    const dataValid = precheck()
+    if (!dataValid) return
+
     try {
       const apiName = isEdit.value ? 'updateCoupon' : 'addCoupon'
       const res = await apis?.[apiName]({

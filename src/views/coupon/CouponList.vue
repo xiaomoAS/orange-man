@@ -3,7 +3,7 @@
  * @Description: 优惠券列表
  * @Date: 2025-06-30 17:04:54
  * @LastEditors: xiaomoAS jiangzupei@gmail.com
- * @LastEditTime: 2025-10-16 10:16:30
+ * @LastEditTime: 2025-11-10 15:32:22
  * @FilePath: /orange-man/src/views/coupon/CouponList.vue
 -->
 <template>
@@ -30,7 +30,7 @@
       </el-form-item>
       <el-form-item label="发放类型" prop="publishType">
         <el-select v-model="searchForm.publishType" placeholder="请选择发放类型" clearable>
-          <el-option v-for="item in PUBLISH_LIST" :key="item.value" :label="item.label" :value="item.value">
+          <el-option v-for="item in ALL_PUBLISH_LIST" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
       </el-form-item>
@@ -57,7 +57,7 @@
         <template #default="{ row }">
           <div>{{ COUPON_NAME_MAP?.[row?.type as keyof typeof COUPON_NAME_MAP] }}</div>
           <div class="publish-type">
-            发放方式：{{ PUBLISH_LIST.find((item) => item?.value === row?.publishType)?.label }}
+            发放方式：{{ ALL_PUBLISH_LIST.find((item) => item?.value === row?.publishType)?.label }}
           </div>
         </template>
       </el-table-column>
@@ -81,7 +81,7 @@
           {{ row?.receiveUserCount || 0 }}
         </template>
       </el-table-column>
-      <el-table-column label="覆盖用户数" prop="converUserCount" min-width="100"></el-table-column>
+      <el-table-column label="覆盖用户数（总库存）" prop="converUserCount" min-width="100"></el-table-column>
       <el-table-column label="生效时间段" width="200">
         <template #default="{ row }">
           <div>{{ formatDate(row?.startTime) }} 至 {{ formatDate(row?.endTime) }}</div>
@@ -153,7 +153,7 @@ import {
   STATUS_NAME_MAP,
   COUPON_STATUS,
   PUBLISH_TYPE,
-  PUBLISH_LIST,
+  ALL_PUBLISH_LIST,
   COUPON_LIST,
   COUPON_STATUS_LIST,
 } from './constants'
