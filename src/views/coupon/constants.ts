@@ -48,21 +48,21 @@ export const COUPON_STATUS_LIST = [
 // 发放方式
 export enum PUBLISH_TYPE {
   NEW = 1, // 新用户进入小程序领取
-  DISCOUNT_DAILY = 3, // 每日折扣券
   LINK = 4, // 分享二维码领取
+  DISCOUNT_DAILY = 5, // 每日前n个发放
 }
 
 // 所有发放方式
 export const ALL_PUBLISH_LIST = [
   { label: '新用户进入小程序领取', value: PUBLISH_TYPE.NEW },
-  { label: '每日折扣券', value: PUBLISH_TYPE.DISCOUNT_DAILY },
+  { label: '每日前n个发放', value: PUBLISH_TYPE.DISCOUNT_DAILY },
   { label: '分享二维码领取', value: PUBLISH_TYPE.LINK },
 ]
 
 // 专享券发放方式
 export const NEW_PUBLISH_LIST = [
   { label: '新用户进入小程序领取', value: PUBLISH_TYPE.NEW },
-  { label: '每日折扣券', value: PUBLISH_TYPE.DISCOUNT_DAILY },
+  { label: '每日前n个发放', value: PUBLISH_TYPE.DISCOUNT_DAILY },
   { label: '分享二维码领取', value: PUBLISH_TYPE.LINK },
 ]
 
@@ -70,4 +70,15 @@ export const NEW_PUBLISH_LIST = [
 export const FREIGHT_PUBLISH_LIST = [
   { label: '新用户进入小程序领取', value: PUBLISH_TYPE.NEW },
   { label: '分享二维码领取', value: PUBLISH_TYPE.LINK },
+]
+
+// 赠送类型
+export enum DONATE_TYPE {
+  SEND = 1, // 可赠送
+  NO = 2, // 不可赠送
+}
+
+export const DONATE_LIST = [
+  { label: '可赠送', value: DONATE_TYPE.SEND },
+  { label: '不可赠送', value: DONATE_TYPE.NO },
 ]

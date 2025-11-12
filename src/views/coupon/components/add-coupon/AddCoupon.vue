@@ -67,6 +67,11 @@
         <el-form-item v-if="form.publishType === PUBLISH_TYPE.DISCOUNT_DAILY" label="优惠券每日库存" prop="dailyStock">
           <el-input v-model.number="form.dailyStock" type="number" placeholder="请输入券日库存"></el-input>
         </el-form-item>
+        <el-form-item v-if="form.publishType === PUBLISH_TYPE.DISCOUNT_DAILY" label="是否可赠送" prop="donateType">
+          <el-radio-group v-model="form.donateType">
+            <el-radio v-for="item in DONATE_LIST" :value="item.value" :key="item.value">{{ item?.label }}</el-radio>
+          </el-radio-group>
+        </el-form-item>
       </el-form>
     </div>
     <template #footer>
@@ -82,7 +87,14 @@
 import { ref, reactive, computed } from 'vue'
 import * as apis from '@/api/services'
 import { ElMessage } from 'element-plus'
-import { COUPON_LIST, NEW_PUBLISH_LIST, FREIGHT_PUBLISH_LIST, COUPON_TYPE, PUBLISH_TYPE } from '../../constants'
+import {
+  COUPON_LIST,
+  NEW_PUBLISH_LIST,
+  FREIGHT_PUBLISH_LIST,
+  COUPON_TYPE,
+  PUBLISH_TYPE,
+  DONATE_LIST,
+} from '../../constants'
 import { CommonProduct } from '@/components'
 
 const rules = {
@@ -91,6 +103,7 @@ const rules = {
   productIdList: [{ required: true, message: '请选择商品', trigger: 'change' }],
   converUserCount: [{ required: true, message: '请输入覆盖用户数', trigger: 'change' }],
   dailyStock: [{ required: true, message: '请输入券日库存', trigger: 'change' }],
+  donateType: [{ required: true, message: '请选择赠送类型', trigger: 'change' }],
   waybillPriceLimit: [{ required: true, message: '请输入价格', trigger: 'change' }],
   newPersonPrice: [{ required: true, message: '请输入价格', trigger: 'change' }],
   couponTime: [{ required: true, message: '请选择时间', trigger: 'change' }],
@@ -108,6 +121,7 @@ const form = reactive<Record<string, any>>({
   productIdList: [],
   converUserCount: null,
   dailyStock: null,
+  donateType: null,
   waybillPriceLimit: null,
   newPersonPrice: null,
   publishType: null,
@@ -137,6 +151,7 @@ const closeHandler = () => {
     productIdList: [],
     converUserCount: null,
     dailyStock: null,
+    donateType: null,
     waybillPriceLimit: null,
     newPersonPrice: null,
     publishType: null,
@@ -151,12 +166,13 @@ const couponTypeChange = () => {
   // 清空某些数据
   form.publishType = null
   form.dailyStock = null
+  form.donateType = null
 }
 
 const precheck = () => {
   if (form?.publishType === PUBLISH_TYPE.DISCOUNT_DAILY) {
     if (form?.productIdList?.length > 1) {
-      ElMessage.warning('每张每日折扣券只允许绑定一个商品')
+      ElMessage.warning('每日前n个发放方式只允许绑定一个商品')
       return false
     }
     // 天数
