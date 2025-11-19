@@ -1,8 +1,9 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import router from '@/router'
+import { apiBaseUrl } from '@/config/env'
 
-export const BASE_API_URL = '//101.201.111.162'
+export const BASE_API_URL = apiBaseUrl
 
 const server = axios.create({
   withCredentials: true,
