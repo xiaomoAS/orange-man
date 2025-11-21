@@ -2,8 +2,8 @@
  * @Autor: jiangzupei
  * @Description:
  * @Date: 2025-06-30 14:11:45
- * @LastEditors: jiangzupei1 jiangzupei1@jd.com
- * @LastEditTime: 2025-09-09 11:14:11
+ * @LastEditors: xiaomoAS jiangzupei@gmail.com
+ * @LastEditTime: 2025-11-21 11:48:41
  * @FilePath: /orange-man/src/router/index.ts
  */
 import { createRouter, createWebHistory } from 'vue-router'
@@ -46,6 +46,11 @@ const router = createRouter({
       path: '/couponList',
       name: 'CouponList',
       component: () => import(/* webpackChunkName: "coupon-list" */ '@/views/coupon/CouponList.vue'),
+    },
+    {
+      path: '/leaderConfigs',
+      name: 'LeaderConfigs',
+      component: () => import(/* webpackChunkName: "leader-configs" */ '@/views/leader-configs/LeaderConfigs.vue'),
     },
     {
       path: '/userList',

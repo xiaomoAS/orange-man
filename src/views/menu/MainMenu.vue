@@ -3,7 +3,7 @@
  * @Description: 菜单
  * @Date: 2025-06-30 14:57:13
  * @LastEditors: xiaomoAS jiangzupei@gmail.com
- * @LastEditTime: 2025-10-14 15:31:49
+ * @LastEditTime: 2025-11-21 11:47:44
  * @FilePath: /orange-man/src/views/menu/MainMenu.vue
 -->
 <template>
@@ -46,6 +46,13 @@
         <el-icon><Ticket /></el-icon>
         <template #title>
           <span class="main-menu__title">优惠券</span>
+        </template>
+      </el-menu-item>
+
+      <el-menu-item index="/leaderConfigs">
+        <el-icon><User /></el-icon>
+        <template #title>
+          <span class="main-menu__title">团长管理</span>
         </template>
       </el-menu-item>
 

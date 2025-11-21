@@ -8,11 +8,16 @@
   >
     <div>
       <el-form ref="formRef" :model="form" :rules="rules" label-width="120px">
-        <el-form-item label="用户名" prop="userName">
-          <el-input v-model="form.userName" placeholder="请输入用户名"></el-input>
+        <el-form-item label="用户Id" prop="userId">
+          <el-input v-model="form.userId" placeholder="请输入用户Id"></el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input v-model="form.password" placeholder="请输入密码"></el-input>
+        <el-form-item label="手机号" prop="phoneNumber">
+          <el-input v-model="form.phoneNumber" placeholder="请输入手机号"></el-input>
+        </el-form-item>
+        <el-form-item label="团长等级" prop="level">
+          <el-select v-model="form.level" placeholder="团长等级" clearable>
+            <el-option v-for="item in LEADER_LEVEL_LIST" :key="item?.value" :label="item?.label" :value="item?.value" />
+          </el-select>
         </el-form-item>
       </el-form>
     </div>
@@ -29,10 +34,12 @@
 import { ref, reactive, computed } from 'vue'
 import * as apis from '@/api/services'
 import { ElMessage } from 'element-plus'
+import { LEADER_LEVEL_LIST } from '@/views/leader-configs/constants'
 
 const rules = {
-  userName: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-  password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+  userId: [{ required: true, message: '请输入用户Id', trigger: 'blur' }],
+  phoneNumber: [{ required: true, message: '请输入手机号', trigger: 'blur' }],
+  level: [{ required: true, message: '请选择团长等级', trigger: 'change' }],
 }
 
 const emits = defineEmits(['getTableData'])
@@ -40,8 +47,9 @@ const dialogVisible = ref<boolean>(false)
 const rowData = ref()
 const formRef = ref()
 const form = reactive<Record<string, any>>({
-  userName: null,
-  password: null,
+  userId: null,
+  phoneNumber: null,
+  level: null,
 })
 const isEdit = computed(() => !!rowData.value)
 
@@ -54,8 +62,9 @@ const open = (data: Record<string, any>) => {
 const closeHandler = () => {
   formRef.value?.resetFields()
   Object.assign(form, {
-    userName: null,
-    password: null,
+    userId: null,
+    phoneNumber: null,
+    level: null,
   })
 }
 
@@ -63,11 +72,12 @@ const submitHandler = () => {
   formRef.value?.validate(async (valid: boolean) => {
     if (!valid) return
     try {
-      const apiName = isEdit.value ? 'updateUser' : 'addUser'
+      const apiName = isEdit.value ? 'updateLeader' : 'addLeader'
       const res = await apis?.[apiName]({
         id: rowData.value?.id,
-        userName: form?.userName,
-        password: form?.password,
+        userId: form?.userId,
+        phoneNumber: form?.phoneNumber,
+        level: form?.level,
       })
       if (res) {
         ElMessage.success(isEdit.value ? '修改成功' : '添加成功')
