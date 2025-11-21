@@ -30,13 +30,20 @@
     <el-table-column label="用户id" prop="userId" width="100"></el-table-column>
     <el-table-column label="手机号" prop="phoneNumber"></el-table-column>
     <el-table-column label="用户昵称" prop="nickName"></el-table-column>
-    <!-- <el-table-column label="操作" width="150">
+    <el-table-column label="团员数量" prop="userCount"></el-table-column>
+    <el-table-column label="团员订单数" prop="orderCount"></el-table-column>
+    <el-table-column label="团销售金额" prop="salePrice"></el-table-column>
+    <el-table-column label="团长收入金额" prop="commissionPrice"></el-table-column>
+    <el-table-column label="操作" width="150">
       <template #default="{ row }">
         <div>
-          <el-button link type="primary" @click="modifyLeaderHandler(row)">修改</el-button>
+          <el-button link type="primary">下载团员明细</el-button>
+          <el-button link type="primary">暂停团长身份</el-button>
+          <el-button link type="primary">删除团长</el-button>
+          <el-button link type="primary" @click="viewCode(row)">查看二维码</el-button>
         </div>
       </template>
-    </el-table-column> -->
+    </el-table-column>
   </el-table>
 
   <AddLeaderDialog ref="addLeaderRef" @getTableData="getTableData" />
@@ -53,13 +60,14 @@
       @current-change="handleCurrentChange"
     />
   </div>
+
+  <QrCode ref="qrCodeRef" />
 </template>
 
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue'
 import * as apis from '@/api/services'
-import { ElMessage, ElMessageBox } from 'element-plus'
-import { PageTitle } from '@/components'
+import { PageTitle, QrCode } from '@/components'
 import { AddLeaderDialog } from './components'
 
 const tableData = ref([])
@@ -73,6 +81,7 @@ const searchForm = reactive({
   phoneNumber: null,
   nickName: null,
 })
+const qrCodeRef = ref()
 
 const getTableData = async () => {
   try {
@@ -107,6 +116,10 @@ const modifyLeaderHandler = (row = null) => {
 const reset = () => {
   searchFormRef.value?.resetFields()
   getTableData()
+}
+
+const viewCode = (row) => {
+  qrCodeRef.value?.open(row?.qrCode)
 }
 
 onMounted(() => {

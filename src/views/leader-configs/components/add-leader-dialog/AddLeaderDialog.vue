@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     v-model="dialogVisible"
-    :title="isEdit ? '修改用户' : '添加用户'"
+    :title="isEdit ? '修改团长' : '添加团长'"
     :close-on-click-modal="false"
     :close-on-press-escape="false"
     @close="closeHandler"
