@@ -24,3 +24,20 @@ export const LEADER_LEVEL_LIST = [
     value: LEADER_LEVEL.DIAMOND,
   },
 ]
+
+// 团长认证状态
+export const enum LEADER_STATUS {
+  NORMAL = 1, // 正常
+  PAUSE = 2, // 暂停
+}
+
+export const LEADER_STATUS_LIST = [
+  {
+    label: '正常',
+    value: LEADER_STATUS.NORMAL,
+  },
+  {
+    label: '暂停',
+    value: LEADER_STATUS.PAUSE,
+  },
+]

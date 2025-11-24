@@ -20,3 +20,17 @@ export const addLeader: any = (params = {}) => {
 export const updateLeader: any = (params = {}) => {
   return request.post(`${BASE_API_URL}/admin/team/leader/update`, params)
 }
+
+/**
+ * @description: 暂停团长身份
+ */
+export const pauseLeader: any = (params = {}) => {
+  return request.post(`${BASE_API_URL}/admin/team/leader/pause`, params)
+}
+
+/**
+ * @description: 删除团长
+ */
+export const deleteLeader: any = (params = {}) => {
+  return request.post(`${BASE_API_URL}/admin/team/leader/delete`, params)
+}
